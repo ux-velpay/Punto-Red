@@ -367,14 +367,14 @@ tbody tr:hover{background:#fbfaff}
           <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
         </div>
         <div class="card tbl-card" id="txCard"><div class="tbl-scroll"><table>
-          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Estado del saldo</th><th></th></tr></thead>
+          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Destino</th><th></th></tr></thead>
           <tbody id="txBody"></tbody>
         </table></div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
           <span>Mostrando 6 de 1,284 operaciones</span>
           <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
         </div></div>
-        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El estado del saldo sigue el ciclo <b>Pending</b> → <b>Available</b> → <b>Settlement</b>. Solo lo liquidado como <i>Settlement</i> impacta el Estado de Cuenta.</p>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La columna <b>Destino</b> indica a dónde se liquida cada transacción: <b>Comercio</b> o <b>Proveedor de Servicios</b>, según el Split Payments configurado del comercio.</p>
       </section>
 
       <!-- ===== COMISIONES ===== -->
@@ -481,14 +481,14 @@ tbody tr:hover{background:#fbfaff}
           <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
         </div>
         <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Estado del saldo</th><th></th></tr></thead>
+          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th></th></tr></thead>
           <tbody id="psTxBody"></tbody>
         </table></div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
           <span>Mostrando 4 de 318 operaciones con destino PS</span>
           <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
         </div></div>
-        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino_fondo</b> es Proveedor de Servicios.</p>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino del saldo</b> es Proveedor de Servicios.</p>
       </section>
 
       <!-- ===== PS · MI PERFIL ===== -->
@@ -599,10 +599,11 @@ $("#comerciosBody").innerHTML=comercios.map(r=>`<tr>
   <td>${badge(r[7], r[7]==="Activo"?"b-ok":"b-neutral")}</td>
   <td><button class="kebab">⋯</button></td></tr>`).join("");
 
-$("#txBody").innerHTML=tx.map(r=>`<tr>
+const destinoDe=Object.fromEntries(comercios.map(c=>[c[0],c[6]]));
+$("#txBody").innerHTML=tx.map(r=>{const d=destinoDe[r[2]]||"Comercio";return `<tr>
   <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
-  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge(r[7],r[8])}</td>
-  <td><button class="kebab">⋯</button></td></tr>`).join("");
+  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge(d, d==="PS"?"b-info":"b-neutral")}</td>
+  <td><button class="kebab">⋯</button></td></tr>`}).join("");
 
 $("#comBody").innerHTML=com.map(r=>`<tr>
   <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="num">${r[1]}</td><td class="num">${r[2]}</td>
@@ -653,7 +654,7 @@ function copyKey(b,i){const el=$("#k"+i);navigator.clipboard&&navigator.clipboar
 
 $("#psTxBody").innerHTML=psTx.map(r=>`<tr>
   <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
-  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge(r[7],r[8])}</td>
+  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td>
   <td><button class="kebab">⋯</button></td></tr>`).join("");
 
 /* ---------- Navigation ---------- */
@@ -670,8 +671,10 @@ const NAV={
     ]},
   ps:{
     items:[
+      ["dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
       ["ps-comercios","Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
       ["ps-transacciones","Transacciones",`<path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/>`],
+      ["conciliacion","Conciliación",`<path d="M20 6L9 17l-5-5"/><path d="M4 20h16" opacity=".4"/>`],
       ["ps-perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
     ]},
 };
