@@ -1,0 +1,706 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Velpay · Portales Punto Red — Distribuidor + PS (Prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  /* Design tokens del sistema de diseño Velpay */
+  --action-primary:#754bf1;
+  --action-primary-hover:#6844d4;
+  --action-primary-text:#ffffff;
+  --action-secondary:#2d006d;      /* indigo profundo: títulos, botón Descargar */
+  --action-secondary-hover:#3d1a80;
+  --action-disabled:#d0d5dd;
+  --action-disabled-text:#6b7280;
+  --tertiary-border:#d0d5dd;
+  --tertiary-border-hover:#6b7280;
+
+  --bg-app:#f4f4f7;
+  --bg-surface:#ffffff;
+  --bg-subtle:#f7f7fa;
+  --bg-sidebar:#ffffff;
+
+  --text-strong:#2d006d;
+  --text-body:#26263a;
+  --text-muted:#6b7280;
+  --text-faint:#9497a3;
+
+  --border:#eceaf2;
+  --border-strong:#e0dded;
+
+  --ok-bg:#e7f6ec;   --ok-text:#188a4a;   --ok-dot:#22b06a;
+  --warn-bg:#fff4e0; --warn-text:#b7791f;
+  --info-bg:#eef0ff; --info-text:#4636b8;
+  --err-bg:#fdecec;  --err-text:#d64545;
+  --neutral-bg:#eef0f4; --neutral-text:#5b5b6b;
+
+  --credit:#188a4a;  /* abono */
+  --debit:#d64545;   /* cargo */
+
+  --radius-lg:16px; --radius-md:12px; --radius-sm:8px; --radius-pill:999px;
+  --shadow-card:0 1px 2px rgba(45,0,109,.04),0 4px 16px rgba(45,0,109,.05);
+  --shadow-pop:0 8px 28px rgba(45,0,109,.14);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+  background:var(--bg-app);color:var(--text-body);
+  font-size:14px;line-height:1.5;-webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{font-family:'Poppins',system-ui,sans-serif;color:var(--text-strong);margin:0}
+a{color:inherit}
+button{font-family:inherit;cursor:pointer}
+:focus-visible{outline:2px solid var(--action-primary);outline-offset:2px;border-radius:6px}
+
+/* ---------- Layout ---------- */
+.app{display:flex;min-height:100vh}
+.sidebar{
+  width:256px;flex-shrink:0;background:var(--bg-sidebar);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;position:sticky;top:0;height:100vh;
+}
+.brand{display:flex;align-items:center;gap:10px;padding:22px 22px 18px}
+.brand svg{width:34px;height:34px}
+.brand .wm{font-family:'Poppins';font-weight:700;font-size:22px;color:var(--text-strong);letter-spacing:-.5px}
+.brand .reg{font-size:10px;vertical-align:super;color:var(--text-faint)}
+.brand-sep{height:1px;background:var(--border);margin:0 18px 12px}
+
+.nav{flex:1;overflow-y:auto;padding:4px 14px}
+.nav-item{
+  display:flex;align-items:center;gap:12px;width:100%;border:none;background:none;
+  padding:11px 12px;border-radius:var(--radius-md);color:var(--text-body);
+  font-size:14.5px;font-weight:500;text-align:left;margin-bottom:2px;
+  transition:background .12s,color .12s;
+}
+.nav-item svg{width:19px;height:19px;flex-shrink:0;color:var(--text-strong)}
+.nav-item:hover{background:var(--bg-subtle)}
+.nav-item.active{background:#f3f0ff;color:var(--action-secondary);box-shadow:inset 0 0 0 1.5px #d8ccff}
+.nav-item.active svg{color:var(--action-primary)}
+.nav-foot{padding:14px 20px}
+.logout{display:flex;align-items:center;gap:10px;border:none;background:none;color:#e5484d;font-weight:600;font-size:14px;padding:6px 0}
+.logout svg{width:18px;height:18px}
+.role-chip{margin:2px 20px 10px;display:inline-flex;align-items:center;gap:7px;background:#f3f0ff;color:var(--action-secondary);
+  border-radius:var(--radius-pill);padding:6px 12px;font-size:12px;font-weight:600;width:calc(100% - 40px)}
+.role-chip .who{color:var(--text-muted);font-weight:500}
+
+/* role switcher (solo prototipo: alterna entre los dos portales) */
+.role-switch{margin:0 20px 12px;display:flex;flex-direction:column;gap:6px}
+.role-switch .lbl{font-size:10.5px;font-weight:700;letter-spacing:.6px;text-transform:uppercase;color:var(--text-faint)}
+.role-switch .seg{width:100%}
+.role-switch .seg button{flex:1;padding:7px 6px;font-size:12px}
+
+/* ApiKey / QR enmascarados */
+.key{display:inline-flex;align-items:center;gap:8px}
+.key code{font-variant-numeric:tabular-nums;font-family:'Inter';font-size:12.5px;color:var(--text-strong);letter-spacing:.4px}
+.key-btn{border:1px solid var(--border-strong);background:#fff;border-radius:8px;width:28px;height:28px;display:grid;place-items:center;color:var(--text-muted)}
+.key-btn:hover{border-color:var(--action-primary);color:var(--action-primary)}
+.key-btn svg{width:14px;height:14px}
+.qr-chip{display:inline-flex;align-items:center;gap:7px;border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:5px 12px;font-size:12.5px;font-weight:600;color:var(--action-secondary)}
+.qr-chip svg{width:15px;height:15px;color:var(--action-primary)}
+
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:26px 34px 8px;flex-wrap:wrap}
+.page-title{font-size:27px;font-weight:700}
+.crumb{font-weight:700}.crumb .cur{color:var(--action-primary)}
+.content{padding:12px 34px 48px}
+
+.proto-tag{position:fixed;top:0;right:0;z-index:50;background:#e5484d;color:#fff;font-size:10px;font-weight:700;
+  letter-spacing:1px;padding:5px 46px;transform:rotate(45deg) translate(34px,-6px);box-shadow:0 2px 10px rgba(0,0,0,.2)}
+
+/* ---------- Buttons ---------- */
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:var(--radius-md);padding:11px 18px;font-weight:600;font-size:14px;border:1px solid transparent;transition:.12s}
+.btn svg{width:17px;height:17px}
+.btn-primary{background:var(--action-primary);color:#fff}
+.btn-primary:hover{background:var(--action-primary-hover)}
+.btn-secondary{background:var(--action-secondary);color:#fff}
+.btn-secondary:hover{background:var(--action-secondary-hover)}
+.btn-ghost{background:#fff;color:var(--text-body);border-color:var(--tertiary-border)}
+.btn-ghost:hover{border-color:var(--tertiary-border-hover)}
+.btn[disabled]{background:var(--action-disabled);color:var(--action-disabled-text);cursor:not-allowed;border-color:transparent}
+.btn-sm{padding:8px 13px;font-size:13px}
+
+/* ---------- Cards / grid ---------- */
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:var(--radius-lg);box-shadow:var(--shadow-card)}
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:20px}
+.kpi{padding:20px 20px 18px}
+.kpi .lbl{color:var(--text-muted);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px}
+.kpi .val{font-family:'Poppins';font-weight:700;font-size:27px;color:var(--text-strong);margin-top:8px}
+.kpi .sub{font-size:12px;margin-top:6px;display:flex;align-items:center;gap:5px}
+.up{color:var(--ok-text)}.down{color:var(--err-text)}
+.kpi .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;background:#f3f0ff;color:var(--action-primary);float:right}
+.kpi .ic svg{width:18px;height:18px}
+
+.two-col{display:grid;grid-template-columns:1.4fr 1fr;gap:18px}
+.panel{padding:20px 22px}
+.panel h3{font-size:16px;margin-bottom:2px}
+.panel .cap{color:var(--text-muted);font-size:12.5px;margin-bottom:16px}
+.seg{display:inline-flex;background:var(--bg-subtle);border-radius:var(--radius-sm);padding:3px;border:1px solid var(--border)}
+.seg button{border:none;background:none;padding:5px 12px;border-radius:6px;font-size:12.5px;font-weight:600;color:var(--text-muted)}
+.seg button.on{background:#fff;color:var(--action-secondary);box-shadow:0 1px 3px rgba(45,0,109,.12)}
+
+/* ---------- Charts (CSS) ---------- */
+.bars{display:flex;align-items:flex-end;gap:14px;height:180px;padding-top:8px}
+.bar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:8px;height:100%}
+.bar-track{flex:1;width:100%;display:flex;align-items:flex-end}
+.bar{width:100%;max-width:46px;margin:0 auto;border-radius:8px 8px 0 0;background:linear-gradient(180deg,#8a67f4,#754bf1);transition:height .6s cubic-bezier(.2,.8,.2,1)}
+.bar.alt{background:linear-gradient(180deg,#c9bcff,#a98cff)}
+.bar-lbl{font-size:12px;color:var(--text-muted);font-weight:500}
+.bar-val{font-size:11.5px;color:var(--text-strong);font-weight:600}
+.legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:14px}
+.legend span{display:flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-muted)}
+.dot{width:10px;height:10px;border-radius:3px;display:inline-block}
+
+.donut-wrap{display:flex;align-items:center;gap:22px}
+.rows{flex:1}
+.drow{display:flex;align-items:center;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px}
+.drow:last-child{border-bottom:none}
+.drow .name{display:flex;align-items:center;gap:9px;color:var(--text-body)}
+.drow .amt{font-weight:600;color:var(--text-strong)}
+
+/* ---------- Toolbar ---------- */
+.toolbar{display:flex;align-items:center;gap:12px;margin-bottom:16px;flex-wrap:wrap}
+.search{flex:1;min-width:240px;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:11px 18px}
+.search svg{width:17px;height:17px;color:var(--text-faint)}
+.search input{border:none;outline:none;flex:1;font-size:14px;background:none;color:var(--text-body)}
+.pill{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:10px 16px;font-size:13.5px;font-weight:500;color:var(--text-body)}
+.pill svg{width:16px;height:16px;color:var(--text-muted)}
+
+/* ---------- Table ---------- */
+.tbl-card{overflow:hidden}
+.tbl-scroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;min-width:720px}
+thead th{text-align:left;font-size:12px;font-weight:600;color:var(--text-muted);text-transform:none;
+  padding:16px 20px;border-bottom:1px solid var(--border);background:#fcfcfe;letter-spacing:.2px}
+tbody td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:13.7px;color:var(--text-body);vertical-align:middle}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover{background:#fbfaff}
+.num{font-variant-numeric:tabular-nums;font-weight:600;color:var(--text-strong)}
+.mono{font-variant-numeric:tabular-nums}
+.sub-2{color:var(--text-faint);font-size:12px}
+.kebab{border:none;background:none;color:var(--text-faint);font-size:20px;line-height:0;padding:6px 8px;border-radius:8px}
+.kebab:hover{background:var(--bg-subtle);color:var(--text-body)}
+
+/* ---------- Badges ---------- */
+.badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:var(--radius-pill);font-size:12px;font-weight:600;white-space:nowrap}
+.badge .bd{width:7px;height:7px;border-radius:50%}
+.b-ok{background:var(--ok-bg);color:var(--ok-text)} .b-ok .bd{background:var(--ok-dot)}
+.b-warn{background:var(--warn-bg);color:var(--warn-text)} .b-warn .bd{background:#e0a325}
+.b-info{background:var(--info-bg);color:var(--info-text)} .b-info .bd{background:#6a5ae0}
+.b-err{background:var(--err-bg);color:var(--err-text)} .b-err .bd{background:#e06666}
+.b-neutral{background:var(--neutral-bg);color:var(--neutral-text)} .b-neutral .bd{background:#9aa0ad}
+
+/* ---------- Ledger ---------- */
+.led-head{display:flex;justify-content:space-between;align-items:center;padding:20px 22px;border-bottom:1px solid var(--border)}
+.led-bal{font-family:'Poppins';font-weight:700;font-size:26px;color:var(--text-strong)}
+.amt-c{color:var(--credit);font-weight:700}
+.amt-d{color:var(--debit);font-weight:700}
+
+/* ---------- Conciliación ---------- */
+.drop{border:2px dashed var(--border-strong);border-radius:var(--radius-lg);padding:34px;text-align:center;background:#fbfaff;transition:.15s}
+.drop:hover{border-color:var(--action-primary);background:#f6f2ff}
+.drop svg{width:40px;height:40px;color:var(--action-primary);margin-bottom:10px}
+.drop .t{font-family:'Poppins';font-weight:600;color:var(--text-strong);font-size:15px}
+.drop .s{color:var(--text-muted);font-size:12.5px;margin-top:4px}
+.spin{width:15px;height:15px;border:2px solid #d8ccff;border-top-color:var(--action-primary);border-radius:50%;display:inline-block;animation:sp .7s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+
+/* ---------- Detail / profile ---------- */
+.field{padding:14px 0;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;gap:18px}
+.field:last-child{border-bottom:none}
+.field .k{color:var(--text-muted);font-size:13px}
+.field .v{font-weight:600;color:var(--text-strong);text-align:right}
+.sec-title{font-size:13px;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;margin:26px 0 8px}
+
+.empty{padding:70px 20px;text-align:center}
+.empty svg{width:120px;height:auto;margin-bottom:18px}
+.empty .t{font-family:'Poppins';font-weight:600;color:var(--action-secondary);font-size:20px}
+.empty .s{color:var(--text-faint);font-size:13.5px;margin-top:4px}
+
+.tip{position:relative;display:inline-flex}
+.tip .q{width:15px;height:15px;border-radius:50%;background:var(--neutral-bg);color:var(--text-muted);font-size:10px;font-weight:700;display:grid;place-items:center;cursor:help}
+.tip .box{position:absolute;bottom:130%;left:50%;transform:translateX(-50%);background:var(--action-secondary);color:#fff;font-size:11.5px;font-weight:500;
+  padding:9px 12px;border-radius:8px;width:210px;opacity:0;pointer-events:none;transition:.15s;box-shadow:var(--shadow-pop);z-index:20;line-height:1.45}
+.tip:hover .box{opacity:1}
+
+.view{display:none}.view.on{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+.hamb{display:none}
+@media(max-width:1080px){.kpi-grid{grid-template-columns:repeat(2,1fr)}.two-col{grid-template-columns:1fr}}
+@media(max-width:820px){
+  .sidebar{position:fixed;z-index:40;transform:translateX(-100%);transition:.25s;box-shadow:var(--shadow-pop)}
+  .sidebar.open{transform:none}
+  .hamb{display:inline-grid;place-items:center;width:42px;height:42px;border-radius:12px;border:1px solid var(--border-strong);background:#fff}
+  .hamb svg{width:20px;height:20px;color:var(--text-strong)}
+  .topbar{padding:18px 18px 6px}.content{padding:10px 18px 40px}.page-title{font-size:22px}
+}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+</head>
+<body>
+<div class="proto-tag">PROTOTIPO</div>
+
+<div class="app">
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="sidebar" id="sidebar">
+    <div class="brand">
+      <svg viewBox="0 0 40 40" fill="none"><path d="M8 12 L20 5 L32 12 L20 19 Z" fill="#754bf1"/><path d="M8 20 L20 13 L32 20 L20 27 Z" fill="#2d006d"/><path d="M8 28 L20 21 L32 28 L20 35 Z" fill="#a98cff"/></svg>
+      <span class="wm">Velpay<span class="reg">®</span></span>
+    </div>
+    <div class="brand-sep"></div>
+    <div class="role-switch">
+      <span class="lbl">Vista de portal (prototipo)</span>
+      <div class="seg" id="roleSeg">
+        <button class="on" data-role="dist">Distribuidor</button>
+        <button data-role="ps">Proveedor</button>
+      </div>
+    </div>
+    <div class="role-chip" id="roleChip"></div>
+    <nav class="nav" id="nav"></nav>
+    <div class="nav-foot">
+      <button class="logout"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><path d="M16 17l5-5-5-5M21 12H9"/></svg> Cerrar sesión</button>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <main class="main">
+    <div class="topbar">
+      <div style="display:flex;align-items:center;gap:14px">
+        <button class="hamb" id="hamb" aria-label="Menú"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18M3 12h18M3 18h18"/></svg></button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+      </div>
+      <div id="pageActions"></div>
+    </div>
+
+    <div class="content">
+
+      <!-- ===== DASHBOARD ===== -->
+      <section class="view on" id="view-dashboard">
+        <div style="margin-bottom:18px"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 9l0 10a1 1 0 001 1h16a1 1 0 001-1V9M8 3v4M16 3v4"/></svg> Julio 2026 · Toda la red <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px"><path d="M6 9l6 6 6-6"/></svg></span></div>
+        <div class="kpi-grid">
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="lbl">Revenue generado</div>
+            <div class="val">$418,650</div>
+            <div class="sub up">▲ 12.4% vs. mes anterior</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1 1.1-1.8 2.5-1.8s2.5.8 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg></div>
+            <div class="lbl">Comisión confirmada</div>
+            <div class="val">$31,240</div>
+            <div class="sub"><span class="badge b-warn"><span class="bd"></span>Pendiente de pago $8,910</span></div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M20 17H4m16 0l-3 3"/></svg></div>
+            <div class="lbl">Transacciones del día</div>
+            <div class="val">1,284</div>
+            <div class="sub up">▲ 3.1% vs. ayer</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/></svg></div>
+            <div class="lbl">Comercios activos</div>
+            <div class="val">142<span style="font-size:15px;color:var(--text-faint);font-weight:500"> / 156</span></div>
+            <div class="sub down">14 inactivos este mes</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card panel">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start">
+              <div><h3>Transacciones por estatus</h3><div class="cap">Últimos 7 días · toda la red</div></div>
+            </div>
+            <div class="bars" id="statusBars"></div>
+            <div class="legend">
+              <span><i class="dot" style="background:#754bf1"></i>Aprobadas</span>
+              <span><i class="dot" style="background:#a98cff"></i>Otras (rechazo, cancelación, devolución, contracargo)</span>
+            </div>
+          </div>
+          <div class="card panel">
+            <h3>Saldo por destino</h3><div class="cap">Distribución del volumen liquidable</div>
+            <div class="donut-wrap">
+              <svg width="128" height="128" viewBox="0 0 42 42" style="flex-shrink:0">
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#eceaf2" stroke-width="6"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#754bf1" stroke-width="6" stroke-dasharray="68 32" stroke-dashoffset="25" stroke-linecap="round"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#a98cff" stroke-width="6" stroke-dasharray="32 68" stroke-dashoffset="-43" stroke-linecap="round"/>
+                <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="700" fill="#2d006d" font-family="Poppins">$392k</text>
+                <text x="21" y="26" text-anchor="middle" font-size="3.2" fill="#9497a3">liquidable</text>
+              </svg>
+              <div class="rows">
+                <div class="drow"><span class="name"><i class="dot" style="background:#754bf1"></i>Comercio</span><span class="amt">$266,560 · 68%</span></div>
+                <div class="drow"><span class="name"><i class="dot" style="background:#a98cff"></i>Proveedor de Servicios</span><span class="amt">$125,440 · 32%</span></div>
+                <div class="drow"><span class="name" style="color:var(--text-muted)">Retenido / en revisión</span><span class="amt" style="color:var(--text-muted)">$3,120</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== COMERCIOS ===== -->
+      <section class="view" id="view-comercios">
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, ID de comercio o sucursal"></div>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
+        </div>
+        <div class="card tbl-card"><div class="tbl-scroll"><table>
+          <thead><tr><th>Comercio</th><th>ID</th><th>Sucursal</th><th>Transacciones (mes)</th><th>Volumen</th><th>Comisión generada</th><th>Destino saldo</th><th>Estatus</th><th></th></tr></thead>
+          <tbody id="comerciosBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== TRANSACCIONES ===== -->
+      <section class="view" id="view-transacciones">
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por comercio, correo, teléfono o n° de operación" id="txSearch"></div>
+          <span class="pill">Sucursales seleccionadas (todas) <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg> 01/07/26 – 31/07/26</span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
+        </div>
+        <div class="card tbl-card" id="txCard"><div class="tbl-scroll"><table>
+          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Estado del saldo</th><th></th></tr></thead>
+          <tbody id="txBody"></tbody>
+        </table></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
+          <span>Mostrando 6 de 1,284 operaciones</span>
+          <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
+        </div></div>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El estado del saldo sigue el ciclo <b>Pending</b> → <b>Available</b> → <b>Settlement</b>. Solo lo liquidado como <i>Settlement</i> impacta el Estado de Cuenta.</p>
+      </section>
+
+      <!-- ===== COMISIONES ===== -->
+      <section class="view" id="view-comisiones">
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+          <div class="card kpi"><div class="lbl">Comisión estimada <span class="tip"><span class="q">?</span><span class="box">Proyección sobre transacciones aún en <b>Pending/Available</b>. Puede cambiar hasta que liquiden.</span></span></div><div class="val" style="color:var(--text-muted)">$12,480</div><div class="sub" style="color:var(--text-faint)">No disponible para retiro</div></div>
+          <div class="card kpi"><div class="lbl">Comisión confirmada <span class="tip"><span class="q">?</span><span class="box">Calculada sobre transacciones ya liquidadas (<b>Settlement</b>). Pendiente de dispersión.</span></span></div><div class="val" style="color:var(--action-secondary)">$31,240</div><div class="sub"><span class="badge b-info"><span class="bd"></span>Se dispersa el 05/08</span></div></div>
+          <div class="card kpi"><div class="lbl">Comisión pagada <span class="tip"><span class="q">?</span><span class="box">Ya dispersada a tu cuenta en el periodo seleccionado.</span></span></div><div class="val" style="color:var(--ok-text)">$96,720</div><div class="sub up">Acumulado 2026</div></div>
+        </div>
+        <div class="card tbl-card"><div class="tbl-scroll"><table>
+          <thead><tr><th>Periodo</th><th>Comercios</th><th>Volumen liquidado</th><th>Tasa</th><th>Comisión</th><th>Estado</th><th></th></tr></thead>
+          <tbody id="comBody"></tbody>
+        </table></div></div>
+      </section>
+
+      <!-- ===== ESTADO DE CUENTA ===== -->
+      <section class="view" id="view-estado">
+        <div class="card tbl-card" style="margin-bottom:18px">
+          <div class="led-head">
+            <div><div style="color:var(--text-muted);font-size:13px">Saldo disponible (liquidado)</div><div class="led-bal">$266,560.40</div></div>
+            <div style="text-align:right"><div style="color:var(--text-muted);font-size:13px">Corte al</div><div style="font-weight:600;color:var(--text-strong)">24 jul 2026</div></div>
+          </div>
+          <div class="tbl-scroll"><table>
+            <thead><tr><th>Fecha</th><th>Concepto</th><th>Tipo de movimiento</th><th>Referencia</th><th style="text-align:right">Monto</th><th style="text-align:right">Saldo</th></tr></thead>
+            <tbody id="ledBody"></tbody>
+          </table></div>
+        </div>
+        <p style="color:var(--text-faint);font-size:12px">Los <b>abonos</b> (verde) suman y los <b>cargos</b> (rojo) restan, según el tipo de movimiento: venta, revenue, IVA, cancelación, devolución y contracargo (ganado/perdido).</p>
+      </section>
+
+      <!-- ===== CONCILIACIÓN ===== -->
+      <section class="view" id="view-conciliacion">
+        <div class="two-col" style="grid-template-columns:1fr 1.3fr;align-items:start">
+          <div class="card panel">
+            <h3>Nueva conciliación</h3><div class="cap">Sube el archivo con el layout Velpay para conciliar el periodo.</div>
+            <div class="drop" id="drop" role="button" tabindex="0">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+              <div class="t">Arrastra tu archivo o haz clic para subir</div>
+              <div class="s">.xlsx o .csv con el layout Velpay · máx. 10 MB</div>
+            </div>
+            <a href="#" onclick="return false" style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;color:var(--action-primary);font-weight:600;font-size:13px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 21h14"/></svg> Descargar plantilla de layout</a>
+            <div style="margin-top:14px;padding:11px 14px;background:var(--warn-bg);border-radius:10px;color:var(--warn-text);font-size:12px">El layout definitivo del archivo lo define el equipo de Operaciones.</div>
+          </div>
+          <div class="card tbl-card">
+            <div style="padding:18px 22px 4px"><h3>Conciliaciones recientes</h3></div>
+            <div class="tbl-scroll"><table>
+              <thead><tr><th>Archivo</th><th>Periodo</th><th>Cargado</th><th>Estado</th><th>Diferencias</th><th></th></tr></thead>
+              <tbody id="conBody"></tbody>
+            </table></div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PERFIL ===== -->
+      <section class="view" id="view-perfil">
+        <div class="two-col" style="align-items:start">
+          <div class="card panel">
+            <h3>Datos del distribuidor</h3>
+            <div class="sec-title">General</div>
+            <div class="field"><span class="k">Razón social</span><span class="v">Punto Red S.A. de C.V.</span></div>
+            <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
+            <div class="field"><span class="k">Rol</span><span class="v">Distribuidor (ROL_DISTRIBUIDOR)</span></div>
+            <div class="field"><span class="k">Comercios en red</span><span class="v">156</span></div>
+            <div class="sec-title">Contacto</div>
+            <div class="field"><span class="k">Responsable</span><span class="v">Alma Aldana</span></div>
+            <div class="field"><span class="k">Correo</span><span class="v">operaciones@puntored.mx</span></div>
+            <div class="field"><span class="k">Teléfono</span><span class="v mono">+52 81 1234 5678</span></div>
+          </div>
+          <div>
+            <div class="card panel" style="margin-bottom:18px">
+              <h3>Datos de liquidación</h3><div class="cap">Cuenta donde se dispersan tus comisiones. Para cambios, contacta a Operaciones Velpay.</div>
+              <div class="field"><span class="k">Banco</span><span class="v">BBVA México</span></div>
+              <div class="field"><span class="k">CLABE</span><span class="v mono">•••• •••• •••• 4821</span></div>
+              <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · día 5</span></div>
+            </div>
+            <div class="card panel">
+              <h3>Seguridad</h3><div class="cap">Última contraseña actualizada hace 3 meses.</div>
+              <button class="btn btn-ghost" style="margin-top:6px">Cambiar contraseña</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== PS · COMERCIOS ===== -->
+      <section class="view" id="view-ps-comercios">
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID de comercio"></div>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
+        </div>
+        <div class="card tbl-card"><div class="tbl-scroll"><table>
+          <thead><tr><th>Comercio</th><th>RFC</th><th>Fecha afiliación</th><th>Estatus</th><th>QR</th><th>ApiKey</th><th></th></tr></thead>
+          <tbody id="psComerciosBody"></tbody>
+        </table></div></div>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La <b>ApiKey</b> nunca se muestra en claro: se revela y copia bajo demanda. El PS solo ve los comercios que tiene asignados.</p>
+      </section>
+
+      <!-- ===== PS · TRANSACCIONES ===== -->
+      <section class="view" id="view-ps-transacciones">
+        <div class="toolbar">
+          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por comercio, correo, teléfono o n° de operación"></div>
+          <span class="pill" style="color:var(--action-secondary);border-color:#d8ccff;background:#f3f0ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--action-primary)"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 5 2-7L2 9h7z"/></svg> Destino del saldo: Proveedor de Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px"><path d="M6 9l6 6 6-6"/></svg></span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg> 01/07/26 – 31/07/26</span>
+          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
+        </div>
+        <div class="card tbl-card"><div class="tbl-scroll"><table>
+          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Estado del saldo</th><th></th></tr></thead>
+          <tbody id="psTxBody"></tbody>
+        </table></div>
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
+          <span>Mostrando 4 de 318 operaciones con destino PS</span>
+          <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
+        </div></div>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino_fondo</b> es Proveedor de Servicios.</p>
+      </section>
+
+      <!-- ===== PS · MI PERFIL ===== -->
+      <section class="view" id="view-ps-perfil">
+        <div class="two-col" style="align-items:start">
+          <div class="card panel">
+            <h3>Datos del proveedor</h3>
+            <div class="sec-title">General</div>
+            <div class="field"><span class="k">Razón social</span><span class="v">Servicios TecnoRed S.A. de C.V.</span></div>
+            <div class="field"><span class="k">RFC</span><span class="v mono">STE190322Q45</span></div>
+            <div class="field"><span class="k">Rol</span><span class="v">Proveedor de Servicios (ROL_PROVEEDOR)</span></div>
+            <div class="field"><span class="k">Comercios asignados</span><span class="v">38</span></div>
+            <div class="sec-title">Contacto</div>
+            <div class="field"><span class="k">Responsable</span><span class="v">Luis Herrera</span></div>
+            <div class="field"><span class="k">Correo</span><span class="v">contacto@tecnored.mx</span></div>
+            <div class="field"><span class="k">Teléfono</span><span class="v mono">+52 81 2233 4455</span></div>
+          </div>
+          <div>
+            <div class="card panel" style="margin-bottom:18px">
+              <h3>Distribuidor relacionado</h3><div class="cap">Distribuidor al que pertenece tu figura dentro de la red Velpay.</div>
+              <div class="field"><span class="k">Distribuidor</span><span class="v">Punto Red S.A. de C.V.</span></div>
+              <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
+              <div class="field"><span class="k">Relación</span><span class="v">PS externo asignado</span></div>
+            </div>
+            <div class="card panel">
+              <h3>Seguridad</h3><div class="cap">Última contraseña actualizada hace 1 mes.</div>
+              <button class="btn btn-ghost" style="margin-top:6px">Cambiar contraseña</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  </main>
+</div>
+
+<script>
+/* ---------- Data ---------- */
+const comercios=[
+  ["Abarrotes La Esquina","CM-04821","Monterrey Centro",412,"$184,200","$1,842","Comercio","Activo"],
+  ["Farmacia San José","CM-04822","San Nicolás",298,"$96,540","$965","Comercio","Activo"],
+  ["Refaccionaria El Motor","CM-04823","Guadalupe",176,"$142,880","$1,428","PS","Activo"],
+  ["Cafetería Aroma","CM-04824","Monterrey Centro",544,"$61,300","$613","Comercio","Activo"],
+  ["Papelería Lápiz Azul","CM-04825","Apodaca",89,"$22,410","$224","Comercio","Inactivo"],
+  ["Servicios TecnoRed","CM-04826","San Pedro",233,"$318,750","$3,187","PS","Activo"],
+];
+const tx=[
+  ["24/07/26 14:32","OP-7734921","Cafetería Aroma","$248.00","Crédito","Aprobada","b-ok","Available","b-info"],
+  ["24/07/26 14:28","OP-7734918","Abarrotes La Esquina","$1,120.50","Débito","Aprobada","b-ok","Settlement","b-ok"],
+  ["24/07/26 13:59","OP-7734902","Servicios TecnoRed","$4,300.00","Crédito","Aprobada","b-ok","Pending","b-neutral"],
+  ["24/07/26 13:41","OP-7734887","Farmacia San José","$89.90","Débito","Rechazada","b-err","—","b-neutral"],
+  ["24/07/26 13:12","OP-7734855","Abarrotes La Esquina","$540.00","Crédito","Devolución","b-warn","Available","b-info"],
+  ["24/07/26 12:47","OP-7734820","Refaccionaria El Motor","$2,150.00","Crédito","Contracargo","b-err","Pending","b-neutral"],
+];
+const com=[
+  ["Julio 2026","142","$392,000","1.00%","$31,240","Confirmada","b-info"],
+  ["Junio 2026","148","$1,240,600","1.00%","$12,406","Pagada","b-ok"],
+  ["Mayo 2026","151","$1,088,300","1.00%","$10,883","Pagada","b-ok"],
+  ["En curso (ago)","—","$248,000 (parcial)","1.00%","$2,480","Estimada","b-neutral"],
+];
+const led=[
+  ["24/07/26","Liquidación de ventas","Sale","LIQ-0724","+ $184,320.00","c","$266,560.40"],
+  ["24/07/26","Revenue Velpay","Revenue_Velpay","REV-0724","− $1,843.20","d","$82,240.40"],
+  ["24/07/26","IVA sobre revenue","IVA_Revenue","IVA-0724","− $294.91","d","$84,083.60"],
+  ["23/07/26","Devolución cliente","Devolución","DEV-0723","− $540.00","d","$84,378.51"],
+  ["23/07/26","Contracargo ganado","Contracargo_Ganado","CBK-0710","+ $2,150.00","c","$84,918.51"],
+  ["22/07/26","Cancelación de venta","Cancelación","CAN-0722","− $248.00","d","$82,768.51"],
+];
+const con=[
+  ["conciliacion_jul_s3.xlsx","15–21 jul","24/07/26 09:14","lista","0","ok"],
+  ["conciliacion_jul_s2.xlsx","08–14 jul","17/07/26 10:02","dif","3","dif"],
+  ["conciliacion_jul_s1.csv","01–07 jul","10/07/26 09:40","lista","0","ok"],
+];
+
+/* ---- Portal PS (solo comercios asignados a este proveedor) ---- */
+// [nombre, RFC, fecha afiliación, estatus, apiKey completa]
+const psComercios=[
+  ["Refaccionaria El Motor","REM160812H33","12/03/2026","Activo","sk_live_9f2a7c41e8b6d05a"],
+  ["Servicios TecnoRed","STE190322Q45","28/02/2026","Activo","sk_live_3b81dd60a4f7920c"],
+  ["Autopartes del Norte","APN200714K12","15/04/2026","Activo","sk_live_c07e5a29b1348fd6"],
+  ["Taller Mecánico Díaz","TMD180529R08","03/05/2026","Inactivo","sk_live_5d4413af86e2701b"],
+];
+// mismas columnas que Transacciones distribuidor, filtradas a destino=PS
+const psTx=[
+  ["24/07/26 13:59","OP-7734902","Servicios TecnoRed","$4,300.00","Crédito","Aprobada","b-ok","Pending","b-neutral"],
+  ["24/07/26 12:47","OP-7734820","Refaccionaria El Motor","$2,150.00","Crédito","Aprobada","b-ok","Available","b-info"],
+  ["23/07/26 18:20","OP-7734511","Autopartes del Norte","$1,780.00","Débito","Aprobada","b-ok","Settlement","b-ok"],
+  ["23/07/26 17:02","OP-7734480","Servicios TecnoRed","$960.00","Crédito","Cancelada","b-warn","—","b-neutral"],
+];
+
+/* ---------- Render ---------- */
+const $=s=>document.querySelector(s);
+function badge(t,c){return `<span class="badge ${c}"><span class="bd"></span>${t}</span>`}
+
+$("#comerciosBody").innerHTML=comercios.map(r=>`<tr>
+  <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
+  <td class="num">${r[3]}</td><td class="num">${r[4]}</td><td class="num">${r[5]}</td>
+  <td>${badge(r[6], r[6]==="PS"?"b-info":"b-neutral")}</td>
+  <td>${badge(r[7], r[7]==="Activo"?"b-ok":"b-neutral")}</td>
+  <td><button class="kebab">⋯</button></td></tr>`).join("");
+
+$("#txBody").innerHTML=tx.map(r=>`<tr>
+  <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
+  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge(r[7],r[8])}</td>
+  <td><button class="kebab">⋯</button></td></tr>`).join("");
+
+$("#comBody").innerHTML=com.map(r=>`<tr>
+  <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="num">${r[1]}</td><td class="num">${r[2]}</td>
+  <td>${r[3]}</td><td class="num">${r[4]}</td><td>${badge(r[5],r[6])}</td>
+  <td><button class="kebab">⋯</button></td></tr>`).join("");
+
+$("#ledBody").innerHTML=led.map(r=>`<tr>
+  <td class="mono">${r[0]}</td><td>${r[1]}</td><td>${badge(r[2],"b-neutral")}</td><td class="mono sub-2">${r[3]}</td>
+  <td style="text-align:right" class="${r[5]==='c'?'amt-c':'amt-d'}">${r[4]}</td>
+  <td style="text-align:right" class="num">${r[6]}</td></tr>`).join("");
+
+const conMap={ok:["Lista","b-ok"],dif:["Con diferencias","b-warn"],proc:["En proceso","b-info"]};
+function renderCon(){
+  $("#conBody").innerHTML=con.map((r,i)=>{
+    const st=conMap[r[5]];const ready=r[5]==="ok"||r[5]==="dif";
+    const stCell=r[5]==="proc"?`<span class="badge b-info"><span class="spin"></span>En proceso</span>`:badge(st[0],st[1]);
+    return `<tr><td class="mono">${r[0]}</td><td>${r[1]}</td><td class="mono sub-2">${r[2]}</td>
+    <td>${stCell}</td><td class="num" style="color:${r[4]!=='0'?'var(--warn-text)':'var(--text-faint)'}">${r[4]}</td>
+    <td><button class="btn btn-ghost btn-sm" ${ready?'':'disabled'}>Descargar</button></td></tr>`}).join("");
+}
+renderCon();
+
+/* status bars */
+const bars=[["Lun",70,10],["Mar",82,14],["Mié",65,9],["Jue",90,18],["Vie",100,22],["Sáb",58,7],["Dom",44,6]];
+const max=Math.max(...bars.map(b=>b[1]+b[2]));
+$("#statusBars").innerHTML=bars.map(b=>`<div class="bar-wrap">
+  <div class="bar-val">${b[1]+b[2]}</div>
+  <div class="bar-track"><div style="width:100%"><div class="bar alt" style="height:${(b[2]/max)*140}px;border-radius:0"></div><div class="bar" style="height:${(b[1]/max)*140}px"></div></div></div>
+  <div class="bar-lbl">${b[0]}</div></div>`).join("");
+
+/* ---------- Portal PS render ---------- */
+const qrChip=`<span class="qr-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>Ver QR</span>`;
+function maskKey(k){return "sk_live_" + "•".repeat(8) + k.slice(-4);}
+$("#psComerciosBody").innerHTML=psComercios.map((r,i)=>`<tr>
+  <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
+  <td>${badge(r[3], r[3]==="Activo"?"b-ok":"b-neutral")}</td>
+  <td>${qrChip}</td>
+  <td><span class="key"><code id="k${i}" data-full="${r[4]}" data-shown="0">${maskKey(r[4])}</code>
+    <button class="key-btn" title="Revelar" onclick="toggleKey(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+    <button class="key-btn" title="Copiar" onclick="copyKey(this,${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
+  </span></td>
+  <td><button class="kebab">⋯</button></td></tr>`).join("");
+function toggleKey(i){const el=$("#k"+i);const on=el.dataset.shown==="1";el.textContent=on?maskKey(el.dataset.full):el.dataset.full;el.dataset.shown=on?"0":"1";}
+function copyKey(b,i){const el=$("#k"+i);navigator.clipboard&&navigator.clipboard.writeText(el.dataset.full);const o=b.innerHTML;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#188a4a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';setTimeout(()=>b.innerHTML=o,1200);}
+
+$("#psTxBody").innerHTML=psTx.map(r=>`<tr>
+  <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
+  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge(r[7],r[8])}</td>
+  <td><button class="kebab">⋯</button></td></tr>`).join("");
+
+/* ---------- Navigation ---------- */
+const NAV={
+  dist:{
+    chip:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21V8l9-5 9 5v13"/><path d="M9 21v-6h6v6"/></svg> Distribuidor <span class="who">· Punto Red</span>`,
+    items:[
+      ["dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
+      ["comercios","Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
+      ["transacciones","Transacciones",`<path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/>`],
+      ["comisiones","Comisiones",`<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1.1 1.1-1.8 2.5-1.8s2.5.7 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/><path d="M12 6v1.7M12 16.3V18"/>`],
+      ["estado","Estado de Cuenta",`<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5"/>`],
+      ["conciliacion","Conciliación",`<path d="M20 6L9 17l-5-5"/><path d="M4 20h16" opacity=".4"/>`],
+      ["perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
+    ]},
+  ps:{
+    chip:`<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7L12 3 4 7v10l8 4 8-4z"/><path d="M12 12l8-4M12 12v9M12 12L4 8"/></svg> Proveedor de Servicios <span class="who">· TecnoRed</span>`,
+    items:[
+      ["ps-comercios","Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
+      ["ps-transacciones","Transacciones",`<path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/>`],
+      ["ps-perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
+    ]},
+};
+const titles={dashboard:"Dashboard",comercios:"Comercios",transacciones:["Ventas /","Transacciones"],comisiones:"Comisiones",estado:"Estado de Cuenta",conciliacion:"Conciliación",perfil:"Mi Perfil","ps-comercios":"Comercios","ps-transacciones":["Ventas /","Transacciones"],"ps-perfil":"Mi Perfil"};
+const DL=t=>`<button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>${t}</button>`;
+const actions={
+  dashboard:"",comercios:DL("Descargar"),transacciones:DL("Descargar"),comisiones:DL("Descargar"),
+  estado:DL("Descargar estado"),conciliacion:"",perfil:"",
+  "ps-comercios":DL("Descargar"),"ps-transacciones":DL("Descargar"),"ps-perfil":""
+};
+function go(view){
+  document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.view===view));
+  document.querySelectorAll(".view").forEach(v=>v.classList.toggle("on",v.id==="view-"+view));
+  const t=titles[view];
+  $("#pageTitle").innerHTML=Array.isArray(t)?`<span class="crumb">${t[0]} <span class="cur">${t[1]}</span></span>`:t;
+  $("#pageActions").innerHTML=actions[view]||"";
+  $("#sidebar").classList.remove("open");
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+let role="dist";
+function renderNav(){
+  const cfg=NAV[role];
+  $("#roleChip").innerHTML=cfg.chip;
+  $("#nav").innerHTML=cfg.items.map((it,i)=>`<button class="nav-item${i===0?" active":""}" data-view="${it[0]}">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${it[2]}</svg> ${it[1]}</button>`).join("");
+  document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>go(n.dataset.view)));
+  go(cfg.items[0][0]);
+}
+document.querySelectorAll("#roleSeg button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("#roleSeg button").forEach(x=>x.classList.toggle("on",x===b));
+  role=b.dataset.role;renderNav();
+}));
+renderNav();
+$("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
+
+/* conciliación async simulation */
+function startCon(){
+  const name="conciliacion_jul_s4.xlsx";
+  con.unshift([name,"22–28 jul","24/07/26 "+new Date().toTimeString().slice(0,5),"—","proc"]);
+  renderCon();
+  setTimeout(()=>{con[0][5]="ok";con[0][3]="Lista";con[0][4]="0";renderCon();},2600);
+}
+$("#drop").addEventListener("click",startCon);
+$("#drop").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();startCon();}});
+</script>
+</body>
+</html>
