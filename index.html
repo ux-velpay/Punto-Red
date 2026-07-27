@@ -481,7 +481,7 @@ tbody tr:hover{background:#fbfaff}
           <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
         </div>
         <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th></th></tr></thead>
+          <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Destino</th><th></th></tr></thead>
           <tbody id="psTxBody"></tbody>
         </table></div>
         <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
@@ -654,7 +654,7 @@ function copyKey(b,i){const el=$("#k"+i);navigator.clipboard&&navigator.clipboar
 
 $("#psTxBody").innerHTML=psTx.map(r=>`<tr>
   <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
-  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td>
+  <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge("PS","b-info")}</td>
   <td><button class="kebab">⋯</button></td></tr>`).join("");
 
 /* ---------- Navigation ---------- */
