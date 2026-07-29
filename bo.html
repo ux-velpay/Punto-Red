@@ -58,8 +58,33 @@
   .tabs{display:flex;gap:34px;margin:22px 0 0;border-bottom:1px solid var(--border)}
   .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px}
   .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
-  .ghost-table{margin-top:18px;opacity:.5}
-  .ghost-row{height:44px;background:#fff;border-bottom:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+  /* ---------- Listado de distribuidores (Figma 218-73) ---------- */
+  .toolbar{display:flex;align-items:center;gap:14px;margin-top:22px}
+  .search{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px}
+  .search svg{width:17px;height:17px;color:var(--text-muted);flex:none}
+  .search input{border:none;outline:none;box-shadow:none;padding:0;font-size:14.5px;flex:1}
+  .search .count{color:var(--accent);font-weight:500;font-size:13.5px;white-space:nowrap}
+  .filtros{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 18px;font-size:14.5px;color:var(--text-primary);cursor:pointer;font-family:inherit}
+  .filtros svg{width:16px;height:16px;color:var(--text-secondary)}
+  .tbl-card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.05);margin-top:18px;overflow:hidden}
+  .tbl-scroll{overflow-x:auto}
+  table.lst{width:100%;border-collapse:collapse;min-width:940px}
+  table.lst thead th{text-align:left;font-size:13px;font-weight:500;color:var(--text-secondary);padding:15px 20px;border-bottom:1px solid var(--border);background:var(--surface-sunken);white-space:nowrap}
+  table.lst tbody td{padding:17px 20px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-primary);vertical-align:middle;white-space:nowrap}
+  table.lst tbody tr:last-child td{border-bottom:none}
+  table.lst tbody tr:hover{background:var(--surface-sunken)}
+  .rfc{color:var(--text-secondary);font-variant-numeric:tabular-nums}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;font-size:12.5px;font-weight:500}
+  .badge .bd{width:7px;height:7px;border-radius:50%}
+  .badge.ok{background:var(--status-success-bg);color:var(--status-success-fg)} .badge.ok .bd{background:var(--status-success)}
+  .badge.no{background:var(--status-error-bg);color:var(--status-error-fg)} .badge.no .bd{background:var(--status-error)}
+  .kebab{border:none;background:none;color:var(--text-muted);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1}
+  .kebab:hover{background:var(--surface-sunken);color:var(--text-primary)}
+  .pager{display:flex;justify-content:flex-end;align-items:center;gap:6px;padding:18px 2px 2px}
+  .pager button{min-width:36px;height:36px;border:none;background:none;border-radius:9px;font-family:inherit;font-size:14px;color:var(--text-secondary);cursor:pointer}
+  .pager button:hover{background:var(--surface-sunken)}
+  .pager button.on{background:var(--accent);color:#fff;font-weight:600}
+  .pager .arrow{border:1px solid var(--border);color:var(--text-secondary)}
 
   /* ---------- Modal ---------- */
   .backdrop{position:absolute;inset:0;background:rgba(24,18,52,.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
@@ -141,28 +166,50 @@
   <nav class="nav">
     <div class="brand"><span class="logo"></span>Velpay<span class="sub">Backoffice</span></div>
     <div class="nav-links">
-      <a href="#">Facturación</a><a href="#">Conciliaciones</a><a href="#">Transacciones</a>
-      <a href="#">Liquidaciones</a><a href="#">Contracargos</a><a href="#">Aclaraciones</a>
-      <a href="#" class="active">Comercios</a><a href="#">Reportes</a>
+      <a href="#">Dashboard</a><a href="#">Reportes</a>
+      <a href="#" class="active">Comercios</a><a href="#">Informes</a><a href="#">Title header</a>
     </div>
-    <div class="nav-right"><span class="gear">⚙</span><span class="avatar">AC</span></div>
+    <div class="nav-right"><span class="gear">⚙</span><span class="avatar">IG</span></div>
   </nav>
 
-  <!-- PAGE (contexto atenuado) -->
-  <div class="page" aria-hidden="true">
+  <!-- PAGE · Listado de distribuidores (Figma 218-73) -->
+  <div class="page">
     <div class="page-head">
       <h1 class="page-title">Listado de distribuidores</h1>
-      <button class="btn btn-navy">+ Agregar</button>
+      <button class="btn btn-primary" onclick="openModal()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Agregar</button>
     </div>
     <div class="tabs"><span>Comercios</span><span>Cargas masivas</span><span class="active">Distribuidores</span></div>
-    <div class="ghost-table">
-      <div class="ghost-row"></div><div class="ghost-row"></div><div class="ghost-row"></div>
-      <div class="ghost-row"></div><div class="ghost-row"></div>
+
+    <div class="toolbar">
+      <div class="search">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input placeholder="Buscar por nombre de distribuidor">
+        <span class="count">Mostrando 46 resultados</span>
+      </div>
+      <button class="filtros">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+    </div>
+
+    <div class="tbl-card"><div class="tbl-scroll">
+      <table class="lst">
+        <thead><tr>
+          <th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th>
+          <th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th>
+        </tr></thead>
+        <tbody id="distBody"></tbody>
+      </table>
+    </div></div>
+
+    <div class="pager">
+      <button class="on">1</button><button>2</button><button>3</button><button>4</button>
+      <button>5</button><button>6</button><button>7</button><button>…</button>
+      <button class="arrow" aria-label="Siguiente">→</button>
     </div>
   </div>
 
   <!-- MODAL -->
-  <div class="backdrop">
+  <div class="backdrop" id="backdrop">
     <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
       <div class="modal-head">
         <div>
@@ -170,7 +217,7 @@
             <small>Da de alta la figura de distribuidor y define si opera también como proveedor de servicios.</small>
           </h2>
         </div>
-        <button class="x" aria-label="Cerrar">✕</button>
+        <button class="x" aria-label="Cerrar" onclick="closeModal()">✕</button>
       </div>
 
       <!-- Datos del distribuidor (existente) -->
@@ -243,7 +290,7 @@
       <div class="footer">
         <div class="willcreate" id="summary"></div>
         <div class="side">
-          <button class="btn btn-ghost">Cancelar</button>
+          <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
           <button class="btn btn-primary" onclick="save()">Guardar</button>
         </div>
       </div>
@@ -254,6 +301,29 @@
 </div>
 
 <script>
+  /* ---- Abrir / cerrar modal ---- */
+  const backdrop=document.getElementById('backdrop');
+  function openModal(){backdrop.style.display='flex';backdrop.scrollTop=0;}
+  function closeModal(){backdrop.style.display='none';}
+
+  /* ---- Listado de distribuidores (datos de ejemplo, Figma 218-73) ---- */
+  const distribuidores=[
+    ["Juan García López","Física","GALJ850101ABC","García López Juan","15%","5% ($0-$50K)","Activo"],
+    ["Comercial Norte SA","Moral","CNO980101BC5","Comercial Norte SA de CV","20%","8% ($50K-$100K)","Activo"],
+    ["María Rodríguez Morales","Física","ROMM920301XYZ","Rodríguez Morales María","-","10% ($0-$75K)","Inactivo"],
+    ["Distribuidora del Sur SA","Moral","DSU010215JK8","Distribuidora del Sur S…","22%","12% ($100K-$200K)","Activo"],
+    ["Carlos Hernández Cruz","Física","HECC851201PQR","Hernández Cruz Carlos","10%","5% ($0-$30K)","Activo"],
+    ["Grupo Industrial MX SA","Moral","GIM951010AB3","Grupo Industrial de Méxi…","25%","15% ($200K+)","Activo"],
+  ];
+  document.getElementById('distBody').innerHTML=distribuidores.map(r=>{
+    const ok=r[6]==="Activo";
+    return `<tr>
+      <td>${r[0]}</td><td>${r[1]}</td><td class="rfc">${r[2]}</td><td>${r[3]}</td>
+      <td>${r[4]}</td><td>${r[5]}</td>
+      <td><span class="badge ${ok?'ok':'no'}"><span class="bd"></span>${r[6]}</span></td>
+      <td><button class="kebab" aria-label="Acciones">⋯</button></td></tr>`;
+  }).join("");
+
   /* ---- Cuentas bancarias ---- */
   const accList=document.getElementById('acc-list');
   let accN=0;
@@ -368,6 +438,7 @@
 
   /* ---- Guardar ---- */
   function save(){
+    closeModal();
     const t=document.getElementById('toast');
     let count=psList.querySelectorAll('.ps-card:not(.empty)').length;
     let branch = isPS?'Distribuidor + PS propio' : (count>0?`Distribuidor + ${count} PS asignado(s)`:'Solo distribuidor');
