@@ -1,15 +1,18 @@
-# Punto Red · Portales (Prototipo UI)
+# Punto Red · Prototipos UI
 
-Prototipo de interfaz, clickeable, de dos portales web para la plataforma **Velpay Assistant**:
+Prototipos de interfaz clickeables para el proyecto **Punto Red** en la plataforma **Velpay**.
 
-- **Portal Distribuidor** — Dashboard, Comercios, Transacciones, Comisiones, Estado de Cuenta, Conciliación y Mi Perfil.
-- **Portal Proveedor de Servicios** — Comercios (con QR y ApiKey enmascarada), Transacciones y Mi Perfil.
+## Vistas
 
-Usa el selector **"Vista de portal"** en la barra lateral para alternar entre ambos.
+- **`index.html` — Portales (Velpay Assistant).** Dos portales web:
+  - **Portal Distribuidor** — Dashboard, Comercios, Transacciones, Comisiones, Estado de Cuenta, Conciliación y Mi Perfil.
+  - **Portal Proveedor de Servicios** — Comercios (con QR y ApiKey enmascarada), Transacciones y Mi Perfil.
+  - Usa el selector **"Vista de portal"** para alternar entre ambos.
+- **`bo.html` — BackOffice.** Alta de distribuidor con proveedor de servicios (módulo Comercios · Distribuidores).
 
 ## Cómo verlo
 
-Abre `index.html` en cualquier navegador. No requiere build ni dependencias.
+Abre `index.html` o `bo.html` en cualquier navegador. No requiere build ni dependencias.
 
 O sírvelo localmente:
 

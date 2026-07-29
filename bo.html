@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alta de distribuidor · Proveedor de Servicios — Prototipo BO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Tokens aproximados de los screenshots — reconciliar con DS "[Velpay] Design tokens" */
+    --navy:#2b1a63;            /* header + acciones de página */
+    --action-primary:#5b3fd6;  /* action.primary (CTA modal, links) */
+    --action-primary-hover:#4c33bd;
+    --accent:#754bf1;          /* seleccionado / underline activo */
+    --bg-page:#f3f2f7;         /* bg.page */
+    --surface:#ffffff;         /* bg.card */
+    --surface-sunken:#faf9fd;
+    --text-primary:#1c1b2e;
+    --text-secondary:#6b6a7b;
+    --text-muted:#9a99a8;
+    --border:#e5e3ee;
+    --border-strong:#d6d3e4;
+    --status-success:#1d9e75; --status-success-bg:#e1f5ee; --status-success-fg:#0f6e56;
+    --status-error:#dc4a4a;   --status-error-bg:#fdecec;  --status-error-fg:#a32d2d;
+    --radius:10px; --radius-lg:16px;
+    --shadow-modal:0 24px 60px -12px rgba(28,20,60,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--text-primary);background:var(--bg-page);-webkit-font-smoothing:antialiased}
+  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+
+  /* ---------- Top nav (fiel al BO) ---------- */
+  .nav{background:var(--navy);height:64px;display:flex;align-items:center;padding:0 32px;gap:40px}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;font-size:18px}
+  .brand .logo{width:26px;height:26px;border:2px solid #fff;border-radius:6px;transform:rotate(45deg)}
+  .brand .sub{font-weight:400;color:#c9c2e8;font-size:14px;border-left:1px solid #4a3a83;padding-left:10px;margin-left:2px}
+  .nav-links{display:flex;gap:26px;align-items:center;flex:1;margin-left:8px}
+  .nav-links a{color:#d8d2f0;text-decoration:none;font-size:14.5px;white-space:nowrap}
+  .nav-links a.active{background:#fff;color:var(--navy);font-weight:500;padding:7px 16px;border-radius:20px}
+  .nav-right{display:flex;align-items:center;gap:18px}
+  .nav-right .gear{color:#c9c2e8;font-size:20px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--action-primary);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600}
+
+  /* ---------- Page behind modal (contexto) ---------- */
+  .page{padding:28px 40px}
+  .page-head{display:flex;justify-content:space-between;align-items:center}
+  .page-title{font-family:'Poppins',sans-serif;font-size:30px;font-weight:600;color:var(--navy);margin:0}
+  .btn{font-family:inherit;font-size:14.5px;font-weight:500;border-radius:var(--radius);padding:11px 20px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .btn-navy{background:var(--navy);color:#fff}
+  .btn-primary{background:var(--action-primary);color:#fff}
+  .btn-primary:hover{background:var(--action-primary-hover)}
+  .btn-ghost{background:#fff;color:var(--text-primary);border-color:var(--border-strong)}
+  .btn-ghost:hover{border-color:var(--text-muted)}
+  .btn-link{background:none;border:none;color:var(--action-primary);font-weight:500;cursor:pointer;font-size:14px;padding:6px 0;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+  .tabs{display:flex;gap:34px;margin:22px 0 0;border-bottom:1px solid var(--border)}
+  .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px}
+  .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
+  .ghost-table{margin-top:18px;opacity:.5}
+  .ghost-row{height:44px;background:#fff;border-bottom:1px solid var(--border);border-radius:6px;margin-bottom:6px}
+
+  /* ---------- Modal ---------- */
+  .backdrop{position:absolute;inset:0;background:rgba(24,18,52,.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
+  .modal{background:var(--surface);width:100%;max-width:860px;border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);padding:32px 36px 24px}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+  .modal-title{font-family:'Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--action-primary);margin:0}
+  .modal-title small{display:block;font-family:'Inter';font-weight:400;font-size:13.5px;color:var(--text-secondary);margin-top:4px}
+  .x{width:34px;height:34px;border-radius:50%;background:var(--surface-sunken);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text-secondary);font-size:16px}
+
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
+  .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
+  .field label{font-size:13.5px;color:var(--text-primary)}
+  .field .hint{font-size:12px;color:var(--text-muted)}
+  input,select{font-family:inherit;font-size:14.5px;color:var(--text-primary);background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;width:100%}
+  input::placeholder{color:var(--text-muted)}
+  input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(117,75,241,.14)}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b6a7b' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
+
+  .section-label{font-size:15px;font-weight:600;color:var(--text-primary);margin:22px 0 12px}
+  .divider{height:1px;background:var(--border);margin:24px 0}
+
+  /* radio cards */
+  .radio-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+  .rcard{border:1.5px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:border-color .12s,background .12s}
+  .rcard:hover{border-color:var(--border-strong)}
+  .rcard.sel{border-color:var(--accent);background:#faf8ff}
+  .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-strong);flex:none;margin-top:1px;display:grid;place-items:center}
+  .rcard.sel .dot{border-color:var(--accent)}
+  .rcard.sel .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent)}
+  .rcard b{font-size:14.5px;font-weight:600}
+  .rcard span{display:block;font-size:12.5px;color:var(--text-secondary);margin-top:2px}
+
+  .ranges{background:var(--surface-sunken);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px}
+  .range-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin-bottom:10px}
+  .caps{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-muted);text-transform:uppercase}
+  .icon-btn{width:38px;height:42px;border:1px solid var(--border);background:#fff;border-radius:var(--radius);color:var(--text-muted);cursor:pointer;display:grid;place-items:center;font-size:16px}
+  .icon-btn:hover{color:var(--status-error);border-color:var(--status-error)}
+
+  /* segmented Sí/No */
+  .seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden}
+  .seg button{font-family:inherit;font-size:14px;font-weight:500;padding:10px 26px;background:#fff;border:none;cursor:pointer;color:var(--text-secondary)}
+  .seg button.on{background:var(--action-primary);color:#fff}
+
+  .note{border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.55;display:flex;gap:10px;align-items:flex-start}
+  .note.accent{background:#f2eeff;color:#3c2f86}
+  .note.plain{background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border)}
+  .note .ic{font-size:17px;flex:none;margin-top:1px}
+
+  /* PS card */
+  .ps-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+  .ps-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff}
+  .ps-card.empty{border-style:dashed;background:var(--surface-sunken);text-align:center;color:var(--text-secondary);font-size:14px;padding:22px}
+  .ps-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .ps-top b{font-size:14.5px;font-weight:600}
+  .ps-mode{display:inline-flex;background:var(--surface-sunken);border:1px solid var(--border);border-radius:var(--radius);padding:3px}
+  .ps-mode button{font-family:inherit;font-size:13px;font-weight:500;padding:7px 14px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text-secondary)}
+  .ps-mode button.on{background:#fff;color:var(--action-primary);box-shadow:0 1px 2px rgba(0,0,0,.06)}
+  .mini{font-size:12px;color:var(--text-muted);margin:0 0 10px}
+
+  .footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--border)}
+  .footer .side{display:flex;gap:12px}
+  .willcreate{font-size:12.5px;color:var(--text-secondary);max-width:420px;line-height:1.5}
+  .willcreate b{color:var(--text-primary);font-weight:600}
+
+  /* toast */
+  .toast{position:absolute;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:16px 20px;border-radius:12px;font-size:13.5px;line-height:1.5;max-width:520px;opacity:0;pointer-events:none;transition:.35s;box-shadow:var(--shadow-modal)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  .toast b{font-weight:600}
+  .toast ul{margin:8px 0 0;padding-left:18px}
+
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+  @media(max-width:720px){.grid2,.radio-cards{grid-template-columns:1fr}.range-row{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+</style>
+</head>
+<body>
+<div style="position:relative;min-height:100vh">
+
+  <!-- NAV -->
+  <nav class="nav">
+    <div class="brand"><span class="logo"></span>Velpay<span class="sub">Backoffice</span></div>
+    <div class="nav-links">
+      <a href="#">Facturación</a><a href="#">Conciliaciones</a><a href="#">Transacciones</a>
+      <a href="#">Liquidaciones</a><a href="#">Contracargos</a><a href="#">Aclaraciones</a>
+      <a href="#" class="active">Comercios</a><a href="#">Reportes</a>
+    </div>
+    <div class="nav-right"><span class="gear">⚙</span><span class="avatar">AC</span></div>
+  </nav>
+
+  <!-- PAGE (contexto atenuado) -->
+  <div class="page" aria-hidden="true">
+    <div class="page-head">
+      <h1 class="page-title">Listado de distribuidores</h1>
+      <button class="btn btn-navy">+ Agregar</button>
+    </div>
+    <div class="tabs"><span>Comercios</span><span>Cargas masivas</span><span class="active">Distribuidores</span></div>
+    <div class="ghost-table">
+      <div class="ghost-row"></div><div class="ghost-row"></div><div class="ghost-row"></div>
+      <div class="ghost-row"></div><div class="ghost-row"></div>
+    </div>
+  </div>
+
+  <!-- MODAL -->
+  <div class="backdrop">
+    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+      <div class="modal-head">
+        <div>
+          <h2 class="modal-title" id="mt">Agregar distribuidor
+            <small>Da de alta la figura de distribuidor y define si opera también como proveedor de servicios.</small>
+          </h2>
+        </div>
+        <button class="x" aria-label="Cerrar">✕</button>
+      </div>
+
+      <!-- Datos del distribuidor (existente) -->
+      <div class="grid2">
+        <div class="field"><label>Tipo de persona</label>
+          <select><option>Moral</option><option>Física</option></select></div>
+        <div class="field"><label>Nombre de distribuidor o nombre comercial</label>
+          <input placeholder="Nombre"></div>
+        <div class="field"><label>RFC (12 caracteres)</label><input placeholder="RFC"></div>
+        <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
+        <div class="field"><label>Correo electrónico</label>
+          <input placeholder="correo@dominio.com">
+          <span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
+      </div>
+
+      <!-- Cuentas bancarias (NUEVO) -->
+      <div class="section-label">Cuentas bancarias</div>
+      <div id="acc-list"></div>
+      <button class="btn-link" onclick="addAccount()">＋ Agregar cuenta</button>
+
+      <!-- Esquema de comisión (existente) -->
+      <div class="section-label">Esquema de comisión</div>
+      <div class="radio-cards">
+        <div class="rcard sel" data-com="bruto" onclick="pickCom(this,'bruto')">
+          <span class="dot"></span><div><b>Margen bruto</b><span>Porcentaje fijo único</span></div></div>
+        <div class="rcard" data-com="var" onclick="pickCom(this,'var')">
+          <span class="dot"></span><div><b>Comisión variable</b><span>Por rango de monto</span></div></div>
+      </div>
+      <div id="brutoBox" class="ranges" style="display:block">
+        <div class="range-row" style="grid-template-columns:1fr">
+          <div><div class="caps">Porcentaje fijo</div><input placeholder="0.0 %"></div>
+        </div>
+      </div>
+      <div id="varBox" class="ranges" style="display:none">
+        <div class="range-row"><div class="caps" style="grid-column:1">Monto desde</div></div>
+        <div id="range-rows"></div>
+        <button class="btn-link" onclick="addRange()">＋ Agregar rango</button>
+      </div>
+
+      <div class="divider"></div>
+
+      <!-- Pregunta nueva: ¿será PS? -->
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
+        <div style="max-width:520px">
+          <div class="section-label" style="margin:0">¿El distribuidor será también Proveedor de Servicios?</div>
+          <p class="mini" style="margin-top:6px">Como Punto Red. Si es "No", puedes asignarle otros proveedores de servicios, o dejarlo solo como distribuidor.</p>
+        </div>
+        <div class="seg" role="tablist" aria-label="¿Será proveedor de servicios?">
+          <button id="segNo" class="on" onclick="setIsPS(false)">No</button>
+          <button id="segSi" onclick="setIsPS(true)">Sí</button>
+        </div>
+      </div>
+
+      <!-- Rama SÍ -->
+      <div id="branchSi" style="display:none;margin-top:14px">
+        <div class="note accent"><span class="ic">✦</span>
+          <div>Fungirá como su <b>propio proveedor de servicios</b>. Se reutilizan sus mismos datos, cuenta y correo — no se piden de nuevo. Al guardar se crea su <b>su wallet de ventas como proveedor de servicios</b>.</div></div>
+      </div>
+
+      <!-- Rama NO -->
+      <div id="branchNo" style="margin-top:14px">
+        <div style="display:flex;justify-content:space-between;align-items:center">
+          <div class="section-label" style="margin:0">Proveedores de servicios asignados</div>
+          <button class="btn-link" onclick="addPS()">＋ Agregar proveedor de servicios</button>
+        </div>
+        <div id="ps-list" class="ps-list"></div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <div class="willcreate" id="summary"></div>
+        <div class="side">
+          <button class="btn btn-ghost">Cancelar</button>
+          <button class="btn btn-primary" onclick="save()">Guardar</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast" role="status"></div>
+</div>
+
+<script>
+  /* ---- Cuentas bancarias ---- */
+  const accList=document.getElementById('acc-list');
+  let accN=0;
+  function addAccount(){
+    accN++;
+    const d=document.createElement('div');
+    d.className='ps-card';d.style.marginBottom='14px';
+    d.innerHTML=`
+      <div class="ps-top"><b>Cuenta ${accN}</b>
+        <button class="icon-btn" aria-label="Eliminar cuenta" onclick="this.closest('.ps-card').remove()">🗑</button></div>
+      <div class="grid2">
+        <div class="field"><label>CLABE</label><input placeholder="18 dígitos"></div>
+        <div class="field"><label>Número de cuenta</label><input placeholder="Cuenta"></div>
+        <div class="field"><label>Banco</label><input placeholder="Banco"></div>
+        <div class="field"><label>Estado de cuenta</label><input type="file"></div>
+      </div>`;
+    accList.appendChild(d);
+  }
+  addAccount();
+
+  /* ---- Comisión ---- */
+  function pickCom(el,type){
+    document.querySelectorAll('.radio-cards .rcard').forEach(c=>c.classList.remove('sel'));
+    el.classList.add('sel');
+    document.getElementById('brutoBox').style.display=type==='bruto'?'block':'none';
+    document.getElementById('varBox').style.display=type==='var'?'block':'none';
+  }
+  const rangeRows=document.getElementById('range-rows');
+  function addRange(){
+    const r=document.createElement('div');r.className='range-row';
+    r.innerHTML=`
+      <div><input placeholder="$ 0.00"></div>
+      <div><input placeholder="$ Sin límite"></div>
+      <div><input placeholder="0.0 %"></div>
+      <button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.range-row').remove()">🗑</button>`;
+    rangeRows.appendChild(r);
+  }
+  addRange();
+
+  /* ---- ¿Será PS? ---- */
+  let isPS=false;
+  function setIsPS(v){
+    isPS=v;
+    document.getElementById('segSi').classList.toggle('on',v);
+    document.getElementById('segNo').classList.toggle('on',!v);
+    document.getElementById('branchSi').style.display=v?'block':'none';
+    document.getElementById('branchNo').style.display=v?'none':'block';
+    updateSummary();
+  }
+
+  /* ---- Lista de PS (rama No) ---- */
+  const psList=document.getElementById('ps-list');
+  let psN=0;
+  function renderEmpty(){
+    if(psList.querySelector('.ps-card'))return;
+    psList.innerHTML=`<div class="ps-card empty">Sin proveedores de servicios. Este distribuidor operará solo como distribuidor.<br>Usa “Agregar proveedor de servicios” si necesita uno o varios.</div>`;
+  }
+  function addPS(){
+    if(psList.querySelector('.empty'))psList.innerHTML='';
+    psN++;const id='ps'+psN;
+    const c=document.createElement('div');c.className='ps-card';c.id=id;
+    c.innerHTML=`
+      <div class="ps-top"><b>Proveedor de servicios ${psN}</b>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="ps-mode">
+            <button class="on" onclick="psMode('${id}','sel',this)">Seleccionar existente</button>
+            <button onclick="psMode('${id}','new',this)">Crear nuevo</button>
+          </div>
+          <button class="icon-btn" aria-label="Quitar proveedor" onclick="removePS('${id}')">🗑</button>
+        </div>
+      </div>
+      <div class="ps-body-sel">
+        <div class="field"><label>Proveedor de servicios existente</label>
+          <select><option>Selecciona…</option><option>PS · Servicios del Norte</option><option>PS · Pagos Bajío</option></select></div>
+      </div>
+      <div class="ps-body-new" style="display:none">
+        <p class="mini">Mismos datos que el distribuidor: identidad, cuentas, correo y comisión.</p>
+        <div class="grid2">
+          <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
+          <div class="field"><label>Nombre / nombre comercial</label><input placeholder="Nombre"></div>
+          <div class="field"><label>RFC</label><input placeholder="RFC"></div>
+          <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
+          <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Único en el sistema · activación OTP</span></div>
+        </div>
+        <div class="field"><label>Cuenta bancaria (CLABE)</label><input placeholder="18 dígitos"></div>
+        <div class="field" style="margin-bottom:0"><label>Esquema de comisión</label>
+          <select><option>Margen bruto (porcentaje fijo)</option><option>Comisión variable (por rango)</option></select></div>
+      </div>`;
+    psList.appendChild(c);updateSummary();
+  }
+  function psMode(id,mode,btn){
+    const card=document.getElementById(id);
+    card.querySelectorAll('.ps-mode button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+    card.querySelector('.ps-body-sel').style.display=mode==='sel'?'block':'none';
+    card.querySelector('.ps-body-new').style.display=mode==='new'?'block':'none';
+  }
+  function removePS(id){document.getElementById(id).remove();if(!psList.querySelector('.ps-card'))renderEmpty();updateSummary();}
+  renderEmpty();
+
+  /* ---- Resumen de efectos ---- */
+  function updateSummary(){
+    const s=document.getElementById('summary');
+    let count=psList.querySelectorAll('.ps-card:not(.empty)').length;
+    let txt='Al guardar se crea <b>su wallet de comisiones</b> y se envía activación por <b>correo + OTP</b>.';
+    if(isPS) txt+=' El distribuidor funge como PS propio → <b>su wallet de ventas como PS</b>.';
+    else if(count>0) txt+=` ${count} PS asignado(s) → una <b>wallet de ventas</b> por cada PS nuevo.`;
+    else txt+=' Solo figura de distribuidor (sin PS).';
+    s.innerHTML=txt;
+  }
+  updateSummary();
+
+  /* ---- Guardar ---- */
+  function save(){
+    const t=document.getElementById('toast');
+    let count=psList.querySelectorAll('.ps-card:not(.empty)').length;
+    let branch = isPS?'Distribuidor + PS propio' : (count>0?`Distribuidor + ${count} PS asignado(s)`:'Solo distribuidor');
+    t.innerHTML=`<b>Distribuidor guardado — ${branch}</b>
+      <ul><li>Wallets creadas automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>`;
+    t.classList.add('show');
+    setTimeout(()=>t.classList.remove('show'),4200);
+  }
+</script>
+</body>
+</html>
