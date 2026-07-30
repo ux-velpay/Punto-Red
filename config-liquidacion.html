@@ -48,6 +48,9 @@
   .tabs{display:flex;gap:30px;margin:20px 0 0;border-bottom:1px solid var(--border)}
   .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px}
   .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
+  .tabs span{cursor:pointer}
+  .ph{background:#fff;border:1px solid var(--border);border-radius:14px;padding:64px 20px;text-align:center;color:var(--text-muted);margin-top:18px;font-size:14px}
+  .ph b{display:block;color:var(--text-secondary);font-family:'Poppins';font-size:16px;margin-bottom:6px}
   .toolbar{display:flex;align-items:center;gap:14px;margin-top:20px}
   .search{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px;color:var(--text-muted);font-size:14px}
   .count{color:var(--accent);font-weight:500;font-size:13.5px;margin-left:auto}
@@ -138,7 +141,20 @@
     <h1 class="detail-title"><a href="#" class="back" onclick="return false">←</a> EDIT 38 COPAYMENT</h1>
     <button class="btn btn-ghost" onclick="openCfg()">⚙ Configuración</button>
   </div>
-  <div class="tabs"><span class="active">Sucursales</span><span>Usuarios</span><span>Logs</span></div>
+  <div class="tabs">
+    <span data-tab="sucursales" class="active" onclick="showTab(this)">Sucursales</span>
+    <span data-tab="usuarios" onclick="showTab(this)">Usuarios</span>
+    <span data-tab="logs" onclick="showTab(this)">Logs</span>
+  </div>
+
+  <div class="tab-panel" id="tab-usuarios" style="display:none">
+    <div class="ph"><b>Usuarios</b>Usuarios del comercio y sus accesos. (Vista de referencia — pendiente de detalle)</div>
+  </div>
+  <div class="tab-panel" id="tab-logs" style="display:none">
+    <div class="ph"><b>Logs</b>Bitácora de cambios del comercio. (Vista de referencia — pendiente de detalle)</div>
+  </div>
+
+  <div class="tab-panel" id="tab-sucursales">
   <div class="toolbar">
     <div class="search">🔍 Busca por nombre de sucursal <span class="count">Mostrando 2 resultados</span></div>
     <span class="chip">📅 Hoy</span>
@@ -157,6 +173,7 @@
       <div class="rates">Agregadores <b>TDD</b> 3.40% <b>TDC</b> 3.40% <b>TIN</b> 3.40%</div>
     </div>
   </div>
+  </div><!-- /tab-sucursales -->
 </div>
 
 <!-- Modal Configuración -->
@@ -245,6 +262,14 @@
 
 <script>
   const $=s=>document.querySelector(s);
+
+  /* Pestañas del detalle (Sucursales / Usuarios / Logs) */
+  function showTab(el){
+    document.querySelectorAll('.tabs span').forEach(s=>s.classList.toggle('active',s===el));
+    const t=el.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display=p.id==='tab-'+t?'block':'none');
+  }
+
   const backdrop=$('#backdrop');
   function openCfg(){backdrop.style.display='flex';}
   function closeCfg(){backdrop.style.display='none';}

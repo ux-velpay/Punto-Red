@@ -76,6 +76,9 @@
   .pager button:hover{background:var(--surface-sunken)}
   .pager button.on{background:var(--accent);color:#fff;font-weight:600}
   .pager .arrow{border:1px solid var(--border);color:var(--text-secondary)}
+  .tabs span{cursor:pointer}
+  .ph{background:#fff;border:1px solid var(--border);border-radius:14px;padding:64px 20px;text-align:center;color:var(--text-muted);margin-top:18px;font-size:14px}
+  .ph b{display:block;color:var(--text-secondary);font-family:'Poppins';font-size:16px;margin-bottom:6px}
 
   /* Modal */
   .backdrop{position:absolute;inset:0;background:rgba(24,18,52,.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
@@ -171,8 +174,19 @@
       <button class="btn btn-primary" onclick="openModal()">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Agregar</button>
     </div>
-    <div class="tabs"><span>Comercios</span><span>Cargas masivas</span><span class="active">Distribuidores</span></div>
+    <div class="tabs">
+      <span data-tab="comercios" onclick="showTab(this)">Comercios</span>
+      <span data-tab="cargas" onclick="showTab(this)">Cargas masivas</span>
+      <span data-tab="distribuidores" class="active" onclick="showTab(this)">Distribuidores</span>
+    </div>
 
+    <div class="tab-panel" id="tab-comercios" style="display:none">
+      <div class="ph"><b>Comercios</b>Listado de comercios del distribuidor. (Vista de referencia — pendiente de detalle)</div>
+    </div>
+    <div class="tab-panel" id="tab-cargas" style="display:none">
+      <div class="ph"><b>Cargas masivas</b>Alta masiva de comercios/distribuidores por archivo. (Vista de referencia — pendiente de detalle)</div>
+    </div>
+    <div class="tab-panel" id="tab-distribuidores">
     <div class="toolbar">
       <div class="search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
@@ -198,6 +212,7 @@
       <button>5</button><button>6</button><button>7</button><button>…</button>
       <button class="arrow" aria-label="Siguiente">→</button>
     </div>
+    </div><!-- /tab-distribuidores -->
   </div>
 
   <!-- MODAL · Agregar distribuidores -->
@@ -231,6 +246,13 @@
 
 <script>
   const $=s=>document.querySelector(s);
+
+  /* ---- Pestañas (Comercios / Cargas masivas / Distribuidores) ---- */
+  function showTab(el){
+    document.querySelectorAll('.tabs span').forEach(s=>s.classList.toggle('active',s===el));
+    const t=el.dataset.tab;
+    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display=p.id==='tab-'+t?'block':'none');
+  }
 
   /* ---- Abrir / cerrar modal ---- */
   const backdrop=$('#backdrop');
