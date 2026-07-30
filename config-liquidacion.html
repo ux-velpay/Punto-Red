@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Configuración de Liquidación · Comercio — Prototipo BO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    /* Alineado al DS "[Velpay] Design tokens ✨" — tokens semánticos */
+    --navy:#2d006d; --action-primary:#754bf1; --action-primary-hover:#6844d4; --accent:#754bf1;
+    --bg-page:#f4f4f7; --surface:#ffffff; --surface-sunken:#f7f7fa;
+    --text-primary:#26263a; --text-secondary:#6b7280; --text-muted:#9497a3;
+    --border:#eceaf2; --border-strong:#e0dded;
+    --status-success:#188a4a; --status-success-bg:#e7f6ec; --status-success-fg:#188a4a;
+    --status-error:#d64545; --status-error-bg:#fdecec; --status-error-fg:#d64545;
+    --radius:10px; --radius-lg:16px; --shadow-modal:0 24px 60px -12px rgba(45,0,109,.28);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:'Inter',system-ui,sans-serif;color:var(--text-primary);background:var(--bg-page);-webkit-font-smoothing:antialiased}
+
+  /* nav (fiel a las capturas del BO) */
+  .nav{background:var(--navy);height:64px;display:flex;align-items:center;padding:0 32px;gap:36px}
+  .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;font-size:18px}
+  .brand .logo{width:24px;height:24px;border:2px solid #fff;border-radius:6px;transform:rotate(45deg)}
+  .brand .sub{font-weight:400;color:#c9c2e8;font-size:14px;border-left:1px solid #4a3a83;padding-left:10px}
+  .nav-links{display:flex;gap:22px;align-items:center;flex:1;margin-left:6px}
+  .nav-links a{color:#d8d2f0;text-decoration:none;font-size:14px;white-space:nowrap}
+  .nav-links a.active{background:#fff;color:var(--navy);font-weight:500;padding:7px 16px;border-radius:20px}
+  .nav-right{display:flex;align-items:center;gap:16px}
+  .gear{color:#c9c2e8;font-size:18px}
+  .avatar{width:34px;height:34px;border-radius:50%;background:var(--action-primary);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600}
+
+  /* comercio detail (contexto detrás del modal) */
+  .page{padding:26px 40px}
+  .detail-head{display:flex;justify-content:space-between;align-items:center}
+  .detail-title{font-family:'Poppins',sans-serif;font-size:26px;font-weight:600;color:var(--navy);margin:0;display:flex;align-items:center;gap:12px}
+  .detail-title .back{color:var(--navy);text-decoration:none;font-weight:600}
+  .btn{font-family:inherit;font-size:14px;font-weight:500;border-radius:var(--radius);padding:10px 18px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
+  .btn-ghost{background:#fff;color:var(--text-primary);border-color:var(--border-strong)}
+  .btn-ghost:hover{border-color:var(--text-muted)}
+  .btn-primary{background:var(--action-primary);color:#fff}
+  .btn-primary:hover{background:var(--action-primary-hover)}
+  .btn-link{background:none;border:none;color:var(--action-primary);font-weight:500;cursor:pointer;font-size:14px;padding:6px 0;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
+  .tabs{display:flex;gap:30px;margin:20px 0 0;border-bottom:1px solid var(--border)}
+  .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px}
+  .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
+  .toolbar{display:flex;align-items:center;gap:14px;margin-top:20px}
+  .search{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px;color:var(--text-muted);font-size:14px}
+  .count{color:var(--accent);font-weight:500;font-size:13.5px;margin-left:auto}
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px;font-size:14px;color:var(--text-secondary)}
+  .br-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  .br-card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.05);padding:20px 22px}
+  .br-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .br-top b{font-family:'Poppins';font-size:16px;color:var(--navy)}
+  .br-top .link{color:var(--action-primary);font-weight:500;font-size:14px}
+  .br-row{display:flex;gap:10px;align-items:baseline;margin:6px 0;font-size:13.5px}
+  .br-row .bank{color:var(--navy);font-weight:600;min-width:130px}
+  .br-row .sale{color:var(--accent);font-weight:600}
+  .rates{color:var(--text-muted);font-size:13px;display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 8px 0}
+  .rates b{color:var(--text-secondary);font-weight:500}
+
+  /* modal Configuración (dos paneles) */
+  .backdrop{position:fixed;inset:0;background:rgba(24,18,52,.5);display:flex;align-items:center;justify-content:center;padding:32px}
+  .cfg{background:var(--surface);width:100%;max-width:1000px;height:min(78vh,720px);border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);display:flex;overflow:hidden;position:relative}
+  .cfg-side{width:250px;flex:none;background:var(--surface-sunken);border-right:1px solid var(--border);padding:26px 16px}
+  .grp{margin-bottom:22px}
+  .grp .glabel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 10px 8px}
+  .grp .item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:14px;color:var(--text-primary);cursor:pointer;margin-bottom:2px}
+  .grp .item::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--border-strong)}
+  .grp .item.on{background:#eceaf6;color:var(--navy);font-weight:500}
+  .grp .item.on::before{background:var(--accent)}
+  .cfg-body{flex:1;min-width:0;overflow-y:auto;padding:28px 32px}
+  .cfg-body h2{font-family:'Poppins';font-size:22px;font-weight:600;color:var(--navy);margin:0 0 22px}
+  .x{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;background:var(--surface-sunken);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text-secondary);font-size:15px}
+
+  .cfg-card{border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+  .cfg-card .head{background:var(--surface-sunken);padding:14px 18px;font-family:'Poppins';font-weight:600;font-size:15px;color:var(--navy);border-bottom:1px solid var(--border)}
+  .cfg-card .body{padding:16px 18px}
+  .chk{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--text-primary);cursor:pointer;user-select:none}
+  .chk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+  .chk.disabled{color:var(--text-muted);cursor:default}
+
+  .split{margin-top:16px;padding-top:16px;border-top:1px dashed var(--border)}
+  .row-inline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .lbl{font-size:14px;font-weight:600;color:var(--text-primary)}
+  .mini{font-size:12.5px;color:var(--text-muted);margin:2px 0 0}
+  .seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden}
+  .seg button{font-family:inherit;font-size:13.5px;font-weight:500;padding:9px 20px;background:#fff;border:none;cursor:pointer;color:var(--text-secondary)}
+  .seg button.on{background:var(--action-primary);color:#fff}
+  .note{border-radius:12px;padding:13px 15px;font-size:13px;line-height:1.5;margin-top:12px}
+  .note.plain{background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border)}
+  .note.accent{background:#f2eeff;color:#3c2f86}
+  .acct{display:inline-flex;align-items:center;gap:8px;background:var(--surface-sunken);border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--text-primary);margin-top:8px}
+  .acct .dotk{width:7px;height:7px;border-radius:50%;background:var(--status-success)}
+
+  .field{display:flex;flex-direction:column;gap:6px}
+  .field label{font-size:13px;color:var(--text-primary)}
+  select,input.txt{font-family:inherit;font-size:14px;color:var(--text-primary);background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:10px 12px;width:100%}
+  select:focus,input.txt:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(117,75,241,.14)}
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b6a7b' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center}
+
+  .dest-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+  .dest{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
+  .dest-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .dest-top b{font-size:14px;font-weight:600}
+  .icon-btn{width:34px;height:34px;border:1px solid var(--border);background:#fff;border-radius:9px;color:var(--text-muted);cursor:pointer;display:grid;place-items:center;font-size:15px}
+  .icon-btn:hover{color:var(--status-error);border-color:var(--status-error)}
+  .grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:12px}
+
+  .footer{position:absolute;bottom:0;left:250px;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 32px;border-top:1px solid var(--border)}
+  .footer .eff{font-size:12.5px;color:var(--text-secondary);max-width:480px;line-height:1.5}
+  .footer .eff b{color:var(--text-primary)}
+  .footer .side{display:flex;gap:12px;flex:none}
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:15px 20px;border-radius:12px;font-size:13.5px;opacity:0;pointer-events:none;transition:.35s;box-shadow:var(--shadow-modal)}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="brand"><span class="logo"></span>Velpay<span class="sub">Backoffice</span></div>
+  <div class="nav-links">
+    <a href="#">Facturación</a><a href="#">Conciliaciones</a><a href="#">Transacciones</a>
+    <a href="#">Liquidaciones</a><a href="#">Contracargos</a><a href="#">Aclaraciones</a>
+    <a href="#" class="active">Comercios</a><a href="#">Reportes</a>
+  </div>
+  <div class="nav-right"><span class="gear">⚙</span><span class="avatar">AC</span></div>
+</nav>
+
+<!-- Detalle del comercio (se ve al cerrar el modal) -->
+<div class="page">
+  <div class="detail-head">
+    <h1 class="detail-title"><a href="#" class="back" onclick="return false">←</a> EDIT 38 COPAYMENT</h1>
+    <button class="btn btn-ghost" onclick="openCfg()">⚙ Configuración</button>
+  </div>
+  <div class="tabs"><span class="active">Sucursales</span><span>Usuarios</span><span>Logs</span></div>
+  <div class="toolbar">
+    <div class="search">🔍 Busca por nombre de sucursal <span class="count">Mostrando 2 resultados</span></div>
+    <span class="chip">📅 Hoy</span>
+  </div>
+  <div class="br-grid">
+    <div class="br-card">
+      <div class="br-top"><b>EDIT 38 COPAYMENT ECOMMERCE</b><span class="link">Ver detalle</span></div>
+      <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
+      <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
+    </div>
+    <div class="br-card">
+      <div class="br-top"><b>EDIT 38 COPAYMENT</b><span class="link">Ver detalle</span></div>
+      <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
+      <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
+      <div class="br-row"><span class="bank">AMERICAN EXPRESS</span><span class="sale">Venta</span></div>
+      <div class="rates">Agregadores <b>TDD</b> 3.40% <b>TDC</b> 3.40% <b>TIN</b> 3.40%</div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Configuración -->
+<div class="backdrop" id="backdrop">
+  <div class="cfg" role="dialog" aria-modal="true" aria-label="Configuración del comercio">
+    <button class="x" aria-label="Cerrar" onclick="closeCfg()">✕</button>
+
+    <aside class="cfg-side">
+      <div class="grp">
+        <div class="glabel">🏠 General</div>
+        <div class="item on">Operativas</div>
+      </div>
+      <div class="grp">
+        <div class="glabel">🗂 Condiciones</div>
+        <div class="item">Otros servicios</div>
+        <div class="item">Métodos de pago</div>
+      </div>
+    </aside>
+
+    <div class="cfg-body">
+      <h2>Operativas</h2>
+
+      <!-- Facturación -->
+      <div class="cfg-card">
+        <div class="head">Facturación</div>
+        <div class="body"><label class="chk"><input type="checkbox"> Habilitar Facturación</label></div>
+      </div>
+
+      <!-- Liquidación -->
+      <div class="cfg-card">
+        <div class="head">Liquidación</div>
+        <div class="body">
+          <label class="chk"><input type="checkbox" id="chkLiq" checked onchange="toggleLiq()"> Habilitar Liquidación</label>
+
+          <div class="split" id="splitBox">
+            <div class="row-inline">
+              <div>
+                <div class="lbl">Split Payments</div>
+                <p class="mini">Divide los fondos de cada venta entre uno o más beneficiarios.</p>
+              </div>
+              <div class="seg">
+                <button id="spNo" class="on" onclick="setSplit(false)">No</button>
+                <button id="spSi" onclick="setSplit(true)">Sí</button>
+              </div>
+            </div>
+
+            <!-- Split = NO -->
+            <div id="splitNo">
+              <div class="note plain">Liquidación <b>100% al comercio</b>, a la cuenta dada de alta en Assistant.</div>
+              <div class="acct"><span class="dotk"></span>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</div>
+            </div>
+
+            <!-- Split = SÍ -->
+            <div id="splitSi" style="display:none">
+              <div class="row-inline" style="margin-top:6px">
+                <div><div class="lbl">Destinos de los fondos (Beneficiario)</div><p class="mini">Agrega uno o más destinos y cómo se distribuye a cada uno.</p></div>
+                <button class="btn-link" onclick="addDest()">＋ Agregar destino</button>
+              </div>
+              <div class="dest-list" id="destList"></div>
+
+              <div class="row-inline" style="margin-top:16px">
+                <div><div class="lbl">Momento de distribución</div><p class="mini">Cuándo se define el destino de cada venta.</p></div>
+                <div class="seg">
+                  <button class="on">Por transacción</button>
+                  <button>Por corte</button>
+                </div>
+              </div>
+              <p class="mini" style="margin-top:8px">El método (Total / Porcentaje / Monto fijo) y el momento son configurables.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="eff" id="eff"></div>
+      <div class="side">
+        <button class="btn btn-ghost" onclick="closeCfg()">Cancelar</button>
+        <button class="btn btn-primary" onclick="save()">Guardar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<script>
+  const $=s=>document.querySelector(s);
+  const backdrop=$('#backdrop');
+  function openCfg(){backdrop.style.display='flex';}
+  function closeCfg(){backdrop.style.display='none';}
+
+  /* Habilitar Liquidación */
+  function toggleLiq(){$('#splitBox').style.display=$('#chkLiq').checked?'block':'none';updateEff();}
+
+  /* Split No/Sí */
+  let split=false;
+  function setSplit(v){
+    split=v;
+    $('#spSi').classList.toggle('on',v);
+    $('#spNo').classList.toggle('on',!v);
+    $('#splitNo').style.display=v?'none':'block';
+    $('#splitSi').style.display=v?'block':'none';
+    if(v && !$('#destList').children.length) addDest();
+    updateEff();
+  }
+
+  /* Destinos */
+  const PS=['PS · Servicios del Norte','PS · Pagos Bajío','PS · TecnoRed'];
+  let dN=0;
+  function addDest(){
+    dN++;const id='d'+dN;
+    const psOpts=PS.map(p=>`<option>${p}</option>`).join('');
+    const el=document.createElement('div');el.className='dest';el.id=id;
+    el.innerHTML=`
+      <div class="dest-top">
+        <b>Destino ${$('#destList').children.length+1}</b>
+        <div style="display:flex;gap:10px;align-items:center">
+          <div class="seg">
+            <button class="on" onclick="destType('${id}','com',this)">Comercio</button>
+            <button onclick="destType('${id}','ps',this)">Proveedor de Servicios</button>
+          </div>
+          <button class="icon-btn" aria-label="Quitar destino" onclick="delDest('${id}')">🗑</button>
+        </div>
+      </div>
+      <div class="body-com">
+        <p class="mini">Se liquida a la cuenta configurada del comercio.</p>
+        <div class="acct"><span class="dotk"></span>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</div>
+      </div>
+      <div class="body-ps" style="display:none">
+        <div class="grid2">
+          <div class="field"><label>Proveedor de Servicios</label><select><option>Selecciona…</option>${psOpts}</select></div>
+          <div class="field"><label>Cuenta bancaria del PS</label><select><option>Selecciona cuenta…</option><option>BBVA · CLABE ••••&nbsp;7731</option><option>Banorte · CLABE ••••&nbsp;0192</option></select></div>
+        </div>
+      </div>
+      <div class="grid2">
+        <div class="field"><label>Método de distribución</label>
+          <select onchange="method('${id}',this.value)"><option value="total">Total</option><option value="pct">Porcentaje</option><option value="fix">Monto fijo</option></select></div>
+        <div class="field" id="${id}-val" style="display:none"><label id="${id}-vlbl">Valor</label><input class="txt" placeholder="0"></div>
+      </div>`;
+    $('#destList').appendChild(el);updateEff();
+  }
+  function destType(id,t,btn){
+    const c=document.getElementById(id);
+    c.querySelectorAll('.dest-top .seg button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+    c.querySelector('.body-com').style.display=t==='com'?'block':'none';
+    c.querySelector('.body-ps').style.display=t==='ps'?'block':'none';
+  }
+  function method(id,v){
+    const box=document.getElementById(id+'-val');
+    if(v==='total'){box.style.display='none';return;}
+    box.style.display='flex';
+    document.getElementById(id+'-vlbl').textContent=v==='pct'?'Porcentaje (%)':'Monto fijo ($)';
+    box.querySelector('input').placeholder=v==='pct'?'0.0 %':'$ 0.00';
+  }
+  function delDest(id){document.getElementById(id).remove();
+    [...$('#destList').children].forEach((c,i)=>c.querySelector('.dest-top b').textContent='Destino '+(i+1));
+    updateEff();}
+
+  /* Efecto al guardar */
+  function updateEff(){
+    if(!$('#chkLiq').checked){$('#eff').innerHTML='Liquidación deshabilitada para este comercio.';return;}
+    let t='Al guardar se crean/actualizan las <b>wallets de ventas del comercio</b> (solo si el comercio está Activo).';
+    t+= split ? ` Split activo · <b>${$('#destList').children.length}</b> destino(s).` : ' Liquidación 100% al comercio.';
+    $('#eff').innerHTML=t;
+  }
+  updateEff();
+
+  function save(){
+    closeCfg();
+    const t=$('#toast');
+    t.innerHTML='<b>Configuración de liquidación guardada.</b>';
+    t.classList.add('show');setTimeout(()=>t.classList.remove('show'),3600);
+  }
+</script>
+</body>
+</html>

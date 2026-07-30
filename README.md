@@ -8,11 +8,12 @@ Prototipos de interfaz clickeables para el proyecto **Punto Red** en la platafor
   - **Portal Distribuidor** — Dashboard, Comercios, Transacciones, Comisiones, Estado de Cuenta, Conciliación y Mi Perfil.
   - **Portal Proveedor de Servicios** — Comercios (con QR y ApiKey enmascarada), Transacciones y Mi Perfil.
   - Usa el selector **"Vista de portal"** para alternar entre ambos.
-- **`bo.html` — BackOffice.** Alta de distribuidor con proveedor de servicios (módulo Comercios · Distribuidores).
+- **`bo.html` — BackOffice · Alta de distribuidores.** Alta de uno o más distribuidores, cada uno con sus cuentas, esquema de comisión y proveedores de servicios; y listado de distribuidores.
+- **`config-liquidacion.html` — BackOffice · Config de Liquidación.** Configuración de liquidación del comercio: Split Payments y destinos de los fondos (Comercio / Proveedor de Servicios).
 
 ## Cómo verlo
 
-Abre `index.html` o `bo.html` en cualquier navegador. No requiere build ni dependencias.
+Abre cualquiera de los `.html` en un navegador. No requiere build ni dependencias.
 
 O sírvelo localmente:
 
