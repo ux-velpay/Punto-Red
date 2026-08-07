@@ -6,14 +6,14 @@
 <title>BackOffice · Punto Red — Prototipo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&family=Work+Sans:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
   :root{
     /* Alineado al DS "[Velpay] Design tokens ✨" — tokens semánticos */
     --navy:#2d006d; --action-primary:#754bf1; --action-primary-hover:#6844d4; --accent:#754bf1;
     --bg-page:#f4f4f7; --surface:#ffffff; --surface-sunken:#f7f7fa;
     --text-primary:#26263a; --text-secondary:#6b7280; --text-muted:#9497a3;
-    --border:#eceaf2; --border-strong:#e0dded;
+    --border:#eceaf2; --border-strong:#e0dded; --gray-700:#3c4149; --card-border:#eaecf0;
     --status-success:#188a4a; --status-success-bg:#e7f6ec; --status-success-fg:#188a4a;
     --status-error:#d64545; --status-error-bg:#fdecec; --status-error-fg:#d64545;
     --info:#4636b8; --info-bg:#eef0ff;
@@ -38,7 +38,7 @@
   /* Page + heads */
   .page{padding:28px 40px}
   .page-head{display:flex;justify-content:space-between;align-items:center;min-height:44px}
-  .page-title{font-family:'Gotham','Poppins',sans-serif;font-size:30px;font-weight:600;color:var(--navy);margin:0}
+  .page-title{font-family:'Gotham','Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--navy);margin:0}
   .detail-head{display:flex;justify-content:space-between;align-items:center}
   .detail-title{font-family:'Gotham','Poppins',sans-serif;font-size:26px;font-weight:600;color:var(--navy);margin:0;display:flex;align-items:center;gap:12px}
   .detail-title .back{color:var(--navy);text-decoration:none;font-weight:600;cursor:pointer;display:inline-flex;align-items:center}
@@ -193,7 +193,7 @@
   .ps-mode button{font-family:inherit;font-size:13px;font-weight:500;padding:7px 14px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text-secondary)}
   .ps-mode button.on{background:#fff;color:var(--action-primary);box-shadow:0 1px 2px rgba(0,0,0,.06)}
   .mini{font-size:12px;color:var(--text-muted);margin:0 0 10px}
-  .dist-card{border:1px solid var(--border-strong);border-radius:14px;padding:20px 22px;margin-bottom:16px;background:#fff}
+  .dist-card{border:1px solid var(--card-border);border-radius:10px;padding:20px 22px;margin-bottom:16px;background:#fff;box-shadow:0 0 22px 0 rgba(0,0,0,.03)}
   .dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .dist-head b{font-family:'Gotham','Poppins';font-size:16px;color:var(--action-primary)}
   /* Cuentas bancarias gestionables */
@@ -213,6 +213,28 @@
   .acc-actions .lnk.danger{color:var(--status-error)}
   .acc-summary{margin-top:12px;font-size:13.5px;color:var(--text-secondary)}
   .acc-summary b{color:var(--text-primary);font-weight:600}
+  /* Cuenta ya guardada — vista de tarjeta */
+  .acc-card.saved{padding:0}
+  .acc-card.saved .acc-summary{margin-top:0}
+  .acc-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;background:var(--surface-sunken);border-bottom:1px solid var(--card-border);border-radius:14px 14px 0 0}
+  .acc-view-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .acc-view-title b{font-size:15px;font-weight:600;color:var(--text-primary)}
+  .acc-ico{display:inline-flex;color:var(--action-primary)}
+  .acc-ico svg{width:18px;height:18px}
+  .acc-view-body{display:flex;flex-wrap:wrap;padding:18px}
+  .acc-col{flex:1 1 0;min-width:150px;padding:0 18px;border-left:1px solid var(--card-border)}
+  .acc-col:first-child{flex-grow:1.6;padding-left:0;border-left:none}
+  .acc-col span{display:block;font-size:13px;color:var(--text-secondary);margin-bottom:8px}
+  .acc-col b{font-size:15px;font-weight:500;color:var(--text-primary);word-break:break-all}
+  .acc-col a{font-size:15px;color:var(--action-primary);text-decoration:underline;cursor:pointer;word-break:break-all}
+  .acc-menu{position:relative;flex:none}
+  .acc-menu-pop{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;background:#fff;border:1px solid var(--card-border);border-radius:10px;box-shadow:0 8px 24px rgba(16,24,40,.12);padding:6px;z-index:20}
+  .acc-menu.open .acc-menu-pop{display:block}
+  .acc-menu-pop button{display:block;width:100%;text-align:left;background:none;border:none;font-family:inherit;font-size:14px;color:var(--text-primary);padding:9px 12px;border-radius:7px;cursor:pointer;white-space:nowrap}
+  .acc-menu-pop button:hover{background:var(--surface-sunken)}
+  .acc-menu-pop button.danger{color:var(--status-error)}
+  .acc-form-foot{display:flex;justify-content:flex-end;margin-top:16px}
+  @media(max-width:720px){.acc-col{flex:1 1 100%;padding:0;border-left:none;margin-bottom:14px}}
   .acc-form{margin-top:12px}
   .sub-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff;margin-top:14px}
 
@@ -220,7 +242,7 @@
   .backdrop{position:fixed;inset:0;background:rgba(24,18,52,.55);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:50}
   .modal{background:var(--surface);width:100%;max-width:860px;border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);padding:32px 36px 24px}
   .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
-  .modal-title{font-family:'Gotham','Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--action-primary);margin:0}
+  .modal-title{font-family:'Work Sans',sans-serif;font-size:20px;font-style:normal;font-weight:600;line-height:22.852px;color:var(--gray-700);margin:0}
   .modal-title small{display:block;font-family:'Gotham','Inter';font-weight:400;font-size:13.5px;color:var(--text-secondary);margin-top:4px}
   .x{width:34px;height:34px;border-radius:50%;background:var(--surface-sunken);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text-secondary);font-size:16px}
   .footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--border)}
@@ -662,7 +684,6 @@
       <button class="x" aria-label="Cerrar" onclick="closeAlta()">✕</button>
     </div>
     <div id="dist-list"></div>
-    <button class="btn-link" id="btnAddAnother" onclick="addDistribuidor()" style="font-size:14.5px">＋ Agregar otro distribuidor</button>
     <div class="footer">
       <div class="willcreate" id="summary"></div>
       <div class="side"><button class="btn btn-ghost" onclick="closeAlta()">Cancelar</button><button class="btn btn-primary" onclick="saveAlta()">Guardar</button></div>
@@ -727,6 +748,7 @@
 
 <script>
   const $=s=>document.querySelector(s);
+  const ICON_CARD=`<span class="acc-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="2" y="5" width="20" height="14" rx="2.5"/><path d="M2 10h20M6 15h4"/></svg></span>`;
   const ICON_TRASH=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M10 10.9999V17.0004M14 10.9999V17.0004M19 5.99953V20.0006C19 20.5311 18.7893 21.0399 18.4142 21.415C18.0391 21.7901 17.5304 22.0008 17 22.0008H7C6.46957 22.0008 5.96086 21.7901 5.58579 21.415C5.21071 21.0399 5 20.5311 5 20.0006V5.99953M3 5.99953H21M8 5.99953V3.99937C8 3.46889 8.21071 2.96014 8.58579 2.58504C8.96086 2.20994 9.46957 1.99921 10 1.99921H14C14.5304 1.99921 15.0391 2.20994 15.4142 2.58504C15.7893 2.96014 16 3.46889 16 3.99937V5.99953"/></svg>`;
   const CHEV=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
 
@@ -860,7 +882,6 @@
   function openAlta(mode){
     altaMode=mode||'dist';const isDist=altaMode==='dist';
     $('#mt').innerHTML=(isDist?'Agregar distribuidores':'Agregar proveedores de servicios')+`<small>${isDist?'Da de alta uno o más distribuidores.':'Da de alta uno o más proveedores de servicios.'}</small>`;
-    $('#btnAddAnother').textContent=isDist?'＋ Agregar otro distribuidor':'＋ Agregar otro proveedor de servicios';
     distList.innerHTML='';addDistribuidor();
     backdropAlta.style.display='flex';backdropAlta.scrollTop=0;
   }
@@ -968,29 +989,55 @@
           <div class="field"><label>CLABE</label><input class="f-clabe" placeholder="18 dígitos"></div>
           <div class="field"><label>Número de cuenta</label><input class="f-cuenta" placeholder="Cuenta"></div>
           <div class="field"><label>Banco</label><input class="f-banco" placeholder="Banco"></div>
-          <div class="field"><label>Estado de cuenta</label><input type="file"></div>
+          <div class="field"><label>Estado de cuenta</label><input class="f-doc" type="file"></div>
         </div>
-        <button class="btn-link" onclick="doneAcc('${id}')">Listo</button>
+        <div class="acc-form-foot"><button class="btn btn-primary" onclick="doneAcc('${id}')">Guardar</button></div>
       </div>`;
     list.appendChild(d);renumberAccList(list);refreshAcc(id);
   }
   function refreshAcc(id){
     const c=document.getElementById(id);const did=c.dataset.did;
     const isDef=c.dataset.default==='1', editing=c.dataset.editing==='1';
+    c.classList.toggle('saved',!editing);
+    c.querySelector('.acc-head').style.display=editing?'flex':'none';
     c.querySelector('.badge-default').style.display=isDef?'inline-flex':'none';
     c.querySelector('.acc-form').style.display=editing?'block':'none';
     c.querySelector('.acc-summary').style.display=editing?'none':'block';
     if(!editing){
-      const banco=c.querySelector('.f-banco').value||'Banco no capturado';
+      const banco=c.querySelector('.f-banco').value||'—';
       const clabe=c.querySelector('.f-clabe').value, cuenta=c.querySelector('.f-cuenta').value;
-      c.querySelector('.acc-summary').innerHTML=`<b>${banco}</b> · CLABE ${clabe?('••••&nbsp;'+clabe.slice(-4)):'—'} · Núm. cuenta ${cuenta||'—'}`;
+      const f=c.querySelector('.f-doc'), doc=(f&&f.files&&f.files[0])?f.files[0].name:'';
+      c.querySelector('.acc-summary').innerHTML=`
+        <div class="acc-view-head">
+          <div class="acc-view-title">${ICON_CARD}<b>Cuenta bancaria</b>
+            ${isDef?'<span class="badge-sm badge-default">Cuenta principal</span>':''}</div>
+          <div class="acc-menu">
+            <button class="kebab" aria-label="Acciones de la cuenta" onclick="toggleAccMenu(event,'${id}')">⋯</button>
+            <div class="acc-menu-pop">
+              <button onclick="editAcc('${id}')">Editar</button>
+              ${isDef?'':`<button onclick="setDefault('${did}','${id}')">Marcar como principal</button>`}
+              <button class="danger" onclick="delAcc('${did}','${id}')">Eliminar</button>
+            </div>
+          </div>
+        </div>
+        <div class="acc-view-body">
+          <div class="acc-col"><span>CLABE</span><b>${clabe||'—'}</b></div>
+          <div class="acc-col"><span>Cuenta</span><b>${cuenta?('••••'+cuenta.slice(-4)):'—'}</b></div>
+          <div class="acc-col"><span>Banco</span><b>${banco}</b></div>
+          <div class="acc-col"><span>Documento</span>${doc?`<a title="${doc}">${doc}</a>`:'<b>—</b>'}</div>
+        </div>`;
     }
-    let a='';
-    if(!editing && !isDef) a+=`<button class="lnk" onclick="setDefault('${did}','${id}')">Marcar como predeterminada</button>`;
-    if(!editing) a+=`<button class="lnk" onclick="editAcc('${id}')">Editar</button>`;
-    a+=`<button class="lnk danger" onclick="delAcc('${did}','${id}')">Eliminar</button>`;
-    c.querySelector('.acc-actions').innerHTML=a;
+    c.querySelector('.acc-actions').innerHTML=editing
+      ? `<button class="lnk danger" onclick="delAcc('${did}','${id}')">Eliminar</button>` : '';
   }
+  function toggleAccMenu(e,id){
+    e.stopPropagation();
+    const m=document.getElementById(id).querySelector('.acc-menu');
+    const wasOpen=m.classList.contains('open');
+    document.querySelectorAll('.acc-menu.open').forEach(x=>x.classList.remove('open'));
+    if(!wasOpen)m.classList.add('open');
+  }
+  document.addEventListener('click',()=>document.querySelectorAll('.acc-menu.open').forEach(m=>m.classList.remove('open')));
   function editAcc(id){document.getElementById(id).dataset.editing='1';refreshAcc(id);}
   function doneAcc(id){document.getElementById(id).dataset.editing='0';refreshAcc(id);}
   function setDefault(did,id){
