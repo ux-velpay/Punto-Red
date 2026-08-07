@@ -380,18 +380,21 @@
 
   <!-- panel Distribuidores -->
   <div class="mtab-panel" id="mtab-distribuidores" style="display:none">
-    <div class="seg2" id="distSubGroup" style="margin-top:20px">
-      <button class="on" data-dsub="dist" onclick="distSub('dist')">Distribuidores</button>
-      <button data-dsub="ps" onclick="distSub('ps')">Proveedor de servicios</button>
+    <!-- Toolbar compartido: buscador (izq, mitad) + Filtros + button group (der) -->
+    <div class="toolbar" style="margin-top:20px">
+      <div class="search" style="flex:0 1 50%;max-width:520px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input id="distSearch" placeholder="Buscar por nombre de distribuidor"><span class="count" id="distCount">Mostrando 46 resultados</span></div>
+      <div style="display:flex;align-items:center;gap:12px;margin-left:auto">
+        <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+        <div class="seg2" id="distSubGroup">
+          <button class="on" data-dsub="dist" onclick="distSub('dist')">Distribuidores</button>
+          <button data-dsub="ps" onclick="distSub('ps')">Proveedor de servicios</button>
+        </div>
+      </div>
     </div>
 
     <!-- sub-panel Distribuidores -->
     <div class="dsub-panel" id="dsub-distribuidores">
-      <div class="toolbar">
-        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-          <input placeholder="Buscar por nombre de distribuidor"><span class="count">Mostrando 46 resultados</span></div>
-        <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
-      </div>
       <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
         <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th></tr></thead>
         <tbody id="distBody"></tbody>
@@ -405,11 +408,6 @@
 
     <!-- sub-panel Proveedores de servicios -->
     <div class="dsub-panel" id="dsub-proveedores" style="display:none">
-      <div class="toolbar">
-        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-          <input placeholder="Buscar por nombre de proveedor de servicios"><span class="count">Mostrando 12 resultados</span></div>
-        <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
-      </div>
       <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
         <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th></tr></thead>
         <tbody id="provBody"></tbody>
@@ -747,6 +745,8 @@
     distSubMode=mode;
     document.querySelectorAll('#distSubGroup button').forEach(b=>b.classList.toggle('on',b.dataset.dsub===mode));
     document.querySelectorAll('.dsub-panel').forEach(p=>p.style.display=p.id===(mode==='dist'?'dsub-distribuidores':'dsub-proveedores')?'block':'none');
+    const s=$('#distSearch'); if(s) s.placeholder=mode==='dist'?'Buscar por nombre de distribuidor':'Buscar por nombre de proveedor de servicios';
+    const c=$('#distCount'); if(c) c.textContent=mode==='dist'?'Mostrando 46 resultados':'Mostrando 12 resultados';
     $('#moduleTitle').textContent=mode==='dist'?'Listado de distribuidores':'Listado de proveedores de servicios';
     const addSvg=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>`;
     const full=mode==='dist'?`<button class="btn btn-ghost" onclick="openDistFull()" title="Propuesta B · pantalla completa">Pantalla completa</button>`:'';
