@@ -13,7 +13,7 @@
     --navy:#2d006d; --action-primary:#754bf1; --action-primary-hover:#6844d4; --accent:#754bf1;
     --bg-page:#f4f4f7; --surface:#ffffff; --surface-sunken:#f7f7fa;
     --text-primary:#26263a; --text-secondary:#6b7280; --text-muted:#9497a3;
-    --border:#eceaf2; --border-strong:#e0dded; --gray-700:#3c4149; --card-border:#eaecf0;
+    --border:#eceaf2; --border-strong:#e0dded; --gray-700:#3c4149; --card-border:#eaecf0; --header-bg:#f9fafb;
     --status-success:#188a4a; --status-success-bg:#e7f6ec; --status-success-fg:#188a4a;
     --status-error:#d64545; --status-error-bg:#fdecec; --status-error-fg:#d64545;
     --info:#4636b8; --info-bg:#eef0ff;
@@ -187,7 +187,7 @@
   .dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .dist-head b{font-family:'Gotham','Poppins';font-size:16px;color:var(--action-primary)}
   /* Cuentas bancarias gestionables */
-  .acc-card{border:1px solid var(--border);border-radius:14px;padding:16px 18px;background:#fff;margin-bottom:14px}
+  .acc-card{border:1px solid var(--card-border);border-radius:10px;background:#fff;box-shadow:0 0 22px 0 rgba(0,0,0,.03);padding:16px 18px;margin-bottom:14px}
   .acc-card.inactive{opacity:.55}
   .acc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
   .acc-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
@@ -206,7 +206,7 @@
   /* Cuenta ya guardada — vista de tarjeta */
   .acc-card.saved{padding:0}
   .acc-card.saved .acc-summary{margin-top:0}
-  .acc-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 18px;background:var(--surface-sunken);border-bottom:1px solid var(--card-border);border-radius:14px 14px 0 0}
+  .acc-view-head{display:flex;align-items:center;justify-content:space-between;gap:12px;height:40px;padding:0 18px;background:var(--header-bg);border-bottom:1px solid var(--card-border);border-radius:10px 10px 0 0}
   .acc-view-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
   .acc-view-title b{font-size:15px;font-weight:600;color:var(--text-primary)}
   .acc-ico{display:inline-flex;color:var(--action-primary)}
@@ -292,7 +292,7 @@
   .df-wrap{display:flex;min-height:calc(100vh - 64px)}
   .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px}
   .df-back{display:inline-flex;align-items:center;color:var(--navy);cursor:pointer}
-  .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:600;color:var(--text-primary);margin:14px 0 26px}
+  .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:500;color:var(--text-primary);margin:14px 0 26px}
   .df-nav-group{font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 8px 10px}
   .df-tree{margin-left:8px;border-left:2px solid var(--border);padding-left:10px;display:flex;flex-direction:column;gap:4px}
   .df-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);padding:9px 12px;border-radius:9px;cursor:pointer}
@@ -308,14 +308,14 @@
   .df-card-head{background:var(--surface-sunken);border-bottom:1px solid var(--border);padding:16px 24px;font-size:15px;font-weight:600;color:var(--text-primary)}
   .df-card-body{padding:4px 24px 20px}
   .df-row{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:24px 0}
-  .df-row-label{font-size:15px;font-weight:600;color:var(--text-primary);padding-top:4px}
+  .df-row-label{font-size:15px;font-weight:500;color:var(--text-primary);padding-top:4px}
   .df-divider{height:1px;background:var(--border)}
   .df-foot{display:flex;justify-content:flex-end;gap:20px;margin-top:18px}
   .df-acc{margin-bottom:12px}
   .df-visa{display:inline-grid;place-items:center;background:#1a1f71;color:#fff;font-size:9px;font-weight:700;border-radius:3px;padding:3px 6px;letter-spacing:.03em}
-  .df-ranges{border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:660px}
+  .df-ranges{border:1px solid var(--card-border);border-radius:10px;background:#fff;box-shadow:0 0 22px 0 rgba(0,0,0,.03);overflow:hidden}
   .df-ranges-head,.df-range-row{display:grid;grid-template-columns:1fr 1fr 1fr 44px;gap:14px;align-items:center}
-  .df-ranges-head{background:var(--surface-sunken);padding:12px 16px;font-size:12.5px;color:var(--text-secondary);font-weight:500}
+  .df-ranges-head{background:var(--header-bg);height:40px;padding:0 16px;font-size:15px;color:var(--text-secondary);font-weight:500}
   .df-range-row{padding:12px 16px}
   .df-range-row .icon-btn{width:36px;height:40px}
   .df-ranges.one .df-ranges-head,.df-ranges.one .df-range-row{grid-template-columns:1fr}
@@ -331,7 +331,7 @@
   .acc-h:not(.open) .chev svg,.acc-sec-h:not(.open) .chev svg{transform:rotate(-90deg)}
   .acc-body{padding-top:14px}
   .acc-sec{border-top:1px solid var(--border);margin-top:12px}
-  .acc-sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none;padding:12px 0 2px;font-size:15px;font-weight:600;color:var(--text-primary)}
+  .acc-sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none;padding:12px 0 2px;font-size:15px;font-weight:500;color:var(--text-primary)}
   .acc-sec-body{padding-top:10px}
 
   /* ===== Segmented control estilo guía (Figma 126-112) ===== */
