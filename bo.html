@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Alta de distribuidores · Proveedor de Servicios — Prototipo BO</title>
+<title>BackOffice · Punto Red — Prototipo</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@500;600&display=swap" rel="stylesheet">
@@ -16,29 +16,32 @@
     --border:#eceaf2; --border-strong:#e0dded;
     --status-success:#188a4a; --status-success-bg:#e7f6ec; --status-success-fg:#188a4a;
     --status-error:#d64545; --status-error-bg:#fdecec; --status-error-fg:#d64545;
+    --info:#4636b8; --info-bg:#eef0ff;
     --radius:10px; --radius-lg:16px; --shadow-modal:0 24px 60px -12px rgba(45,0,109,.28);
   }
   *{box-sizing:border-box}
   html,body{margin:0}
-  body{font-family:'Inter',system-ui,sans-serif;color:var(--text-primary);background:var(--bg-page);-webkit-font-smoothing:antialiased}
-  .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+  body{font-family:'Gotham','Inter',system-ui,sans-serif;color:var(--text-primary);background:var(--bg-page);-webkit-font-smoothing:antialiased}
 
   /* Top nav */
-  .nav{background:var(--navy);height:64px;display:flex;align-items:center;padding:0 32px;gap:36px}
+  .nav{background:var(--navy);height:64px;display:flex;align-items:center;padding:0 32px;gap:34px}
   .brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:600;font-size:18px}
   .brand .logo{width:26px;height:26px;border:2px solid #fff;border-radius:6px;transform:rotate(45deg)}
   .brand .sub{font-weight:400;color:#c9c2e8;font-size:14px;border-left:1px solid #4a3a83;padding-left:10px;margin-left:2px}
-  .nav-links{display:flex;gap:24px;align-items:center;flex:1;margin-left:8px}
-  .nav-links a{color:#d8d2f0;text-decoration:none;font-size:14.5px;white-space:nowrap}
+  .nav-links{display:flex;gap:22px;align-items:center;flex:1;margin-left:8px}
+  .nav-links a{color:#d8d2f0;text-decoration:none;font-size:14px;white-space:nowrap}
   .nav-links a.active{background:#fff;color:var(--navy);font-weight:500;padding:7px 16px;border-radius:20px}
-  .nav-right{display:flex;align-items:center;gap:18px}
+  .nav-right{display:flex;align-items:center;gap:16px}
   .nav-right .gear{color:#c9c2e8;font-size:20px}
   .avatar{width:34px;height:34px;border-radius:50%;background:var(--action-primary);color:#fff;display:grid;place-items:center;font-size:13px;font-weight:600}
 
-  /* Page: Listado de distribuidores */
+  /* Page + heads */
   .page{padding:28px 40px}
-  .page-head{display:flex;justify-content:space-between;align-items:center}
-  .page-title{font-family:'Poppins',sans-serif;font-size:30px;font-weight:600;color:var(--navy);margin:0}
+  .page-head{display:flex;justify-content:space-between;align-items:center;min-height:44px}
+  .page-title{font-family:'Gotham','Poppins',sans-serif;font-size:30px;font-weight:600;color:var(--navy);margin:0}
+  .detail-head{display:flex;justify-content:space-between;align-items:center}
+  .detail-title{font-family:'Gotham','Poppins',sans-serif;font-size:26px;font-weight:600;color:var(--navy);margin:0;display:flex;align-items:center;gap:12px}
+  .detail-title .back{color:var(--navy);text-decoration:none;font-weight:600;cursor:pointer;display:inline-flex;align-items:center}
   .btn{font-family:inherit;font-size:14.5px;font-weight:500;border-radius:var(--radius);padding:11px 20px;border:1px solid transparent;cursor:pointer;display:inline-flex;align-items:center;gap:8px}
   .btn-navy{background:var(--navy);color:#fff}
   .btn-primary{background:var(--action-primary);color:#fff}
@@ -46,29 +49,38 @@
   .btn-ghost{background:#fff;color:var(--text-primary);border-color:var(--border-strong)}
   .btn-ghost:hover{border-color:var(--text-muted)}
   .btn-link{background:none;border:none;color:var(--action-primary);font-weight:500;cursor:pointer;font-size:14px;padding:6px 0;display:inline-flex;align-items:center;gap:6px;font-family:inherit}
-  .tabs{display:flex;gap:34px;margin:22px 0 0;border-bottom:1px solid var(--border)}
-  .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px}
-  .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
 
-  .toolbar{display:flex;align-items:center;gap:14px;margin-top:22px}
+  .tabs{display:flex;gap:32px;margin:20px 0 0;border-bottom:1px solid var(--border)}
+  .tabs span{padding:10px 2px;color:var(--text-secondary);font-size:15px;cursor:pointer}
+  .tabs span.active{color:var(--accent);font-weight:500;border-bottom:2px solid var(--accent)}
+  .ph{background:#fff;border:1px solid var(--border);border-radius:14px;padding:64px 20px;text-align:center;color:var(--text-muted);margin-top:18px;font-size:14px}
+  .ph b{display:block;color:var(--text-secondary);font-family:'Gotham','Poppins';font-size:16px;margin-bottom:6px}
+
+  /* Toolbar + tables */
+  .toolbar{display:flex;align-items:center;gap:14px;margin-top:20px}
   .search{flex:1;display:flex;align-items:center;gap:10px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px}
   .search svg{width:17px;height:17px;color:var(--text-muted);flex:none}
-  .search input{border:none;outline:none;box-shadow:none;padding:0;font-size:14.5px;flex:1}
+  .search input{border:none;outline:none;padding:0;font-size:14.5px;flex:1}
   .search .count{color:var(--accent);font-weight:500;font-size:13.5px;white-space:nowrap}
-  .filtros{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 18px;font-size:14.5px;color:var(--text-primary);cursor:pointer;font-family:inherit}
-  .filtros svg{width:16px;height:16px;color:var(--text-secondary)}
+  .pill-btn{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 18px;font-size:14.5px;color:var(--text-primary);cursor:pointer;font-family:inherit}
+  .pill-btn svg{width:16px;height:16px;color:var(--text-secondary)}
   .tbl-card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.05);margin-top:18px;overflow:hidden}
   .tbl-scroll{overflow-x:auto}
   table.lst{width:100%;border-collapse:collapse;min-width:940px}
   table.lst thead th{text-align:left;font-size:13px;font-weight:500;color:var(--text-secondary);padding:15px 20px;border-bottom:1px solid var(--border);background:var(--surface-sunken);white-space:nowrap}
-  table.lst tbody td{padding:17px 20px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-primary);vertical-align:middle;white-space:nowrap}
+  table.lst tbody td{padding:16px 20px;border-bottom:1px solid var(--border);font-size:14px;color:var(--text-primary);vertical-align:middle}
   table.lst tbody tr:last-child td{border-bottom:none}
   table.lst tbody tr:hover{background:var(--surface-sunken)}
+  table.lst tbody tr.clickable{cursor:pointer}
   .rfc{color:var(--text-secondary);font-variant-numeric:tabular-nums}
-  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;font-size:12.5px;font-weight:500}
+  .badge{display:inline-flex;align-items:center;gap:6px;padding:4px 11px;border-radius:20px;font-size:12.5px;font-weight:500;white-space:nowrap}
   .badge .bd{width:7px;height:7px;border-radius:50%}
   .badge.ok{background:var(--status-success-bg);color:var(--status-success-fg)} .badge.ok .bd{background:var(--status-success)}
   .badge.no{background:var(--status-error-bg);color:var(--status-error-fg)} .badge.no .bd{background:var(--status-error)}
+  .badge.proc{background:var(--info-bg);color:var(--info)} .badge.proc .bd{background:var(--info)}
+  .doc-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--border-strong);border-radius:20px;padding:5px 12px;font-size:12.5px;font-weight:500;color:var(--text-secondary);white-space:nowrap}
+  .doc-chip.ok{color:var(--status-success);border-color:#a7e0c4}
+  .doc-chip.rev{color:var(--action-primary);border-color:#cdbcff}
   .kebab{border:none;background:none;color:var(--text-muted);font-size:20px;cursor:pointer;padding:4px 8px;border-radius:6px;line-height:1}
   .kebab:hover{background:var(--surface-sunken);color:var(--text-primary)}
   .pager{display:flex;justify-content:flex-end;align-items:center;gap:6px;padding:18px 2px 2px}
@@ -76,23 +88,64 @@
   .pager button:hover{background:var(--surface-sunken)}
   .pager button.on{background:var(--accent);color:#fff;font-weight:600}
   .pager .arrow{border:1px solid var(--border);color:var(--text-secondary)}
-  .tabs span{cursor:pointer}
-  .ph{background:#fff;border:1px solid var(--border);border-radius:14px;padding:64px 20px;text-align:center;color:var(--text-muted);margin-top:18px;font-size:14px}
-  .ph b{display:block;color:var(--text-secondary);font-family:'Poppins';font-size:16px;margin-bottom:6px}
 
-  /* Modal */
-  .backdrop{position:absolute;inset:0;background:rgba(24,18,52,.55);display:flex;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto}
-  .modal{background:var(--surface);width:100%;max-width:860px;border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);padding:32px 36px 24px}
-  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
-  .modal-title{font-family:'Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--action-primary);margin:0}
-  .modal-title small{display:block;font-family:'Inter';font-weight:400;font-size:13.5px;color:var(--text-secondary);margin-top:4px}
-  .x{width:34px;height:34px;border-radius:50%;background:var(--surface-sunken);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text-secondary);font-size:16px}
+  /* ---- Registro de documentos ---- */
+  .docs-layout{display:grid;grid-template-columns:280px 1fr;gap:20px;margin-top:22px;align-items:start}
+  .docs-side{background:#fff;border:1px solid var(--border);border-radius:14px;padding:22px 20px;position:sticky;top:20px}
+  .docs-side h3{font-family:'Gotham','Poppins';font-size:16px;color:var(--text-primary);margin:0 0 18px}
+  .steps{list-style:none;margin:0;padding:0}
+  .steps>li{margin-bottom:6px}
+  .step-row{display:flex;align-items:center;gap:11px;font-size:14.5px;color:var(--text-primary);padding:5px 0}
+  .step-ic{width:22px;height:22px;border-radius:50%;display:grid;place-items:center;flex:none;color:#fff}
+  .step-ic.done{background:#22b06a}
+  .step-ic.pending{background:#c9ccd6}
+  .step-ic svg{width:12px;height:12px}
+  .substeps{list-style:none;margin:0 0 6px;padding:0;margin-left:10px;border-left:2px solid var(--border)}
+  .substeps li{padding-left:14px}
 
-  /* Distribuidor card (alta múltiple) */
-  .dist-card{border:1px solid var(--border-strong);border-radius:14px;padding:20px 22px;margin-bottom:16px;background:#fff}
-  .dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
-  .dist-head b{font-family:'Poppins';font-size:16px;color:var(--action-primary)}
+  .doc-card{background:#fff;border:1px solid var(--border);border-radius:14px;margin-bottom:18px;overflow:hidden}
+  .doc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:18px 24px;background:var(--surface-sunken);border-bottom:1px solid var(--border)}
+  .doc-head h3{font-family:'Gotham','Poppins';font-size:17px;color:var(--text-primary);margin:0;font-weight:600}
+  .doc-undo{background:none;border:none;color:var(--action-primary);font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;white-space:nowrap}
+  .doc-undo svg{width:17px;height:17px}
+  .doc-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
+  .doc-body.single{grid-template-columns:1fr}
+  .doc-col .lab{font-size:14px;color:var(--text-primary);margin-bottom:12px}
+  .filebox{border:1.5px solid var(--border-strong);border-radius:12px;padding:22px;display:flex;align-items:center;gap:16px}
+  .filebox .fic{width:44px;height:56px;position:relative;flex:none}
+  .filebox .fic .sheet{width:38px;height:48px;border-radius:6px;background:#fff;border:1.5px solid currentColor;position:absolute;top:4px;left:3px;opacity:.5}
+  .filebox .fic .st{position:absolute;left:0;bottom:4px;width:24px;height:24px;border-radius:50%;display:grid;place-items:center;color:#fff}
+  .filebox .fic .st svg{width:14px;height:14px}
+  .filebox .txt{font-size:15px;font-weight:500}
+  .filebox.ok{border-color:#8fe3b4;background:#f2fcf6}
+  .filebox.ok{color:#15925a} .filebox.ok .st{background:#22b06a}
+  .filebox.wait{border-color:var(--border-strong);background:var(--surface-sunken);color:var(--text-muted)} .filebox.wait .st{background:#6b7280}
+  .doc-guide{color:var(--action-primary);font-weight:500;font-size:14px;text-decoration:underline;display:inline-block;margin-top:16px;cursor:pointer}
+  .compare-box{background:var(--surface-sunken);border-radius:12px;padding:18px 20px}
+  .compare-box .k{font-size:14.5px;color:var(--text-primary);margin-bottom:8px}
+  .compare-box .v{font-size:14px;color:var(--text-muted);line-height:1.5}
+  .doc-select-err select{border-color:var(--status-error)}
+  .doc-select-err select:focus{box-shadow:0 0 0 3px rgba(214,69,69,.14)}
+  .err-msg{color:var(--status-error);font-size:13.5px;margin-top:10px;line-height:1.4}
+  .doc-foot{padding:14px 24px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;color:var(--action-primary);font-weight:500;font-size:14px;cursor:pointer}
+  .doc-foot .cbi{width:28px;height:28px;border-radius:8px;background:var(--surface-sunken);display:grid;place-items:center;color:var(--navy)}
+  .doc-foot svg{width:16px;height:16px}
+  @media(max-width:900px){.docs-layout{grid-template-columns:1fr}.doc-body{grid-template-columns:1fr}}
 
+  /* Comercio detail — branch cards */
+  .chip{display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 16px;font-size:14px;color:var(--text-secondary)}
+  .br-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-top:18px}
+  .br-card{background:#fff;border:1px solid var(--border);border-radius:14px;box-shadow:0 1px 2px rgba(16,24,40,.05);padding:20px 22px}
+  .br-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .br-top b{font-family:'Gotham','Poppins';font-size:16px;color:var(--navy)}
+  .br-top .link{color:var(--action-primary);font-weight:500;font-size:14px;cursor:pointer}
+  .br-row{display:flex;gap:10px;align-items:baseline;margin:6px 0;font-size:13.5px}
+  .br-row .bank{color:var(--navy);font-weight:600;min-width:130px}
+  .br-row .sale{color:var(--accent);font-weight:600}
+  .rates{color:var(--text-muted);font-size:13px;display:flex;gap:18px;flex-wrap:wrap;margin:2px 0 8px 0}
+  .rates b{color:var(--text-secondary);font-weight:500}
+
+  /* ---- Shared form components ---- */
   .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px 20px}
   .field{display:flex;flex-direction:column;gap:6px;margin-bottom:16px}
   .field label{font-size:13.5px;color:var(--text-primary)}
@@ -100,13 +153,25 @@
   input,select{font-family:inherit;font-size:14.5px;color:var(--text-primary);background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;width:100%}
   input::placeholder{color:var(--text-muted)}
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(117,75,241,.14)}
-  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b6a7b' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
-
+  select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
   .section-label{font-size:15px;font-weight:600;color:var(--text-primary);margin:22px 0 12px}
   .divider{height:1px;background:var(--border);margin:24px 0}
+  .seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden}
+  .seg button{font-family:inherit;font-size:14px;font-weight:500;padding:10px 24px;background:#fff;border:none;cursor:pointer;color:var(--text-secondary)}
+  .seg button.on{background:var(--action-primary);color:#fff}
+  .radios{display:flex;gap:22px;align-items:center}
+  .radio{display:inline-flex;align-items:center;gap:8px;font-size:14px;color:var(--text-primary);cursor:pointer}
+  .radio input{width:18px;height:18px;accent-color:var(--action-primary);cursor:pointer}
+  .note{border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.55;display:flex;gap:10px;align-items:flex-start;margin-top:12px}
+  .note.accent{background:#f2eeff;color:#3c2f86}
+  .note.plain{background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border)}
+  .note .ic{font-size:17px;flex:none;margin-top:1px}
+  .icon-btn{width:38px;height:42px;border:1px solid var(--border);background:#fff;border-radius:var(--radius);color:var(--text-muted);cursor:pointer;display:grid;place-items:center;font-size:16px}
+  .icon-btn:hover{color:var(--status-error);border-color:var(--status-error)}
 
+  /* radio cards + ranges (comisión) */
   .radio-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .rcard{border:1.5px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start;transition:border-color .12s,background .12s}
+  .rcard{border:1.5px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start}
   .rcard:hover{border-color:var(--border-strong)}
   .rcard.sel{border-color:var(--accent);background:#faf8ff}
   .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-strong);flex:none;margin-top:1px;display:grid;place-items:center}
@@ -114,22 +179,11 @@
   .rcard.sel .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent)}
   .rcard b{font-size:14.5px;font-weight:600}
   .rcard span{display:block;font-size:12.5px;color:var(--text-secondary);margin-top:2px}
-
   .ranges{background:var(--surface-sunken);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px}
   .range-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin-bottom:10px}
   .caps{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-muted);text-transform:uppercase}
-  .icon-btn{width:38px;height:42px;border:1px solid var(--border);background:#fff;border-radius:var(--radius);color:var(--text-muted);cursor:pointer;display:grid;place-items:center;font-size:16px}
-  .icon-btn:hover{color:var(--status-error);border-color:var(--status-error)}
 
-  .seg{display:inline-flex;border:1px solid var(--border-strong);border-radius:var(--radius);overflow:hidden}
-  .seg button{font-family:inherit;font-size:14px;font-weight:500;padding:10px 26px;background:#fff;border:none;cursor:pointer;color:var(--text-secondary)}
-  .seg button.on{background:var(--action-primary);color:#fff}
-
-  .note{border-radius:12px;padding:14px 16px;font-size:13.5px;line-height:1.55;display:flex;gap:10px;align-items:flex-start}
-  .note.accent{background:#f2eeff;color:#3c2f86}
-  .note.plain{background:var(--surface-sunken);color:var(--text-secondary);border:1px solid var(--border)}
-  .note .ic{font-size:17px;flex:none;margin-top:1px}
-
+  /* PS / cuenta cards */
   .ps-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}
   .ps-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff}
   .ps-card.empty{border-style:dashed;background:var(--surface-sunken);text-align:center;color:var(--text-secondary);font-size:14px;padding:22px}
@@ -139,127 +193,623 @@
   .ps-mode button{font-family:inherit;font-size:13px;font-weight:500;padding:7px 14px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text-secondary)}
   .ps-mode button.on{background:#fff;color:var(--action-primary);box-shadow:0 1px 2px rgba(0,0,0,.06)}
   .mini{font-size:12px;color:var(--text-muted);margin:0 0 10px}
+  .dist-card{border:1px solid var(--border-strong);border-radius:14px;padding:20px 22px;margin-bottom:16px;background:#fff}
+  .dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .dist-head b{font-family:'Gotham','Poppins';font-size:16px;color:var(--action-primary)}
+  /* Cuentas bancarias gestionables */
+  .acc-card{border:1px solid var(--border);border-radius:14px;padding:16px 18px;background:#fff;margin-bottom:14px}
+  .acc-card.inactive{opacity:.55}
+  .acc-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap}
+  .acc-title{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+  .acc-title b{font-size:14.5px;font-weight:600}
+  .badge-sm{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:20px;font-size:12px;font-weight:500;white-space:nowrap}
+  .badge-default{background:#f2eeff;color:var(--action-primary)}
+  .badge-act{background:var(--status-success-bg);color:var(--status-success-fg)}
+  .badge-inact{background:#f3f4f6;color:var(--text-secondary)}
+  .acc-actions{display:flex;align-items:center;gap:2px;flex-wrap:wrap}
+  .acc-actions .lnk{background:none;border:none;color:var(--action-primary);font-weight:500;font-size:13px;cursor:pointer;font-family:inherit;padding:6px 8px;border-radius:8px;white-space:nowrap}
+  .acc-actions .lnk:hover{background:var(--surface-sunken)}
+  .acc-actions .lnk.muted{color:var(--text-secondary)}
+  .acc-actions .lnk.danger{color:var(--status-error)}
+  .acc-summary{margin-top:12px;font-size:13.5px;color:var(--text-secondary)}
+  .acc-summary b{color:var(--text-primary);font-weight:600}
+  .acc-form{margin-top:12px}
+  .sub-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff;margin-top:14px}
 
+  /* Modals — genéricos */
+  .backdrop{position:fixed;inset:0;background:rgba(24,18,52,.55);display:none;align-items:flex-start;justify-content:center;padding:40px 16px;overflow:auto;z-index:50}
+  .modal{background:var(--surface);width:100%;max-width:860px;border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);padding:32px 36px 24px}
+  .modal-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+  .modal-title{font-family:'Gotham','Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--action-primary);margin:0}
+  .modal-title small{display:block;font-family:'Gotham','Inter';font-weight:400;font-size:13.5px;color:var(--text-secondary);margin-top:4px}
+  .x{width:34px;height:34px;border-radius:50%;background:var(--surface-sunken);border:1px solid var(--border);display:grid;place-items:center;cursor:pointer;color:var(--text-secondary);font-size:16px}
   .footer{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:26px;padding-top:20px;border-top:1px solid var(--border)}
   .footer .side{display:flex;gap:12px;flex:none}
   .willcreate{font-size:12.5px;color:var(--text-secondary);max-width:440px;line-height:1.5}
   .willcreate b{color:var(--text-primary);font-weight:600}
 
-  .toast{position:absolute;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:16px 20px;border-radius:12px;font-size:13.5px;line-height:1.5;max-width:520px;opacity:0;pointer-events:none;transition:.35s;box-shadow:var(--shadow-modal)}
+  /* Modal Configuración (dos paneles) */
+  .cfg{background:var(--surface);width:100%;max-width:1000px;height:min(80vh,720px);border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);display:flex;overflow:hidden;position:relative;margin:auto}
+  .cfg-side{width:250px;flex:none;background:var(--surface-sunken);border-right:1px solid var(--border);padding:26px 16px}
+  .grp{margin-bottom:22px}
+  .grp .glabel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 10px 8px}
+  .grp .item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:14px;color:var(--text-primary);cursor:pointer;margin-bottom:2px}
+  .grp .item::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--border-strong)}
+  .grp .item.on{background:#eceaf6;color:var(--navy);font-weight:500}
+  .grp .item.on::before{background:var(--accent)}
+  .cfg-body{flex:1;min-width:0;overflow-y:auto;padding:28px 32px 90px}
+  .cfg-body h2{font-family:'Gotham','Poppins';font-size:22px;font-weight:600;color:var(--navy);margin:0 0 22px}
+  .cfg .x{position:absolute;top:18px;right:18px}
+  .cfg-card{border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+  .cfg-card .head{background:var(--surface-sunken);padding:14px 18px;font-family:'Gotham','Poppins';font-weight:600;font-size:15px;color:var(--navy);border-bottom:1px solid var(--border)}
+  .cfg-card .body{padding:16px 18px}
+  .chk{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--text-primary);cursor:pointer;user-select:none}
+  .chk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
+  .split{margin-top:16px;padding-top:16px;border-top:1px dashed var(--border)}
+  .row-inline{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;margin-bottom:6px}
+  .lbl{font-size:14px;font-weight:600;color:var(--text-primary)}
+  .acct{display:inline-flex;align-items:center;gap:8px;background:var(--surface-sunken);border:1px solid var(--border);border-radius:9px;padding:9px 13px;font-size:13px;color:var(--text-primary);margin-top:8px}
+  .acct .dotk{width:7px;height:7px;border-radius:50%;background:var(--status-success)}
+  .dest-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}
+  .dest{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
+  .dest-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+  .dest-top b{font-size:14px;font-weight:600}
+  .cfg-footer{position:absolute;bottom:0;left:250px;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 32px;border-top:1px solid var(--border)}
+  .cfg-footer .eff{font-size:12.5px;color:var(--text-secondary);max-width:480px;line-height:1.5}
+  .cfg-footer .eff b{color:var(--text-primary)}
+  .cfg-footer .side{display:flex;gap:12px;flex:none}
+
+  .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:16px 20px;border-radius:12px;font-size:13.5px;line-height:1.5;max-width:520px;opacity:0;pointer-events:none;transition:.35s;box-shadow:var(--shadow-modal);z-index:60}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
   .toast b{font-weight:600}
   .toast ul{margin:8px 0 0;padding-left:18px}
 
+  /* ===== Propuesta B · Alta de distribuidor en PANTALLA COMPLETA ===== */
+  #view-distfull{background:var(--bg-page)}
+  .df-wrap{display:flex;min-height:calc(100vh - 64px)}
+  .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px}
+  .df-back{display:inline-flex;align-items:center;color:var(--navy);cursor:pointer}
+  .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:600;color:var(--text-primary);margin:14px 0 26px}
+  .df-nav-group{font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 8px 10px}
+  .df-tree{margin-left:8px;border-left:2px solid var(--border);padding-left:10px;display:flex;flex-direction:column;gap:4px}
+  .df-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);padding:9px 12px;border-radius:9px;cursor:pointer}
+  .df-item::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--border-strong);flex:none}
+  .df-item:hover{background:var(--surface-sunken)}
+  .df-item.active{background:#eceaf6;color:var(--navy);font-weight:500}
+  .df-item.active::before{background:var(--action-primary)}
+  .df-main{flex:1;min-width:0;padding:26px 40px 60px}
+  .df-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
+  .df-head h1{font-family:'Gotham','Poppins',sans-serif;font-size:24px;font-weight:600;color:var(--text-primary);margin:0}
+  .df-actions{display:flex;gap:12px;flex:none}
+  .df-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .df-card-head{background:var(--surface-sunken);border-bottom:1px solid var(--border);padding:16px 24px;font-size:15px;font-weight:600;color:var(--text-primary)}
+  .df-card-body{padding:4px 24px 20px}
+  .df-row{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:24px 0}
+  .df-row-label{font-size:15px;font-weight:600;color:var(--text-primary);padding-top:4px}
+  .df-divider{height:1px;background:var(--border)}
+  .df-foot{display:flex;justify-content:flex-end;margin-top:18px}
+  .df-acc{border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr auto;gap:24px;align-items:center;max-width:660px;margin-bottom:12px}
+  .df-acc .k{font-size:12.5px;color:var(--text-secondary);margin-bottom:6px}
+  .df-acc .v{font-size:14px;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+  .df-visa{display:inline-grid;place-items:center;background:#1a1f71;color:#fff;font-size:9px;font-weight:700;border-radius:3px;padding:3px 6px;letter-spacing:.03em}
+  .df-ranges{border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:660px}
+  .df-ranges-head,.df-range-row{display:grid;grid-template-columns:1fr 1fr 1fr 44px;gap:14px;align-items:center}
+  .df-ranges-head{background:var(--surface-sunken);padding:12px 16px;font-size:12.5px;color:var(--text-secondary);font-weight:500}
+  .df-range-row{padding:12px 16px}
+  .df-range-row .icon-btn{width:36px;height:40px}
+  @media(max-width:900px){.df-row{grid-template-columns:1fr;gap:14px}.df-side{display:none}}
+
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-  @media(max-width:720px){.grid2,.radio-cards{grid-template-columns:1fr}.range-row{grid-template-columns:1fr 1fr}.nav-links{display:none}}
+  @media(max-width:720px){.grid2,.radio-cards{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
 </head>
 <body>
-<div style="position:relative;min-height:100vh">
 
-  <!-- NAV -->
-  <nav class="nav">
-    <div class="brand"><span class="logo"></span>Velpay<span class="sub">Backoffice</span></div>
-    <div class="nav-links">
-      <a href="#">Dashboard</a><a href="#">Reportes</a>
-      <a href="#" class="active">Comercios</a><a href="#">Informes</a><a href="#">Title header</a>
-    </div>
-    <div class="nav-right"><span class="gear">⚙</span><span class="avatar">IG</span></div>
-  </nav>
+<!-- NAV -->
+<nav class="nav">
+  <div class="brand"><svg height="26" viewBox="0 0 253 36" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Velpay Backoffice">
+<mask id="mask0_448_267" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="0" width="40" height="33"><path fill-rule="evenodd" clip-rule="evenodd" d="M0 0H39.6679V32.6814H0V0Z" fill="white"/></mask>
+<g mask="url(#mask0_448_267)"><path fill-rule="evenodd" clip-rule="evenodd" d="M33.7499 15.2711L31.6438 17.3772L31.6453 17.373C31.6453 17.373 31.2726 17.7612 30.8843 17.373L30.8854 17.3768L22.2632 8.75439C22.1755 8.63217 22.0507 8.37168 22.2955 8.09808L26.6009 3.75076C26.7301 3.65974 27.0022 3.53402 27.2834 3.815L27.2773 3.79691L35.8348 12.3542L35.8318 12.3531C35.8318 12.3531 36.1629 12.6723 35.9051 13.0275L33.7499 15.2711ZM20.111 28.877C19.9829 28.9681 19.7087 29.0978 19.4257 28.8146L19.4272 28.8198L5.90133 15.2941L3.87222 13.2015L3.87666 13.2028C3.87666 13.2028 3.48841 12.8303 3.87666 12.442L3.87592 12.4422L7.00718 9.24005L20.1403 22.373L22.2841 20.2743L9.14262 7.17033L12.4543 3.85685C12.5274 3.79058 12.8504 3.5371 13.1881 3.86184L28.8234 19.4975C28.9105 19.6079 29.0772 19.8931 28.7966 20.1914L20.111 28.877ZM39.1605 11.5462L28.1219 0.508216C27.444 -0.169507 26.3404 -0.169322 25.6625 0.508401L19.8251 6.34594L13.9874 0.508216C13.3093 -0.169876 12.2059 -0.169322 11.528 0.508401L0.505508 11.5392C-0.1628 12.2088 -0.169261 13.3046 0.490924 13.9816L3.79739 17.375L18.5956 32.1731C18.9346 32.5118 19.3798 32.6813 19.8251 32.6813C20.2702 32.6813 20.7159 32.5117 21.055 32.1729L31.4454 21.7826L35.8612 17.3669L39.171 13.9951C39.8376 13.3174 39.833 12.2186 39.1605 11.5462V11.5462Z" fill="white"/></g>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M137.295 9.22847C135.794 9.22847 134.574 10.4488 134.574 11.949C134.574 13.4491 135.794 14.6696 137.295 14.6696C138.795 14.6696 140.015 13.4491 140.015 11.949C140.015 10.4488 138.795 9.22847 137.295 9.22847M137.295 15.395C135.395 15.395 133.849 13.8492 133.849 11.949C133.849 10.0489 135.395 8.50293 137.295 8.50293C139.195 8.50293 140.741 10.0489 140.741 11.949C140.741 13.8492 139.195 15.395 137.295 15.395" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M62.9299 8.12988H60.2022C59.9414 8.12988 59.7099 8.29751 59.6284 8.54545L54.5881 23.892C54.4068 24.4445 53.626 24.4466 53.4414 23.8953L48.3086 8.55801C48.2262 8.31173 47.9955 8.14558 47.7359 8.14558H45.0556C44.6362 8.14558 44.3445 8.56281 44.4883 8.95678L51.8319 29.0734C51.9189 29.3117 52.1454 29.4701 52.3993 29.4701H55.7519C56.0072 29.4701 56.2348 29.3095 56.3207 29.069L63.4989 8.93665C63.639 8.54342 63.3475 8.12988 62.9299 8.12988" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M72.0233 19.6282H66.006C65.831 19.6282 65.6947 19.4646 65.7374 19.2949C66.1806 17.5259 67.4772 16.4668 69.304 16.4668C70.8928 16.4668 72.1306 17.4652 72.299 19.3337C72.3134 19.4917 72.1819 19.6282 72.0233 19.6282M69.3934 13.5439C64.8602 13.5439 61.6689 16.8247 61.6689 21.5075C61.6689 25.8318 64.8004 29.4702 69.8413 29.4702C72.987 29.4702 75.1246 27.9687 75.7586 27.4597C75.8742 27.367 75.9081 27.2064 75.838 27.0761L74.664 24.8958C74.5763 24.7331 74.3683 24.6833 74.2191 24.7922C73.6017 25.2421 72.0085 26.249 70.1094 26.249C67.9802 26.249 66.0349 25.0388 65.6092 22.6913C65.5653 22.4485 65.753 22.2235 65.9997 22.2235L75.7353 22.2233C75.9105 22.2233 76.0564 22.0892 76.0701 21.915C76.0965 21.579 76.1341 21.0513 76.1341 20.7619C76.1341 16.7352 73.7775 13.5439 69.3934 13.5439" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M93.272 26.2789C90.7669 26.2789 89.4844 23.9527 89.4844 21.5971C89.4844 18.2267 91.3335 16.7948 93.3019 16.7948C95.5383 16.7948 97.0896 18.6739 97.0896 21.5671C97.0896 24.5791 95.3602 26.2789 93.272 26.2789M94.1672 13.5439C91.3599 13.5439 89.9471 15.0855 89.4682 15.7503C89.408 15.8339 89.2756 15.7896 89.2756 15.6866V14.7796C89.2756 14.295 88.8827 13.9021 88.3981 13.9021H86.6936C86.209 13.9021 85.8163 14.295 85.8163 14.7796V34.2622C85.8163 34.7125 86.1813 35.0775 86.6315 35.0775H88.7886C89.2387 35.0775 89.6039 34.7125 89.6039 34.2622V28.6951V27.8227C89.6039 27.6827 89.7765 27.6144 89.8695 27.7191C90.3942 28.3093 91.7118 29.47 93.9582 29.47C97.9546 29.47 100.907 26.3385 100.907 21.5073C100.907 16.7948 98.2824 13.5439 94.1672 13.5439" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M111.711 22.5208C111.711 24.3699 110.279 26.5174 108.281 26.5174C106.73 26.5174 105.984 25.5633 105.984 24.5488C105.984 22.4313 109.116 22.1632 111.055 22.1632H111.711V22.5208ZM109.116 13.5441C106.625 13.5441 104.731 14.4395 103.796 14.9942C103.423 15.2158 103.291 15.6893 103.494 16.0729L104.431 17.8497C104.511 18.0007 104.7 18.0537 104.844 17.9621C105.454 17.5742 107.051 16.6761 108.758 16.6761C110.428 16.6761 111.681 17.3615 111.681 19.3598V19.5688H111.174C108.698 19.5688 102.167 19.8965 102.167 24.7284C102.167 27.7703 104.613 29.4701 107.327 29.4701C110.786 29.4701 111.979 26.7865 111.949 26.7865H112.009V28.6351C112.009 29.0963 112.383 29.4701 112.844 29.4701H114.599C115.063 29.4701 115.439 29.0942 115.439 28.6308V19.5987C115.439 15.7513 113.113 13.5441 109.116 13.5441V13.5441Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M132.571 13.4982H128.917C128.82 13.4982 128.734 13.5608 128.703 13.6531L124.881 25.3344H124.821L120.721 13.6935C120.68 13.5764 120.569 13.4982 120.445 13.4982H116.83C116.62 13.4982 116.479 13.7125 116.561 13.9054L123.146 29.3289C123.187 29.4253 123.188 29.534 123.147 29.6304L122.644 30.8217C122.035 32.1428 121.157 32.4692 120.113 32.4692C119.53 32.4692 118.96 32.1844 118.651 31.9988C118.521 31.9211 118.355 31.975 118.293 32.1135L117.247 34.4814C117.196 34.5966 117.235 34.7295 117.342 34.7958C117.766 35.0576 118.898 35.6605 120.322 35.6605C122.618 35.6605 124.642 34.7886 125.716 32.0145L132.781 13.8044C132.838 13.6571 132.729 13.4982 132.571 13.4982" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M83.6755 26.0892L83.6753 26.0886C83.5795 26.0944 83.4685 26.0997 83.3471 26.0997C82.3625 26.0997 81.7959 25.6825 81.7959 24.0119V8.96963C81.7959 8.51437 81.4269 8.14551 80.9718 8.14551H78.8622C78.4069 8.14551 78.0381 8.51437 78.0381 8.96963V24.5783C78.0381 28.9334 80.6329 29.4699 82.7207 29.4699C82.8514 29.4699 82.9795 29.4662 83.1006 29.4599C83.5575 29.4366 83.9137 29.0545 83.9137 28.5968V26.2742C83.9137 26.0602 83.6755 26.0892 83.6755 26.0892" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M136.222 13.3303V10.5534C136.222 10.4699 136.289 10.4023 136.373 10.4023H137.603C138.224 10.4023 138.534 10.6737 138.534 11.2163C138.534 11.5833 138.293 11.8874 137.809 12.1281L138.673 13.3063C138.714 13.3627 138.674 13.4419 138.604 13.4419H138.107C138.079 13.4419 138.053 13.4282 138.037 13.4053L137.138 12.1176V11.8604C137.676 11.7683 137.945 11.5593 137.945 11.2335C137.945 11.0095 137.819 10.8975 137.567 10.8975H136.852C136.821 10.8975 136.795 10.923 136.795 10.9542V13.3303C136.795 13.3894 136.748 13.4374 136.688 13.4374H136.329C136.27 13.4374 136.222 13.3894 136.222 13.3303" fill="white"/>
+<path d="M149.402 5.61111V30.0556" stroke="white" stroke-width="2" stroke-linecap="round"/>
+<path d="M162.944 24V12.12H167.174C168.578 12.12 169.604 12.414 170.252 13.002C170.9 13.59 171.224 14.388 171.224 15.396C171.224 15.996 171.05 16.542 170.702 17.034C170.354 17.514 169.862 17.82 169.226 17.952V17.97C169.934 18.102 170.492 18.426 170.9 18.942C171.32 19.446 171.53 20.022 171.53 20.67C171.53 21.678 171.152 22.488 170.396 23.1C169.64 23.7 168.56 24 167.156 24H162.944ZM164.384 22.65H167.498C168.35 22.65 168.98 22.476 169.388 22.128C169.808 21.78 170.018 21.294 170.018 20.67C170.018 20.034 169.808 19.548 169.388 19.212C168.98 18.864 168.35 18.69 167.498 18.69H164.384V22.65ZM164.384 17.34H167.192C168.872 17.34 169.712 16.692 169.712 15.396C169.712 14.112 168.872 13.47 167.192 13.47H164.384V17.34ZM179.69 18.186C179.69 17.514 179.51 16.998 179.15 16.638C178.79 16.266 178.28 16.08 177.62 16.08C176.996 16.08 176.468 16.218 176.036 16.494C175.604 16.758 175.286 17.19 175.082 17.79L173.912 17.07C174.152 16.398 174.596 15.858 175.244 15.45C175.892 15.03 176.696 14.82 177.656 14.82C178.304 14.82 178.892 14.934 179.42 15.162C179.948 15.378 180.362 15.714 180.662 16.17C180.974 16.614 181.13 17.19 181.13 17.898V22.254C181.13 22.686 181.358 22.902 181.814 22.902C182.042 22.902 182.264 22.872 182.48 22.812L182.408 23.946C182.168 24.066 181.856 24.126 181.472 24.126C181.124 24.126 180.812 24.06 180.536 23.928C180.26 23.796 180.044 23.598 179.888 23.334C179.732 23.058 179.654 22.716 179.654 22.308V22.128L180.014 22.182C179.87 22.65 179.624 23.034 179.276 23.334C178.928 23.622 178.538 23.838 178.106 23.982C177.674 24.114 177.248 24.18 176.828 24.18C176.3 24.18 175.808 24.09 175.352 23.91C174.896 23.73 174.53 23.46 174.254 23.1C173.99 22.728 173.858 22.272 173.858 21.732C173.858 21.06 174.08 20.508 174.524 20.076C174.98 19.632 175.61 19.332 176.414 19.176L179.978 18.474V19.662L177.08 20.256C176.492 20.376 176.054 20.544 175.766 20.76C175.478 20.976 175.334 21.276 175.334 21.66C175.334 22.032 175.478 22.338 175.766 22.578C176.066 22.806 176.486 22.92 177.026 22.92C177.374 22.92 177.704 22.878 178.016 22.794C178.34 22.698 178.628 22.56 178.88 22.38C179.132 22.188 179.33 21.954 179.474 21.678C179.618 21.39 179.69 21.054 179.69 20.67V18.186ZM188.355 14.82C188.979 14.82 189.525 14.916 189.993 15.108C190.473 15.3 190.887 15.576 191.235 15.936C191.583 16.296 191.865 16.722 192.081 17.214L190.713 17.862C190.521 17.286 190.227 16.848 189.831 16.548C189.447 16.236 188.943 16.08 188.319 16.08C187.719 16.08 187.203 16.218 186.771 16.494C186.339 16.758 186.009 17.148 185.781 17.664C185.553 18.168 185.439 18.78 185.439 19.5C185.439 20.208 185.553 20.82 185.781 21.336C186.009 21.852 186.339 22.248 186.771 22.524C187.203 22.788 187.719 22.92 188.319 22.92C188.787 22.92 189.189 22.848 189.525 22.704C189.873 22.56 190.155 22.35 190.371 22.074C190.599 21.798 190.755 21.462 190.839 21.066L192.171 21.534C191.967 22.086 191.685 22.56 191.325 22.956C190.977 23.352 190.551 23.658 190.047 23.874C189.555 24.078 188.991 24.18 188.355 24.18C187.515 24.18 186.765 23.994 186.105 23.622C185.445 23.25 184.929 22.716 184.557 22.02C184.185 21.312 183.999 20.472 183.999 19.5C183.999 18.528 184.185 17.694 184.557 16.998C184.929 16.29 185.445 15.75 186.105 15.378C186.765 15.006 187.515 14.82 188.355 14.82ZM202.603 15L198.715 18.888L198.373 19.23L195.421 22.182V20.382L200.785 15H202.603ZM196.141 10.86V24H194.701V10.86H196.141ZM198.841 18.15L202.819 24H201.073L197.635 18.96L198.841 18.15ZM208.324 14.82C209.176 14.82 209.926 15.006 210.574 15.378C211.234 15.75 211.75 16.29 212.122 16.998C212.494 17.694 212.68 18.528 212.68 19.5C212.68 20.472 212.494 21.312 212.122 22.02C211.75 22.716 211.234 23.25 210.574 23.622C209.926 23.994 209.176 24.18 208.324 24.18C207.484 24.18 206.734 23.994 206.074 23.622C205.414 23.25 204.898 22.716 204.526 22.02C204.154 21.312 203.968 20.472 203.968 19.5C203.968 18.528 204.154 17.694 204.526 16.998C204.898 16.29 205.414 15.75 206.074 15.378C206.734 15.006 207.484 14.82 208.324 14.82ZM208.324 16.062C207.712 16.062 207.19 16.2 206.758 16.476C206.326 16.752 205.99 17.148 205.75 17.664C205.522 18.168 205.408 18.78 205.408 19.5C205.408 20.208 205.522 20.82 205.75 21.336C205.99 21.852 206.326 22.248 206.758 22.524C207.19 22.8 207.712 22.938 208.324 22.938C208.936 22.938 209.458 22.8 209.89 22.524C210.322 22.248 210.652 21.852 210.88 21.336C211.12 20.82 211.24 20.208 211.24 19.5C211.24 18.78 211.12 18.168 210.88 17.664C210.652 17.148 210.322 16.752 209.89 16.476C209.458 16.2 208.936 16.062 208.324 16.062ZM218.887 10.77C219.199 10.77 219.493 10.806 219.769 10.878C220.045 10.95 220.261 11.052 220.417 11.184L220.039 12.354C219.895 12.258 219.739 12.192 219.571 12.156C219.403 12.108 219.217 12.084 219.013 12.084C218.497 12.084 218.095 12.21 217.807 12.462C217.519 12.702 217.375 13.092 217.375 13.632V15V15.468V24H215.935V13.488C215.935 13.092 215.995 12.726 216.115 12.39C216.235 12.054 216.415 11.766 216.655 11.526C216.907 11.286 217.219 11.1 217.591 10.968C217.963 10.836 218.395 10.77 218.887 10.77ZM220.381 15V16.242H214.135V15H220.381ZM225.961 10.77C226.273 10.77 226.567 10.806 226.843 10.878C227.119 10.95 227.335 11.052 227.491 11.184L227.113 12.354C226.969 12.258 226.813 12.192 226.645 12.156C226.477 12.108 226.291 12.084 226.087 12.084C225.571 12.084 225.169 12.21 224.881 12.462C224.593 12.702 224.449 13.092 224.449 13.632V15V15.468V24H223.009V13.488C223.009 13.092 223.069 12.726 223.189 12.39C223.309 12.054 223.489 11.766 223.729 11.526C223.981 11.286 224.293 11.1 224.665 10.968C225.037 10.836 225.469 10.77 225.961 10.77ZM227.455 15V16.242H221.209V15H227.455ZM230.101 13.272C229.777 13.272 229.513 13.176 229.309 12.984C229.117 12.78 229.021 12.516 229.021 12.192C229.021 11.868 229.117 11.61 229.309 11.418C229.513 11.214 229.777 11.112 230.101 11.112C230.425 11.112 230.683 11.214 230.875 11.418C231.079 11.61 231.181 11.868 231.181 12.192C231.181 12.516 231.079 12.78 230.875 12.984C230.683 13.176 230.425 13.272 230.101 13.272ZM230.821 15V24H229.381V15H230.821ZM237.89 14.82C238.514 14.82 239.06 14.916 239.528 15.108C240.008 15.3 240.422 15.576 240.77 15.936C241.118 16.296 241.4 16.722 241.616 17.214L240.248 17.862C240.056 17.286 239.762 16.848 239.366 16.548C238.982 16.236 238.478 16.08 237.854 16.08C237.254 16.08 236.738 16.218 236.306 16.494C235.874 16.758 235.544 17.148 235.316 17.664C235.088 18.168 234.974 18.78 234.974 19.5C234.974 20.208 235.088 20.82 235.316 21.336C235.544 21.852 235.874 22.248 236.306 22.524C236.738 22.788 237.254 22.92 237.854 22.92C238.322 22.92 238.724 22.848 239.06 22.704C239.408 22.56 239.69 22.35 239.906 22.074C240.134 21.798 240.29 21.462 240.374 21.066L241.706 21.534C241.502 22.086 241.22 22.56 240.86 22.956C240.512 23.352 240.086 23.658 239.582 23.874C239.09 24.078 238.526 24.18 237.89 24.18C237.05 24.18 236.3 23.994 235.64 23.622C234.98 23.25 234.464 22.716 234.092 22.02C233.72 21.312 233.534 20.472 233.534 19.5C233.534 18.528 233.72 17.694 234.092 16.998C234.464 16.29 234.98 15.75 235.64 15.378C236.3 15.006 237.05 14.82 237.89 14.82ZM247.999 24.18C247.147 24.18 246.385 23.994 245.713 23.622C245.053 23.25 244.537 22.716 244.165 22.02C243.793 21.312 243.607 20.472 243.607 19.5C243.607 18.528 243.793 17.694 244.165 16.998C244.537 16.29 245.047 15.75 245.695 15.378C246.343 15.006 247.081 14.82 247.909 14.82C248.749 14.82 249.463 15 250.051 15.36C250.651 15.72 251.107 16.212 251.419 16.836C251.731 17.448 251.887 18.138 251.887 18.906C251.887 19.11 251.881 19.296 251.869 19.464C251.857 19.632 251.839 19.782 251.814 19.914H244.543V18.636H251.185L250.447 18.78C250.447 17.916 250.207 17.25 249.727 16.782C249.259 16.314 248.641 16.08 247.873 16.08C247.285 16.08 246.775 16.218 246.343 16.494C245.923 16.758 245.593 17.148 245.353 17.664C245.125 18.168 245.011 18.78 245.011 19.5C245.011 20.208 245.131 20.82 245.371 21.336C245.611 21.852 245.947 22.248 246.379 22.524C246.823 22.788 247.351 22.92 247.963 22.92C248.623 22.92 249.157 22.794 249.565 22.542C249.985 22.29 250.321 21.948 250.573 21.516L251.707 22.182C251.479 22.59 251.185 22.944 250.825 23.244C250.477 23.544 250.063 23.778 249.583 23.946C249.115 24.102 248.587 24.18 247.999 24.18Z" fill="white"/>
+</svg></div>
+  <div class="nav-links">
+    <a href="#">Facturación</a><a href="#">Conciliaciones</a><a href="#">Transacciones</a>
+    <a href="#">Liquidaciones</a><a href="#">Contracargos</a><a href="#">Aclaraciones</a>
+    <a href="#" class="active">Comercios</a><a href="#">Reportes</a>
+  </div>
+  <div class="nav-right"><span class="gear">⚙</span><span class="avatar">AC</span></div>
+</nav>
 
-  <!-- PAGE · Listado de distribuidores -->
-  <div class="page">
-    <div class="page-head">
-      <h1 class="page-title">Listado de distribuidores</h1>
-      <button class="btn btn-primary" onclick="openModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>Agregar</button>
-    </div>
-    <div class="tabs">
-      <span data-tab="comercios" onclick="showTab(this)">Comercios</span>
-      <span data-tab="cargas" onclick="showTab(this)">Cargas masivas</span>
-      <span data-tab="distribuidores" class="active" onclick="showTab(this)">Distribuidores</span>
-    </div>
+<!-- ============ VISTA: Módulo Comercios (listados) ============ -->
+<div class="page" id="view-module">
+  <div class="page-head">
+    <h1 class="page-title" id="moduleTitle">Listado de comercios</h1>
+    <div id="moduleAction"></div>
+  </div>
+  <div class="tabs">
+    <span data-mtab="comercios" class="active" onclick="moduleTab(this)">Comercios</span>
+    <span data-mtab="cargas" onclick="moduleTab(this)">Cargas masivas</span>
+    <span data-mtab="distribuidores" onclick="moduleTab(this)">Distribuidores</span>
+  </div>
 
-    <div class="tab-panel" id="tab-comercios" style="display:none">
-      <div class="ph"><b>Comercios</b>Listado de comercios del distribuidor. (Vista de referencia — pendiente de detalle)</div>
-    </div>
-    <div class="tab-panel" id="tab-cargas" style="display:none">
-      <div class="ph"><b>Cargas masivas</b>Alta masiva de comercios/distribuidores por archivo. (Vista de referencia — pendiente de detalle)</div>
-    </div>
-    <div class="tab-panel" id="tab-distribuidores">
+  <!-- panel Comercios -->
+  <div class="mtab-panel" id="mtab-comercios">
     <div class="toolbar">
-      <div class="search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
-        <input placeholder="Buscar por nombre de distribuidor">
-        <span class="count">Mostrando 46 resultados</span>
-      </div>
-      <button class="filtros">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input placeholder="Busca por nombre de comercio o grupo"><span class="count">Mostrando 2000 resultados</span></div>
+      <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>Columnas</button>
+      <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+    </div>
+    <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
+      <thead><tr><th>Fecha de registro</th><th>Comercio</th><th>Giro</th><th>Representante</th><th>Teléfono</th><th>Tasa</th><th>Sucursales</th><th>Verificar documentos</th><th>Estatus</th></tr></thead>
+      <tbody id="comerciosBody"></tbody>
+    </table></div></div>
+  </div>
+
+  <!-- panel Cargas masivas -->
+  <div class="mtab-panel" id="mtab-cargas" style="display:none">
+    <div class="ph"><b>Cargas masivas</b>Alta masiva de comercios por archivo. (Vista de referencia — pendiente de detalle)</div>
+  </div>
+
+  <!-- panel Distribuidores -->
+  <div class="mtab-panel" id="mtab-distribuidores" style="display:none">
+    <div class="seg" id="distSubGroup" style="margin-top:20px">
+      <button class="on" data-dsub="dist" onclick="distSub('dist')">Distribuidores</button>
+      <button data-dsub="ps" onclick="distSub('ps')">Proveedor de servicios</button>
     </div>
 
-    <div class="tbl-card"><div class="tbl-scroll">
-      <table class="lst">
-        <thead><tr>
-          <th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th>
-          <th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th>
-        </tr></thead>
+    <!-- sub-panel Distribuidores -->
+    <div class="dsub-panel" id="dsub-distribuidores">
+      <div class="toolbar">
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input placeholder="Buscar por nombre de distribuidor"><span class="count">Mostrando 46 resultados</span></div>
+        <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+      </div>
+      <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
+        <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th></tr></thead>
         <tbody id="distBody"></tbody>
-      </table>
-    </div></div>
-
-    <div class="pager">
-      <button class="on">1</button><button>2</button><button>3</button><button>4</button>
-      <button>5</button><button>6</button><button>7</button><button>…</button>
-      <button class="arrow" aria-label="Siguiente">→</button>
-    </div>
-    </div><!-- /tab-distribuidores -->
-  </div>
-
-  <!-- MODAL · Agregar distribuidores -->
-  <div class="backdrop" id="backdrop">
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
-      <div class="modal-head">
-        <div>
-          <h2 class="modal-title" id="mt">Agregar distribuidores
-            <small>Da de alta uno o más distribuidores y define, por cada uno, si opera también como proveedor de servicios.</small>
-          </h2>
-        </div>
-        <button class="x" aria-label="Cerrar" onclick="closeModal()">✕</button>
+      </table></div></div>
+      <div class="pager">
+        <button class="on">1</button><button>2</button><button>3</button><button>4</button>
+        <button>5</button><button>6</button><button>7</button><button>…</button>
+        <button class="arrow" aria-label="Siguiente">→</button>
       </div>
+    </div>
 
-      <div id="dist-list"></div>
-      <button class="btn-link" onclick="addDistribuidor()" style="font-size:14.5px">＋ Agregar otro distribuidor</button>
-
-      <!-- Footer -->
-      <div class="footer">
-        <div class="willcreate" id="summary"></div>
-        <div class="side">
-          <button class="btn btn-ghost" onclick="closeModal()">Cancelar</button>
-          <button class="btn btn-primary" onclick="save()">Guardar</button>
-        </div>
+    <!-- sub-panel Proveedores de servicios -->
+    <div class="dsub-panel" id="dsub-proveedores" style="display:none">
+      <div class="toolbar">
+        <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+          <input placeholder="Buscar por nombre de proveedor de servicios"><span class="count">Mostrando 12 resultados</span></div>
+        <button class="pill-btn"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 5h18M6 12h12M10 19h4"/></svg>Filtros</button>
+      </div>
+      <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
+        <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th></tr></thead>
+        <tbody id="provBody"></tbody>
+      </table></div></div>
+      <div class="pager">
+        <button class="on">1</button><button>2</button><button>3</button><button class="arrow" aria-label="Siguiente">→</button>
       </div>
     </div>
   </div>
-
-  <div class="toast" id="toast" role="status"></div>
 </div>
+
+<!-- ============ VISTA: Detalle de comercio ============ -->
+<div class="page" id="view-comercio" style="display:none">
+  <div class="detail-head">
+    <h1 class="detail-title"><span class="back" onclick="backToModule()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4.5L3 12L10.5 19.5M3 12L21 12"/></svg></span> <span id="comercioName">EDIT 38 COPAYMENT</span></h1>
+    <button class="btn btn-ghost" onclick="openCfg()"><svg width="18" height="18" viewBox="0 0 21 20" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M10.4995 12.4545C11.8551 12.4545 12.954 11.3556 12.954 9.99996C12.954 8.64435 11.8551 7.54541 10.4995 7.54541C9.14386 7.54541 8.04492 8.64435 8.04492 9.99996C8.04492 11.3556 9.14386 12.4545 10.4995 12.4545Z"/><path d="M16.5545 12.4545C16.4456 12.7013 16.4131 12.9751 16.4613 13.2405C16.5094 13.5059 16.6359 13.7508 16.8245 13.9436L16.8736 13.9927C17.0258 14.1447 17.1465 14.3252 17.2288 14.5238C17.3112 14.7225 17.3536 14.9354 17.3536 15.1505C17.3536 15.3655 17.3112 15.5784 17.2288 15.7771C17.1465 15.9757 17.0258 16.1562 16.8736 16.3082C16.7217 16.4603 16.5412 16.581 16.3425 16.6634C16.1439 16.7457 15.931 16.7881 15.7159 16.7881C15.5009 16.7881 15.2879 16.7457 15.0893 16.6634C14.8906 16.581 14.7102 16.4603 14.5582 16.3082L14.5091 16.2591C14.3163 16.0705 14.0714 15.9439 13.8059 15.8958C13.5405 15.8477 13.2668 15.8802 13.02 15.9891C12.778 16.0928 12.5716 16.265 12.4263 16.4845C12.2809 16.704 12.2029 16.9613 12.2018 17.2245V17.3636C12.2018 17.7976 12.0294 18.2138 11.7225 18.5207C11.4157 18.8276 10.9994 19 10.5655 19C10.1315 19 9.71525 18.8276 9.40837 18.5207C9.10149 18.2138 8.92909 17.7976 8.92909 17.3636V17.29C8.92276 17.0192 8.8351 16.7565 8.67751 16.5362C8.51992 16.3159 8.29969 16.1481 8.04545 16.0545C7.79868 15.9456 7.52493 15.9131 7.25952 15.9613C6.9941 16.0094 6.74919 16.1359 6.55636 16.3245L6.50727 16.3736C6.3553 16.5258 6.17483 16.6465 5.97617 16.7288C5.77752 16.8112 5.56459 16.8536 5.34955 16.8536C5.1345 16.8536 4.92157 16.8112 4.72292 16.7288C4.52426 16.6465 4.34379 16.5258 4.19182 16.3736C4.03967 16.2217 3.91898 16.0412 3.83663 15.8425C3.75428 15.6439 3.71189 15.431 3.71189 15.2159C3.71189 15.0009 3.75428 14.7879 3.83663 14.5893C3.91898 14.3906 4.03967 14.2102 4.19182 14.0582L4.24091 14.0091C4.42953 13.8163 4.55606 13.5714 4.60419 13.3059C4.65231 13.0405 4.61982 12.7668 4.51091 12.52C4.40719 12.278 4.23498 12.0716 4.01547 11.9263C3.79596 11.7809 3.53873 11.7029 3.27545 11.7018H3.13636C2.70237 11.7018 2.28616 11.5294 1.97928 11.2225C1.6724 10.9157 1.5 10.4994 1.5 10.0655C1.5 9.63146 1.6724 9.21525 1.97928 8.90837C2.28616 8.60149 2.70237 8.42909 3.13636 8.42909H3.21C3.48081 8.42276 3.74346 8.3351 3.96379 8.17751C4.18412 8.01992 4.35195 7.79969 4.44545 7.54545C4.55437 7.29868 4.58686 7.02493 4.53873 6.75952C4.49061 6.4941 4.36408 6.24919 4.17545 6.05636L4.12636 6.00727C3.97422 5.8553 3.85352 5.67483 3.77118 5.47617C3.68883 5.27752 3.64644 5.06459 3.64644 4.84955C3.64644 4.6345 3.68883 4.42157 3.77118 4.22292C3.85352 4.02426 3.97422 3.84379 4.12636 3.69182C4.27834 3.53967 4.45881 3.41898 4.65746 3.33663C4.85611 3.25428 5.06905 3.21189 5.28409 3.21189C5.49913 3.21189 5.71207 3.25428 5.91072 3.33663C6.10937 3.41898 6.28984 3.53967 6.44182 3.69182L6.49091 3.74091C6.68374 3.92953 6.92865 4.05606 7.19406 4.10419C7.45948 4.15231 7.73322 4.11982 7.98 4.01091H8.04545C8.28745 3.90719 8.49383 3.73498 8.6392 3.51547C8.78457 3.29596 8.86259 3.03873 8.86364 2.77545V2.63636C8.86364 2.20237 9.03604 1.78616 9.34292 1.47928C9.64979 1.1724 10.066 1 10.5 1C10.934 1 11.3502 1.1724 11.6571 1.47928C11.964 1.78616 12.1364 2.20237 12.1364 2.63636V2.71C12.1374 2.97328 12.2154 3.23051 12.3608 3.45002C12.5062 3.66953 12.7126 3.84174 12.9545 3.94545C13.2013 4.05437 13.4751 4.08686 13.7405 4.03873C14.0059 3.99061 14.2508 3.86408 14.4436 3.67545L14.4927 3.62636C14.6447 3.47422 14.8252 3.35352 15.0238 3.27118C15.2225 3.18883 15.4354 3.14644 15.6505 3.14644C15.8655 3.14644 16.0784 3.18883 16.2771 3.27118C16.4757 3.35352 16.6562 3.47422 16.8082 3.62636C16.9603 3.77834 17.081 3.95881 17.1634 4.15746C17.2457 4.35611 17.2881 4.56905 17.2881 4.78409C17.2881 4.99913 17.2457 5.21207 17.1634 5.41072C17.081 5.60937 16.9603 5.78984 16.8082 5.94182L16.7591 5.99091C16.5705 6.18374 16.4439 6.42865 16.3958 6.69406C16.3477 6.95948 16.3802 7.23322 16.4891 7.48V7.54545C16.5928 7.78745 16.765 7.99383 16.9845 8.1392C17.204 8.28457 17.4613 8.36259 17.7245 8.36364H17.8636C18.2976 8.36364 18.7138 8.53604 19.0207 8.84292C19.3276 9.14979 19.5 9.56601 19.5 10C19.5 10.434 19.3276 10.8502 19.0207 11.1571C18.7138 11.464 18.2976 11.6364 17.8636 11.6364H17.79C17.5267 11.6374 17.2695 11.7154 17.05 11.8608C16.8305 12.0062 16.6583 12.2126 16.5545 12.4545V12.4545Z"/></svg> Configuración</button>
+  </div>
+  <div class="tabs">
+    <span data-dtab="sucursales" class="active" onclick="detailTab(this)">Sucursales</span>
+    <span data-dtab="usuarios" onclick="detailTab(this)">Usuarios</span>
+    <span data-dtab="logs" onclick="detailTab(this)">Logs</span>
+  </div>
+  <div class="dtab-panel" id="dtab-sucursales">
+    <div class="toolbar">
+      <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
+        <input placeholder="Busca por nombre de sucursal"><span class="count">Mostrando 2 resultados</span></div>
+      <span class="chip">📅 Hoy</span>
+    </div>
+    <div class="br-grid">
+      <div class="br-card">
+        <div class="br-top"><b>EDIT 38 COPAYMENT ECOMMERCE</b><span class="link">Ver detalle</span></div>
+        <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
+        <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
+      </div>
+      <div class="br-card">
+        <div class="br-top"><b>EDIT 38 COPAYMENT</b><span class="link">Ver detalle</span></div>
+        <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
+        <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
+        <div class="br-row"><span class="bank">AMERICAN EXPRESS</span><span class="sale">Venta</span></div>
+        <div class="rates">Agregadores <b>TDD</b> 3.40% <b>TDC</b> 3.40% <b>TIN</b> 3.40%</div>
+      </div>
+    </div>
+  </div>
+  <div class="dtab-panel" id="dtab-usuarios" style="display:none"><div class="ph"><b>Usuarios</b>Usuarios del comercio y sus accesos. (Vista de referencia — pendiente de detalle)</div></div>
+  <div class="dtab-panel" id="dtab-logs" style="display:none"><div class="ph"><b>Logs</b>Bitácora de cambios del comercio. (Vista de referencia — pendiente de detalle)</div></div>
+</div>
+
+<!-- ============ VISTA: Registro de documentos ============ -->
+<div class="page" id="view-docs" style="display:none">
+  <div class="detail-head">
+    <h1 class="detail-title"><span class="back" onclick="backToModule()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4.5L3 12L10.5 19.5M3 12L21 12"/></svg></span> Registro de documentos</h1>
+    <button class="btn btn-primary" onclick="aprobarComercio()">Aprobar comercio</button>
+  </div>
+  <div class="docs-layout">
+    <!-- Menú de pasos (fijo) -->
+    <aside class="docs-side">
+      <h3>Validar documentos</h3>
+      <ul class="steps">
+        <li>
+          <div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Negocio</div>
+          <ul class="substeps">
+            <li><div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Domicilio</div></li>
+            <li><div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Fotos</div></li>
+          </ul>
+        </li>
+        <li>
+          <div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Representante</div>
+          <ul class="substeps">
+            <li><div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Identificación</div></li>
+            <li><div class="step-row"><span class="step-ic pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Constancia (CSF)</div></li>
+          </ul>
+        </li>
+        <li><div class="step-row"><span class="step-ic pending"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Cuentas bancarias</div></li>
+        <li><div class="step-row"><span class="step-ic done"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></span> Distribuidor</div></li>
+      </ul>
+    </aside>
+
+    <!-- Documentos (lado derecho) -->
+    <div class="docs-main">
+
+      <!-- 1 · Identificación -->
+      <div class="doc-card">
+        <div class="doc-head"><h3>Identificación</h3><button class="doc-undo" onclick="undoAprob(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14 4 9l5-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 9h11a5 5 0 0 1 5 5v1"/></svg>Deshacer aprobación</button></div>
+        <div class="doc-body">
+          <div class="doc-col">
+            <div class="lab">Archivo de negocio</div>
+            <div class="filebox ok"><div class="fic"><div class="sheet"></div><div class="st"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div></div><div class="txt">Descargar archivo(s)</div></div>
+            <a class="doc-guide" href="#" onclick="return false">Ver guía de documentos aceptados</a>
+          </div>
+          <div class="doc-col">
+            <div class="lab">Compara la información con el archivo</div>
+            <div class="compare-box"><div class="k">Nombre del representante</div><div class="v">Emiliano Salinas Monsivais</div></div>
+          </div>
+        </div>
+        <div class="doc-foot" onclick="toggleHist(this)"><span class="cbi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span> Ver historial de comentarios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+
+      <!-- 2 · Comprobante de domicilio del negocio -->
+      <div class="doc-card">
+        <div class="doc-head"><h3>Comprobante de domicilio del negocio</h3><button class="doc-undo" onclick="undoAprob(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14 4 9l5-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 9h11a5 5 0 0 1 5 5v1"/></svg>Deshacer aprobación</button></div>
+        <div class="doc-body">
+          <div class="doc-col">
+            <div class="lab">Archivo de negocio</div>
+            <div class="filebox ok"><div class="fic"><div class="sheet"></div><div class="st"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div></div><div class="txt">Descargar archivo(s)</div></div>
+            <a class="doc-guide" href="#" onclick="return false">Ver guía de documentos aceptados</a>
+          </div>
+          <div class="doc-col">
+            <div class="lab">Compara la información con el archivo</div>
+            <div class="compare-box"><div class="k">Dirección del negocio</div><div class="v">Cerro del Pilón 4324, La República, Monterrey, Nuevo León</div></div>
+          </div>
+        </div>
+        <div class="doc-foot" onclick="toggleHist(this)"><span class="cbi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span> Ver historial de comentarios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+
+      <!-- 3 · Fotos del negocio -->
+      <div class="doc-card">
+        <div class="doc-head"><h3>Fotos del negocio</h3><button class="doc-undo" onclick="undoAprob(this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 14 4 9l5-5"/><path stroke-linecap="round" stroke-linejoin="round" d="M4 9h11a5 5 0 0 1 5 5v1"/></svg>Deshacer aprobación</button></div>
+        <div class="doc-body single">
+          <div class="doc-col">
+            <div class="lab">Archivo de negocio</div>
+            <div class="filebox ok" style="max-width:440px"><div class="fic"><div class="sheet"></div><div class="st"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/></svg></div></div><div class="txt">Descargar archivo(s)</div></div>
+            <a class="doc-guide" href="#" onclick="return false">Ver guía de documentos aceptados</a>
+          </div>
+        </div>
+        <div class="doc-foot" onclick="toggleHist(this)"><span class="cbi"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 15a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/></svg></span> Ver historial de comentarios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M6 9l6 6 6-6"/></svg></div>
+      </div>
+
+      <!-- 4 · CSF (Constancia de situación fiscal) -->
+      <div class="doc-card">
+        <div class="doc-head"><h3>CSF (Constancia de situación fiscal)</h3></div>
+        <div class="doc-body">
+          <div class="doc-col">
+            <div class="lab">Archivo de negocio</div>
+            <div class="filebox wait"><div class="fic"><div class="sheet"></div><div class="st"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7.5V12l3 2"/></svg></div></div><div class="txt">En espera de archivo</div></div>
+            <a class="doc-guide" href="#" onclick="return false">Ver guía de documentos aceptados</a>
+          </div>
+          <div class="doc-col doc-select-err" id="regimenCol">
+            <div class="lab">Selecciona un Régimen Fiscal</div>
+            <select onchange="fixRegimen()"><option>Selecciona una opción</option><option>601 · General de Ley Personas Morales</option><option>612 · Personas Físicas con Actividades Empresariales</option><option>626 · Régimen Simplificado de Confianza (RESICO)</option></select>
+            <div class="err-msg" id="regimenErr">Favor de seleccionar el régimen fiscal del comercio</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5 · Distribuidor -->
+      <div class="doc-card">
+        <div class="doc-head"><h3>Distribuidor</h3></div>
+        <div class="doc-body">
+          <div class="doc-col">
+            <div class="lab">Selecciona un Distribuidor</div>
+            <select id="docDist" onchange="onDocDistChange()"></select>
+            <!-- Sub-distribuidor: solo si el distribuidor tiene ligados -->
+            <div id="docSubDistWrap" style="display:none;margin-top:16px">
+              <div class="lab">Selecciona un Sub-distribuidor</div>
+              <select id="docSubDist"></select>
+            </div>
+          </div>
+          <div class="doc-col">
+            <div class="lab">Proveedor de servicios <span style="color:var(--text-muted)">· opcional</span></div>
+            <select id="docPS"></select>
+            <p class="mini" style="margin-top:8px">Se actualiza con el alta de Proveedores de Servicio.</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- ============ VISTA: Alta de distribuidor · PANTALLA COMPLETA (Propuesta B) ============ -->
+<div id="view-distfull" style="display:none">
+  <div class="df-wrap">
+    <aside class="df-side">
+      <span class="df-back" onclick="closeDistFull()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4.5L3 12L10.5 19.5M3 12L21 12"/></svg></span>
+      <div class="df-side-title">Agregar distribuidor</div>
+      <div class="df-nav-group">Detalle</div>
+      <div class="df-tree">
+        <div class="df-item active" onclick="dfTree(this)">Distribuidor</div>
+        <div class="df-item" onclick="dfTree(this)">Sub-afiliado</div>
+      </div>
+    </aside>
+    <div class="df-main">
+      <div class="df-head">
+        <h1>Detalle del distribuidor</h1>
+        <div class="df-actions">
+          <button class="btn btn-ghost" onclick="closeDistFull()">Cancelar</button>
+          <button class="btn btn-navy" onclick="saveDistFull()">Guardar</button>
+        </div>
+      </div>
+      <div class="df-card">
+        <div class="df-card-head">Configurar adquirente</div>
+        <div class="df-card-body">
+          <!-- Datos del distribuidor -->
+          <div class="df-row">
+            <div class="df-row-label">Datos del distribuidor</div>
+            <div class="df-row-fields">
+              <div class="grid2">
+                <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
+                <div class="field"><label>Nombre de distribuidor o nombre comercial</label><input placeholder="Nombre" value="AFIRME-514044-1000"></div>
+                <div class="field"><label>RFC (12 caracteres)</label><input placeholder="RFC" value="AFIRME-B062"></div>
+                <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
+                <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="df-divider"></div>
+          <!-- Cuentas bancarias -->
+          <div class="df-row">
+            <div class="df-row-label">Cuentas bancarias</div>
+            <div class="df-row-fields">
+              <div id="dfAccList">
+                <div class="df-acc">
+                  <div><div class="k">Cuenta</div><div class="v"><span class="df-visa">VISA</span>Visa ••••&nbsp;3457</div></div>
+                  <div><div class="k">Banco</div><div class="v">Banregio</div></div>
+                  <span class="badge-sm badge-default">Cuenta principal</span>
+                </div>
+              </div>
+              <button class="btn-link" onclick="addDfAccount()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+            </div>
+          </div>
+          <div class="df-divider"></div>
+          <!-- Esquema de comisión -->
+          <div class="df-row">
+            <div class="df-row-label">Esquema de comisión</div>
+            <div class="df-row-fields">
+              <div class="radios" style="margin-bottom:16px">
+                <label class="radio"><input type="radio" name="dfCom" checked> Margen bruto</label>
+                <label class="radio"><input type="radio" name="dfCom"> Comisión variable</label>
+              </div>
+              <div class="df-ranges">
+                <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+                <div id="dfRangeRows">
+                  <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+                </div>
+              </div>
+              <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="df-foot"><button class="btn-link" onclick="addDfSub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar sub distribuidor</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Alta de distribuidores ============ -->
+<div class="backdrop" id="backdrop-alta">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
+    <div class="modal-head">
+      <div><h2 class="modal-title" id="mt">Agregar distribuidores
+        <small>Da de alta uno o más distribuidores.</small></h2></div>
+      <button class="x" aria-label="Cerrar" onclick="closeAlta()">✕</button>
+    </div>
+    <div id="dist-list"></div>
+    <button class="btn-link" id="btnAddAnother" onclick="addDistribuidor()" style="font-size:14.5px">＋ Agregar otro distribuidor</button>
+    <div class="footer">
+      <div class="willcreate" id="summary"></div>
+      <div class="side"><button class="btn btn-ghost" onclick="closeAlta()">Cancelar</button><button class="btn btn-primary" onclick="saveAlta()">Guardar</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Configuración (Config de Liquidación) ============ -->
+<div class="backdrop" id="backdrop-cfg">
+  <div class="cfg" role="dialog" aria-modal="true" aria-label="Configuración del comercio">
+    <button class="x" aria-label="Cerrar" onclick="closeCfg()">✕</button>
+    <aside class="cfg-side">
+      <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.658674 3.84079C1.53735 4.71947 2.96198 4.71947 3.84065 3.84079C3.94863 3.73282 4.04334 3.6166 4.12477 3.49416C4.52788 4.10033 5.21712 4.49983 5.99966 4.49983C6.78231 4.49983 7.47163 4.10023 7.87472 3.49392C7.9562 3.61646 8.05096 3.73277 8.15901 3.84082C9.03769 4.7195 10.4623 4.7195 11.341 3.84082C12.2197 2.96214 12.2197 1.53752 11.341 0.65884L11.1215 0.43934C10.8402 0.158035 10.4587 0 10.0608 0H1.93881C1.54098 0 1.15945 0.158035 0.878148 0.43934L0.658674 0.658813C-0.220006 1.53749 -0.220006 2.96211 0.658674 3.84079Z"/><path d="M0.749664 5.27417C1.82066 5.80551 3.11511 5.73296 4.12509 5.05653C4.6609 5.41505 5.3057 5.62483 5.99966 5.62483C6.69369 5.62483 7.33854 5.41501 7.87439 5.05643C8.88429 5.73291 10.1787 5.80555 11.2497 5.27436V10.875H11.4372C11.7478 10.875 11.9997 11.1268 11.9997 11.4375C11.9997 11.7482 11.7478 12 11.4372 12H8.06216C7.7515 12 7.49966 11.7482 7.49966 11.4375V8.8125C7.49966 8.50184 7.24782 8.25 6.93716 8.25H5.06216C4.7515 8.25 4.49966 8.50184 4.49966 8.8125V11.4375C4.49966 11.7482 4.24782 12 3.93716 12H0.562164C0.251504 12 -0.000335693 11.7482 -0.000335693 11.4375C-0.000335693 11.1268 0.251504 10.875 0.562164 10.875H0.749664V5.27417Z"/></svg> General</div><div class="item on">Operativas</div></div>
+      <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.699997 2.97483C1.13872 2.6453 1.68405 2.45002 2.275 2.45002H11.725C12.3159 2.45002 12.8613 2.6453 13.3 2.97484C13.2999 2.10507 12.5948 1.40002 11.725 1.40002H2.275C1.40521 1.40002 0.700101 2.10507 0.699997 2.97483Z"/><path d="M0.699997 5.07483C1.13872 4.7453 1.68405 4.55002 2.275 4.55002H11.725C12.3159 4.55002 12.8613 4.7453 13.3 5.07484C13.2999 4.20507 12.5948 3.50002 11.725 3.50002H2.275C1.40521 3.50002 0.700101 4.20507 0.699997 5.07483Z"/><path d="M4.9 5.60002C5.2866 5.60002 5.6 5.91343 5.6 6.30002C5.6 7.07322 6.2268 7.70002 7 7.70002C7.7732 7.70002 8.4 7.07322 8.4 6.30002C8.4 5.91343 8.7134 5.60002 9.1 5.60002H11.725C12.5948 5.60002 13.3 6.30518 13.3 7.17502V11.025C13.3 11.8949 12.5948 12.6 11.725 12.6H2.275C1.40515 12.6 0.699997 11.8949 0.699997 11.025V7.17502C0.699997 6.30518 1.40515 5.60002 2.275 5.60002H4.9Z"/></svg> Condiciones</div><div class="item">Otros servicios</div><div class="item">Métodos de pago</div></div>
+    </aside>
+    <div class="cfg-body">
+      <h2>Operativas</h2>
+      <div class="cfg-card"><div class="head">Facturación</div><div class="body"><label class="chk"><input type="checkbox"> Habilitar Facturación</label></div></div>
+      <div class="cfg-card"><div class="head">Liquidación</div><div class="body">
+        <label class="chk"><input type="checkbox" id="chkLiq" checked onchange="toggleLiq()"> Habilitar Liquidación</label>
+        <div class="split" id="splitBox">
+          <div class="row-inline">
+            <div><div class="lbl">Split Payments</div><p class="mini">Divide los fondos de cada venta entre uno o más beneficiarios.</p></div>
+            <div class="radios">
+              <label class="radio"><input type="radio" name="splitpay" id="spNo" checked onclick="setSplit(false)"> No</label>
+              <label class="radio"><input type="radio" name="splitpay" id="spSi" onclick="setSplit(true)"> Sí</label>
+            </div>
+          </div>
+          <div id="splitNo">
+            <div class="note plain">Liquidación <b>100% al comercio</b>, a la cuenta dada de alta en Assistant.</div>
+            <div class="acct"><span class="dotk"></span>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</div>
+          </div>
+          <div id="splitSi" style="display:none">
+            <!-- Destino fijo: cuenta(s) del comercio -->
+            <div class="row-inline" style="margin-top:6px">
+              <div><div class="lbl">Cuenta del comercio</div><p class="mini">Selecciona la cuenta del comercio a la que se dispersa.</p></div>
+            </div>
+            <div class="dest">
+              <div class="dest-top"><b>Comercio</b></div>
+              <div class="field" style="margin-bottom:0"><label>Cuenta bancaria del comercio</label>
+                <select><option>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</option><option>BBVA · CLABE ••••&nbsp;3390</option></select>
+              </div>
+            </div>
+            <!-- Destinos: proveedores de servicios (uno o más) -->
+            <div class="row-inline" style="margin-top:18px">
+              <div><div class="lbl">Proveedores de servicios</div><p class="mini">Agrega uno o más proveedores de servicios del catálogo y la cuenta a la que se dispersa.</p></div>
+              <button class="btn-link" onclick="addDest()" style="flex:none;margin-left:auto">＋ Agregar proveedor de servicios</button>
+            </div>
+            <div class="dest-list" id="destList"></div>
+          </div>
+        </div>
+      </div></div>
+    </div>
+    <div class="cfg-footer">
+      <div class="eff" id="eff"></div>
+      <div class="side"><button class="btn btn-ghost" onclick="closeCfg()">Cancelar</button><button class="btn btn-primary" onclick="saveCfg()">Guardar</button></div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
 
 <script>
   const $=s=>document.querySelector(s);
+  const ICON_TRASH=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M10 10.9999V17.0004M14 10.9999V17.0004M19 5.99953V20.0006C19 20.5311 18.7893 21.0399 18.4142 21.415C18.0391 21.7901 17.5304 22.0008 17 22.0008H7C6.46957 22.0008 5.96086 21.7901 5.58579 21.415C5.21071 21.0399 5 20.5311 5 20.0006V5.99953M3 5.99953H21M8 5.99953V3.99937C8 3.46889 8.21071 2.96014 8.58579 2.58504C8.96086 2.20994 9.46957 1.99921 10 1.99921H14C14.5304 1.99921 15.0391 2.20994 15.4142 2.58504C15.7893 2.96014 16 3.46889 16 3.99937V5.99953"/></svg>`;
 
-  /* ---- Pestañas (Comercios / Cargas masivas / Distribuidores) ---- */
-  function showTab(el){
-    document.querySelectorAll('.tabs span').forEach(s=>s.classList.toggle('active',s===el));
-    const t=el.dataset.tab;
-    document.querySelectorAll('.tab-panel').forEach(p=>p.style.display=p.id==='tab-'+t?'block':'none');
+  /* ============ Navegación entre vistas ============ */
+  let distSubMode='dist';
+  function moduleTab(el){
+    document.querySelectorAll('#view-module .tabs span').forEach(s=>s.classList.toggle('active',s===el));
+    const t=el.dataset.mtab;
+    document.querySelectorAll('.mtab-panel').forEach(p=>p.style.display=p.id==='mtab-'+t?'block':'none');
+    if(t==='distribuidores'){distSub(distSubMode);return;}
+    $('#moduleTitle').textContent=t==='cargas'?'Cargas masivas':'Listado de comercios';
+    const DL=`<button class="btn btn-navy"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Descargar</button>`;
+    $('#moduleAction').innerHTML=t==='comercios'?DL:'';
+  }
+  function distSub(mode){
+    distSubMode=mode;
+    document.querySelectorAll('#distSubGroup button').forEach(b=>b.classList.toggle('on',b.dataset.dsub===mode));
+    document.querySelectorAll('.dsub-panel').forEach(p=>p.style.display=p.id===(mode==='dist'?'dsub-distribuidores':'dsub-proveedores')?'block':'none');
+    $('#moduleTitle').textContent=mode==='dist'?'Listado de distribuidores':'Listado de proveedores de servicios';
+    const addSvg=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>`;
+    const full=mode==='dist'?`<button class="btn btn-ghost" onclick="openDistFull()" title="Propuesta B · pantalla completa">Pantalla completa</button>`:'';
+    $('#moduleAction').innerHTML=`<div style="display:flex;gap:12px">${full}<button class="btn btn-primary" onclick="openAlta('${mode}')">${addSvg}Agregar</button></div>`;
+  }
+  function openComercio(name){
+    $('#comercioName').textContent=name||'EDIT 38 COPAYMENT';
+    $('#view-module').style.display='none';
+    $('#view-comercio').style.display='block';
+    window.scrollTo({top:0});
+  }
+  function backToModule(){
+    $('#view-comercio').style.display='none';
+    $('#view-docs').style.display='none';
+    $('#view-module').style.display='block';
+  }
+  /* Registro de documentos */
+  function openDocs(name){
+    $('#view-module').style.display='none';$('#view-comercio').style.display='none';
+    $('#view-docs').style.display='block';window.scrollTo({top:0});
+  }
+  function aprobarComercio(){toast('<b>Comercio aprobado</b><ul><li>Documentos validados</li></ul>');backToModule();}
+  function undoAprob(btn){
+    const box=btn.closest('.doc-card').querySelector('.filebox');
+    box.classList.remove('ok');box.classList.add('wait');
+    box.querySelector('.txt').textContent='En espera de archivo';
+    box.querySelector('.st').innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" d="M12 7.5V12l3 2"/></svg>';
+    btn.style.display='none';
+  }
+  function toggleHist(foot){
+    let box=foot.nextElementSibling;
+    if(box && box.classList.contains('hist')){box.remove();return;}
+    box=document.createElement('div');box.className='hist';box.style.cssText='padding:0 24px 18px;color:var(--text-muted);font-size:13.5px';
+    box.textContent='Sin comentarios por el momento.';
+    foot.after(box);
+  }
+  function fixRegimen(){$('#regimenCol').classList.remove('doc-select-err');$('#regimenErr').style.display='none';}
+
+  /* ---- Registro de documentos · Distribuidor + Sub-distribuidor + PS opcional ---- */
+  const DOC_DISTS=[
+    {name:'JOSE DANIEL CASTRO AYALA',subs:[]},
+    {name:'Comercial Norte SA de CV',subs:['Comercial Norte — Sucursal 1','Comercial Norte — Sucursal 2']},
+    {name:'Punto Red S.A. de C.V.',subs:['Punto Red Bajío','Punto Red Centro','Punto Red Sur']},
+  ];
+  function initDocDist(){
+    const d=$('#docDist'); if(!d) return;
+    d.innerHTML='<option value="">Selecciona una opción</option>'+DOC_DISTS.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
+    // PS opcional — se alimenta del alta de Proveedores de Servicio
+    const activos=proveedores.filter(p=>p[6]==='Activo').map(p=>p[0]);
+    $('#docPS').innerHTML='<option value="">Sin proveedor de servicios</option>'+activos.map(n=>`<option>${n}</option>`).join('');
+  }
+  function onDocDistChange(){
+    const i=$('#docDist').value, wrap=$('#docSubDistWrap'), sel=$('#docSubDist');
+    const subs=(i!==''&&DOC_DISTS[i])?DOC_DISTS[i].subs:[];
+    if(subs.length){
+      sel.innerHTML='<option value="">Selecciona una opción</option>'+subs.map(s=>`<option>${s}</option>`).join('');
+      wrap.style.display='block';
+    }else{wrap.style.display='none';sel.innerHTML='';}
+  }
+  function detailTab(el){
+    document.querySelectorAll('#view-comercio .tabs span').forEach(s=>s.classList.toggle('active',s===el));
+    const t=el.dataset.dtab;
+    document.querySelectorAll('.dtab-panel').forEach(p=>p.style.display=p.id==='dtab-'+t?'block':'none');
   }
 
-  /* ---- Abrir / cerrar modal ---- */
-  const backdrop=$('#backdrop');
-  function openModal(){backdrop.style.display='flex';backdrop.scrollTop=0;}
-  function closeModal(){backdrop.style.display='none';}
+  /* ============ Datos de listados ============ */
+  const comercios=[
+    ["16/07/2026 14:57","EDIT 38 COPAYMENT","BILLARES","Emiliano","8136452866","Agregador","2","Verificado","ok","Activo","ok"],
+    ["16/07/2026 11:02","NEGOCIO CARGA 12","RESTAURANTES, (CAFETERÍAS)","andres","8211206789","Agregador","2","Por revisar","rev","Alta en proceso","proc"],
+    ["16/07/2026 11:02","NEGOCIO CARGA 11","AERO PERÚ","rodrigo","8211206788","Agregador","2","Pendiente","","",""],
+    ["16/07/2026 11:02","NEGOCIO CARGA 10","FERROCARRILES","roberto","8211206787","Agregador","2","Pendiente","","",""],
+    ["16/07/2026 11:02","NEGOCIO CARGA 9","TIENDAS DE PARTICIPACIÓN ESTATAL","edgar","8211206786","Agregador","2","Pendiente","","",""],
+    ["16/07/2026 11:02","NEGOCIO CARGA 8","SALONES DE BELLEZA, ESTÉTICAS","pablo","8211206785","Agregador","2","Pendiente","","",""],
+  ];
+  $('#comerciosBody').innerHTML=comercios.map(r=>{
+    const doc=`<span class="doc-chip ${r[8]||''}" style="cursor:pointer" onclick="event.stopPropagation();openDocs('${r[1].replace(/'/g,"")}')">📄 ${r[7]} ›</span>`;
+    const est=r[10]?`<span class="badge ${r[10]}"><span class="bd"></span>${r[9]}</span>`:'';
+    return `<tr class="clickable" onclick="openComercio('${r[1].replace(/'/g,"")}')">
+      <td class="rfc">${r[0]}</td><td><b style="color:var(--navy)">${r[1]}</b></td><td style="color:var(--text-secondary)">${r[2]}</td>
+      <td>${r[3]}</td><td class="rfc">${r[4]}</td><td>${r[5]}</td><td>${r[6]}</td><td>${doc}</td><td>${est}</td></tr>`;
+  }).join("");
 
-  /* ---- Listado de distribuidores (datos de ejemplo, Figma 218-73) ---- */
   const distribuidores=[
     ["Juan García López","Física","GALJ850101ABC","García López Juan","15%","5% ($0-$50K)","Activo"],
     ["Comercial Norte SA","Moral","CNO980101BC5","Comercial Norte SA de CV","20%","8% ($50K-$100K)","Activo"],
@@ -268,24 +818,42 @@
     ["Carlos Hernández Cruz","Física","HECC851201PQR","Hernández Cruz Carlos","10%","5% ($0-$30K)","Activo"],
     ["Grupo Industrial MX SA","Moral","GIM951010AB3","Grupo Industrial de Méxi…","25%","15% ($200K+)","Activo"],
   ];
-  $('#distBody').innerHTML=distribuidores.map(r=>{
+  const proveedores=[
+    ["Servicios del Norte SA","Moral","SNO180412AB2","Servicios del Norte SA de CV","12%","4% ($0-$40K)","Activo"],
+    ["Pagos Bajío","Física","PAB900215XY7","Pagos Bajío","10%","3% ($0-$25K)","Activo"],
+    ["TecnoRed Servicios","Moral","TRS210330K19","TecnoRed Servicios SA","-","6% ($0-$60K)","Inactivo"],
+    ["Cobros del Centro","Moral","CDC170822J44","Cobros del Centro SA de CV","15%","5% ($0-$50K)","Activo"],
+  ];
+  const renderLst=(rows,tbody)=>{tbody.innerHTML=rows.map(r=>{
     const ok=r[6]==="Activo";
-    return `<tr>
-      <td>${r[0]}</td><td>${r[1]}</td><td class="rfc">${r[2]}</td><td>${r[3]}</td>
-      <td>${r[4]}</td><td>${r[5]}</td>
-      <td><span class="badge ${ok?'ok':'no'}"><span class="bd"></span>${r[6]}</span></td>
-      <td><button class="kebab" aria-label="Acciones">⋯</button></td></tr>`;
-  }).join("");
+    return `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="rfc">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td>
+      <td><span class="badge ${ok?'ok':'no'}"><span class="bd"></span>${r[6]}</span></td><td><button class="kebab">⋯</button></td></tr>`;
+  }).join("");};
+  renderLst(distribuidores,$('#distBody'));
+  renderLst(proveedores,$('#provBody'));
+  initDocDist();
 
-  /* ================= Alta múltiple de distribuidores ================= */
+  moduleTab(document.querySelector('.tabs span[data-mtab="comercios"]')); // estado inicial
+
+  /* ============ MODAL: Alta de distribuidores ============ */
+  const backdropAlta=$('#backdrop-alta');
+  let altaMode='dist';
+  function openAlta(mode){
+    altaMode=mode||'dist';const isDist=altaMode==='dist';
+    $('#mt').innerHTML=(isDist?'Agregar distribuidores':'Agregar proveedores de servicios')+`<small>${isDist?'Da de alta uno o más distribuidores.':'Da de alta uno o más proveedores de servicios.'}</small>`;
+    $('#btnAddAnother').textContent=isDist?'＋ Agregar otro distribuidor':'＋ Agregar otro proveedor de servicios';
+    distList.innerHTML='';addDistribuidor();
+    backdropAlta.style.display='flex';backdropAlta.scrollTop=0;
+  }
+  function closeAlta(){backdropAlta.style.display='none';}
+
   const distList=$('#dist-list');
   let distSeq=0, psSeq=0;
   const PSOPTS=['PS · Servicios del Norte','PS · Pagos Bajío','PS · TecnoRed'];
-
-  function distTemplate(did){
-    return `<div class="dist-card" id="${did}">
-      <div class="dist-head"><b>Distribuidor</b>
-        <button class="icon-btn dist-del" title="Quitar distribuidor" onclick="removeDistribuidor('${did}')">🗑</button></div>
+  /* Cuerpo del afiliado: identidad + cuentas bancarias gestionables + esquema de comisión.
+     Se reutiliza igual para el afiliado y para cada sub-afiliado. */
+  function affiliateBody(id){
+    return `
       <div class="grid2">
         <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
         <div class="field"><label>Nombre de distribuidor o nombre comercial</label><input placeholder="Nombre"></div>
@@ -293,9 +861,8 @@
         <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
         <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
       </div>
-      <div class="section-label">Cuentas bancarias</div>
-      <div class="acc-list"></div>
-      <button class="btn-link" onclick="addAccount('${did}')">＋ Agregar cuenta</button>
+      <div class="section-label">Cuentas bancarias</div><div class="acc-list"></div>
+      <button class="btn-link" onclick="addAccount('${id}')">＋ Agregar cuenta</button>
       <div class="section-label">Esquema de comisión</div>
       <div class="radio-cards">
         <div class="rcard sel" data-com="bruto" onclick="pickCom(this)"><span class="dot"></span><div><b>Margen bruto</b><span>Porcentaje fijo único</span></div></div>
@@ -304,82 +871,132 @@
       <div class="brutoBox ranges" style="display:block"><div class="range-row" style="grid-template-columns:1fr"><div><div class="caps">Porcentaje fijo</div><input placeholder="0.0 %"></div></div></div>
       <div class="varBox ranges" style="display:none">
         <div class="range-row"><div class="caps">Monto desde</div><div class="caps">Monto hasta</div><div class="caps">Porcentaje</div><div></div></div>
-        <div class="range-rows"></div>
-        <button class="btn-link" onclick="addRange('${did}')">＋ Agregar rango</button>
-      </div>
+        <div class="range-rows"></div><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button>
+      </div>`;
+  }
+  function distTemplate(did){
+    const isDist=altaMode==='dist';
+    const label=isDist?'Distribuidor':'Proveedor de servicios';
+    // Un distribuidor puede tener sub-afiliados; un proveedor de servicios NO.
+    const subSection=isDist?`
       <div class="divider"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap">
-        <div style="max-width:480px"><div class="section-label" style="margin:0">¿El distribuidor será también Proveedor de Servicios?</div>
-          <p class="mini" style="margin-top:6px">Si es "No", puedes asignarle otros proveedores de servicios, o dejarlo solo como distribuidor.</p></div>
-        <div class="seg"><button class="segNo on" onclick="setIsPS('${did}',false)">No</button><button class="segSi" onclick="setIsPS('${did}',true)">Sí</button></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
+        <div><div class="section-label" style="margin:0">Sub-afiliados <span style="color:var(--text-muted);font-weight:400">· opcional</span></div>
+          <p class="mini" style="margin-top:6px">Mismos datos que un afiliado, con su propio esquema de comisiones.</p></div>
+        <button class="btn-link" onclick="addSub('${did}')">＋ Agregar sub-afiliado</button>
       </div>
-      <div class="branchSi" style="display:none;margin-top:14px"><div class="note accent"><span class="ic">✦</span><div>Fungirá como su <b>propio proveedor de servicios</b>. Se reutilizan sus mismos datos, cuenta y correo — no se piden de nuevo. Al guardar se crea su wallet de ventas como PS.</div></div></div>
-      <div class="branchNo" style="margin-top:14px">
-        <div style="display:flex;justify-content:space-between;align-items:center"><div class="section-label" style="margin:0">Proveedores de servicios asignados</div>
-          <button class="btn-link" onclick="addPS('${did}')">＋ Agregar proveedor de servicios</button></div>
-        <div class="ps-list"></div>
-      </div>
+      <div class="sub-list"></div>`:'';
+    return `<div class="dist-card aff" id="${did}">
+      <div class="dist-head"><b>${label}</b><button class="icon-btn dist-del" title="Quitar" onclick="removeDistribuidor('${did}')">${ICON_TRASH}</button></div>
+      ${affiliateBody(did)}
+      ${subSection}
     </div>`;
   }
-
+  function subTemplate(sid){
+    return `<div class="sub-card aff" id="${sid}">
+      <div class="dist-head"><b class="sub-name">Sub-afiliado</b><button class="icon-btn" title="Quitar sub-afiliado" onclick="removeSub('${sid}')">${ICON_TRASH}</button></div>
+      ${affiliateBody(sid)}
+    </div>`;
+  }
   function addDistribuidor(){
     distSeq++;const did='dist'+distSeq;
     distList.insertAdjacentHTML('beforeend',distTemplate(did));
-    addAccount(did);                                   // una cuenta por defecto
-    addRange(did);                                     // un rango por defecto
-    renderEmptyPS(document.getElementById(did));       // estado vacío de PS
-    renumber();updateSummary();
+    addAccount(did);addRange(did);renumber();updateSummary();
   }
-  function removeDistribuidor(did){
-    if(distList.children.length<=1)return;             // siempre queda al menos 1
-    document.getElementById(did).remove();renumber();updateSummary();
-  }
+  function removeDistribuidor(did){if(distList.children.length<=1)return;document.getElementById(did).remove();renumber();updateSummary();}
   function renumber(){
-    [...distList.children].forEach((c,i)=>c.querySelector('.dist-head b').textContent='Distribuidor '+(i+1));
+    const label=altaMode==='dist'?'Distribuidor ':'Proveedor de servicios ';
+    [...distList.children].forEach((c,i)=>c.querySelector('.dist-head b').textContent=label+(i+1));
     const only=distList.children.length<=1;
     distList.querySelectorAll('.dist-del').forEach(b=>b.style.visibility=only?'hidden':'visible');
   }
-
-  /* Cuentas bancarias (por distribuidor) */
+  let accSeq=0;
   function addAccount(did){
     const list=document.getElementById(did).querySelector('.acc-list');
-    const n=list.children.length+1;
-    const d=document.createElement('div');d.className='ps-card';d.style.marginBottom='14px';
-    d.innerHTML=`<div class="ps-top"><b>Cuenta ${n}</b><button class="icon-btn" aria-label="Eliminar cuenta" onclick="this.closest('.ps-card').remove()">🗑</button></div>
-      <div class="grid2">
-        <div class="field"><label>CLABE</label><input placeholder="18 dígitos"></div>
-        <div class="field"><label>Número de cuenta</label><input placeholder="Cuenta"></div>
-        <div class="field"><label>Banco</label><input placeholder="Banco"></div>
-        <div class="field"><label>Estado de cuenta</label><input type="file"></div>
+    accSeq++;const id='acc'+accSeq;
+    const isFirst=list.children.length===0;
+    const d=document.createElement('div');d.className='acc-card';d.id=id;
+    d.dataset.default=isFirst?'1':'0';d.dataset.active='1';d.dataset.editing='1';d.dataset.did=did;
+    d.innerHTML=`
+      <div class="acc-head">
+        <div class="acc-title"><b class="acc-name">Cuenta</b>
+          <span class="badge-sm badge-default">Predeterminada</span></div>
+        <div class="acc-actions"></div>
+      </div>
+      <div class="acc-summary"></div>
+      <div class="acc-form">
+        <div class="grid2">
+          <div class="field"><label>CLABE</label><input class="f-clabe" placeholder="18 dígitos"></div>
+          <div class="field"><label>Número de cuenta</label><input class="f-cuenta" placeholder="Cuenta"></div>
+          <div class="field"><label>Banco</label><input class="f-banco" placeholder="Banco"></div>
+          <div class="field"><label>Estado de cuenta</label><input type="file"></div>
+        </div>
+        <button class="btn-link" onclick="doneAcc('${id}')">Listo</button>
       </div>`;
-    list.appendChild(d);
+    list.appendChild(d);renumberAccList(list);refreshAcc(id);
+  }
+  function refreshAcc(id){
+    const c=document.getElementById(id);const did=c.dataset.did;
+    const isDef=c.dataset.default==='1', editing=c.dataset.editing==='1';
+    c.querySelector('.badge-default').style.display=isDef?'inline-flex':'none';
+    c.querySelector('.acc-form').style.display=editing?'block':'none';
+    c.querySelector('.acc-summary').style.display=editing?'none':'block';
+    if(!editing){
+      const banco=c.querySelector('.f-banco').value||'Banco no capturado';
+      const clabe=c.querySelector('.f-clabe').value, cuenta=c.querySelector('.f-cuenta').value;
+      c.querySelector('.acc-summary').innerHTML=`<b>${banco}</b> · CLABE ${clabe?('••••&nbsp;'+clabe.slice(-4)):'—'} · Núm. cuenta ${cuenta||'—'}`;
+    }
+    let a='';
+    if(!editing && !isDef) a+=`<button class="lnk" onclick="setDefault('${did}','${id}')">Marcar como predeterminada</button>`;
+    if(!editing) a+=`<button class="lnk" onclick="editAcc('${id}')">Editar</button>`;
+    a+=`<button class="lnk danger" onclick="delAcc('${did}','${id}')">Eliminar</button>`;
+    c.querySelector('.acc-actions').innerHTML=a;
+  }
+  function editAcc(id){document.getElementById(id).dataset.editing='1';refreshAcc(id);}
+  function doneAcc(id){document.getElementById(id).dataset.editing='0';refreshAcc(id);}
+  function setDefault(did,id){
+    const list=document.getElementById(id).closest('.acc-list');
+    [...list.children].forEach(c=>{c.dataset.default=(c.id===id)?'1':'0';refreshAcc(c.id);});
+  }
+  function delAcc(did,id){
+    const list=document.getElementById(id).closest('.acc-list');
+    if(list.children.length<=1)return; // debe quedar al menos una
+    const c=document.getElementById(id);const wasDef=c.dataset.default==='1';c.remove();
+    if(wasDef){const first=list.firstElementChild;if(first){first.dataset.default='1';refreshAcc(first.id);}}
+    renumberAccList(list);
+  }
+  function renumberAccList(list){
+    [...list.children].forEach((c,i)=>{const n=c.querySelector('.acc-name');if(n)n.textContent='Cuenta '+(i+1);});
   }
 
-  /* Comisión (por distribuidor) */
+  /* Sub-afiliados (opcional) — mismo cuerpo que un afiliado */
+  let subSeq=0;
+  function addSub(did){
+    const list=document.getElementById(did).querySelector('.sub-list');
+    subSeq++;const sid='sub'+subSeq;
+    list.insertAdjacentHTML('beforeend',subTemplate(sid));
+    addAccount(sid);addRange(sid);renumberSub(did);
+  }
+  function removeSub(sid){const top=document.getElementById(sid).closest('.dist-card');document.getElementById(sid).remove();renumberSub(top.id);}
+  function renumberSub(did){document.getElementById(did).querySelectorAll('.sub-list > .sub-card > .dist-head > .sub-name').forEach((b,i)=>b.textContent='Sub-afiliado '+(i+1));}
   function pickCom(el){
-    const card=el.closest('.dist-card');const type=el.dataset.com;
-    card.querySelectorAll('.radio-cards .rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-    card.querySelector('.brutoBox').style.display=type==='bruto'?'block':'none';
-    card.querySelector('.varBox').style.display=type==='var'?'block':'none';
+    const card=el.closest('.aff');const type=el.dataset.com;
+    card.querySelectorAll(':scope > .radio-cards .rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
+    card.querySelector(':scope > .brutoBox').style.display=type==='bruto'?'block':'none';
+    card.querySelector(':scope > .varBox').style.display=type==='var'?'block':'none';
   }
   function addRange(did){
     const rr=document.getElementById(did).querySelector('.range-rows');
     const r=document.createElement('div');r.className='range-row';
-    r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="$ Sin límite"></div><div><input placeholder="0.0 %"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.range-row').remove()">🗑</button>`;
+    r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="$ Sin límite"></div><div><input placeholder="0.0 %"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.range-row').remove()">${ICON_TRASH}</button>`;
     rr.appendChild(r);
   }
-
-  /* ¿Será PS? (por distribuidor) */
   function setIsPS(did,v){
     const card=document.getElementById(did);
-    card.querySelector('.segSi').classList.toggle('on',v);
-    card.querySelector('.segNo').classList.toggle('on',!v);
-    card.querySelector('.branchSi').style.display=v?'block':'none';
-    card.querySelector('.branchNo').style.display=v?'none':'block';
+    card.querySelector('.segSi').classList.toggle('on',v);card.querySelector('.segNo').classList.toggle('on',!v);
+    card.querySelector('.branchSi').style.display=v?'block':'none';card.querySelector('.branchNo').style.display=v?'none':'block';
     updateSummary();
   }
-
-  /* Lista de PS (rama No, por distribuidor) */
   function renderEmptyPS(card){
     const list=card.querySelector('.ps-list');
     if(list.querySelector('.ps-card:not(.empty)'))return;
@@ -394,8 +1011,7 @@
     c.innerHTML=`<div class="ps-top"><b>Proveedor de servicios ${n}</b>
         <div style="display:flex;gap:10px;align-items:center">
           <div class="ps-mode"><button class="on" onclick="psMode('${id}','sel',this)">Seleccionar existente</button><button onclick="psMode('${id}','new',this)">Crear nuevo</button></div>
-          <button class="icon-btn" aria-label="Quitar proveedor" onclick="removePS('${did}','${id}')">🗑</button>
-        </div></div>
+          <button class="icon-btn" aria-label="Quitar proveedor" onclick="removePS('${did}','${id}')">${ICON_TRASH}</button></div></div>
       <div class="ps-body-sel"><div class="field"><label>Proveedor de servicios existente</label><select><option>Selecciona…</option>${psOpts}</select></div></div>
       <div class="ps-body-new" style="display:none"><p class="mini">Mismos datos que el distribuidor: identidad, cuentas, correo y comisión.</p>
         <div class="grid2">
@@ -411,41 +1027,92 @@
     list.appendChild(c);updateSummary();
   }
   function psMode(id,mode,btn){
-    const c=document.getElementById(id);
-    c.querySelectorAll('.ps-mode button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
-    c.querySelector('.ps-body-sel').style.display=mode==='sel'?'block':'none';
-    c.querySelector('.ps-body-new').style.display=mode==='new'?'block':'none';
+    const c=document.getElementById(id);c.querySelectorAll('.ps-mode button').forEach(b=>b.classList.remove('on'));btn.classList.add('on');
+    c.querySelector('.ps-body-sel').style.display=mode==='sel'?'block':'none';c.querySelector('.ps-body-new').style.display=mode==='new'?'block':'none';
   }
   function removePS(did,id){
-    document.getElementById(id).remove();
-    const card=document.getElementById(did);
+    document.getElementById(id).remove();const card=document.getElementById(did);
     [...card.querySelectorAll('.ps-list .ps-card:not(.empty)')].forEach((c,i)=>c.querySelector('.ps-top b').textContent='Proveedor de servicios '+(i+1));
     renderEmptyPS(card);updateSummary();
   }
-
-  /* Resumen de efectos (todo el modal) */
   function updateSummary(){
     const nd=distList.children.length;
-    const nps=distList.querySelectorAll('.ps-list .ps-card:not(.empty)').length;
-    const propios=[...distList.querySelectorAll('.segSi')].filter(b=>b.classList.contains('on')).length;
-    let t=`Se dará(n) de alta <b>${nd}</b> distribuidor(es). Al guardar se crea la wallet de comisiones de cada uno y se envía activación por <b>correo + OTP</b>.`;
-    if(propios) t+=` ${propios} funge(n) como PS propio.`;
-    if(nps) t+=` ${nps} PS asignado(s) → una wallet de ventas por cada PS nuevo.`;
-    $('#summary').innerHTML=t;
+    const noun=altaMode==='dist'?'distribuidor(es)':'proveedor(es) de servicios';
+    $('#summary').innerHTML=`Se dará(n) de alta <b>${nd}</b> ${noun}. Al guardar se crean las wallets correspondientes y se envía activación por <b>correo + OTP</b>.`;
   }
-
-  addDistribuidor(); // primer distribuidor al cargar
-
-  /* Guardar */
-  function save(){
-    closeModal();
+  addDistribuidor();
+  function saveAlta(){
+    closeAlta();
     const nd=distList.children.length;
-    const nps=distList.querySelectorAll('.ps-list .ps-card:not(.empty)').length;
-    const t=$('#toast');
-    t.innerHTML=`<b>${nd} distribuidor(es) guardado(s)${nps?` · ${nps} PS`:''}</b>
-      <ul><li>Wallets creadas automáticamente</li><li>Correo(s) de activación enviado(s) (OTP pendiente)</li></ul>`;
-    t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4400);
+    const noun=altaMode==='dist'?'distribuidor(es)':'proveedor(es) de servicios';
+    toast(`<b>${nd} ${noun} guardado(s)</b><ul><li>Wallets creadas automáticamente</li><li>Correo(s) de activación enviado(s) (OTP pendiente)</li></ul>`);
   }
+
+  /* ============ MODAL: Configuración (Config de Liquidación) ============ */
+  const backdropCfg=$('#backdrop-cfg');
+  function openCfg(){backdropCfg.style.display='flex';}
+  function closeCfg(){backdropCfg.style.display='none';}
+  function toggleLiq(){$('#splitBox').style.display=$('#chkLiq').checked?'block':'none';updateEff();}
+  let split=false;
+  function setSplit(v){
+    split=v;document.getElementById('spNo').checked=!v;document.getElementById('spSi').checked=v;
+    $('#splitNo').style.display=v?'none':'block';$('#splitSi').style.display=v?'block':'none';
+    if(v && !$('#destList').children.length) addDest();updateEff();
+  }
+  const PS2=['PS · Servicios del Norte','PS · Pagos Bajío','PS · TecnoRed'];
+  let dN=0;
+  function addDest(){
+    dN++;const id='d'+dN;const psOpts=PS2.map(p=>`<option>${p}</option>`).join('');
+    const el=document.createElement('div');el.className='dest';el.id=id;
+    el.innerHTML=`<div class="dest-top"><b>Proveedor de servicios ${$('#destList').children.length+1}</b>
+        <button class="icon-btn" aria-label="Quitar proveedor de servicios" onclick="delDest('${id}')">${ICON_TRASH}</button></div>
+      <div class="grid2">
+        <div class="field"><label>Proveedor de servicios (catálogo)</label><select><option>Selecciona…</option>${psOpts}</select></div>
+        <div class="field"><label>Cuenta bancaria del PS</label><select><option>Selecciona cuenta…</option><option>BBVA · CLABE ••••&nbsp;7731</option><option>Banorte · CLABE ••••&nbsp;0192</option></select></div>
+      </div>`;
+    $('#destList').appendChild(el);updateEff();
+  }
+  function delDest(id){document.getElementById(id).remove();[...$('#destList').children].forEach((c,i)=>c.querySelector('.dest-top b').textContent='Proveedor de servicios '+(i+1));updateEff();}
+  function updateEff(){
+    if(!$('#chkLiq').checked){$('#eff').innerHTML='Liquidación deshabilitada para este comercio.';return;}
+    let t='Al guardar se crean/actualizan las <b>wallets de ventas del comercio</b> (solo si el comercio está Activo).';
+    t+= split ? ` Split activo · Comercio + <b>${$('#destList').children.length}</b> proveedor(es) de servicios.` : ' Liquidación 100% al comercio.';
+    $('#eff').innerHTML=t;
+  }
+  updateEff();
+  function saveCfg(){closeCfg();toast('<b>Configuración de liquidación guardada.</b>');}
+
+  /* ============ VISTA: Alta de distribuidor · Pantalla completa (Propuesta B) ============ */
+  function openDistFull(){
+    document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+    $('#view-distfull').style.display='block';
+    // inyecta el ícono de basura en la fila de rango estática (ICON_TRASH es JS)
+    document.querySelectorAll('#dfRangeRows .icon-btn:empty').forEach(b=>b.innerHTML=ICON_TRASH);
+    window.scrollTo({top:0});
+  }
+  function closeDistFull(){$('#view-distfull').style.display='none';$('#view-module').style.display='block';}
+  function saveDistFull(){closeDistFull();toast('<b>Distribuidor guardado</b><ul><li>Wallet creada automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>');}
+  function dfTree(el){document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',i===el));}
+  function addDfRange(){
+    const rr=$('#dfRangeRows');const r=document.createElement('div');r.className='df-range-row';
+    r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()">${ICON_TRASH}</button>`;
+    rr.appendChild(r);
+  }
+  let dfAccN=1;
+  function addDfAccount(){
+    dfAccN++;const el=document.createElement('div');el.className='df-acc';
+    el.innerHTML=`<div><div class="k">Cuenta</div><div class="v">Cuenta ${dfAccN} · CLABE ••••&nbsp;0000</div></div>
+      <div><div class="k">Banco</div><div class="v">Banco</div></div>
+      <button class="icon-btn" aria-label="Eliminar cuenta" onclick="this.closest('.df-acc').remove()">${ICON_TRASH}</button>`;
+    $('#dfAccList').appendChild(el);
+  }
+  function addDfSub(){
+    document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',/sub/i.test(i.textContent)));
+    toast('<b>Sub-afiliado agregado</b><ul><li>Captura sus datos, cuentas y esquema de comisión</li></ul>');
+  }
+
+  /* ============ Toast compartido ============ */
+  function toast(html){const t=$('#toast');t.innerHTML=html;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),4200);}
 </script>
 </body>
 </html>

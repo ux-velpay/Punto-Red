@@ -9,7 +9,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
 :root{
-  /* Design tokens del sistema de diseño Velpay */
+  /* Tokens leídos del DS Velpay (Figma: Design Tokens ✨) + capturas Assistant */
   --action-primary:#754bf1;
   --action-primary-hover:#6844d4;
   --action-primary-text:#ffffff;
@@ -246,6 +246,25 @@ tbody tr:hover{background:#fbfaff}
   .topbar{padding:18px 18px 6px}.content{padding:10px 18px 40px}.page-title{font-size:22px}
 }
 @media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+/* ---------- Modal QR ---------- */
+.qr-chip.clickable{cursor:pointer;transition:.12s}
+.qr-chip.clickable:hover{border-color:var(--action-primary);color:var(--action-primary)}
+.qr-overlay{position:fixed;inset:0;background:rgba(45,0,109,.45);display:none;align-items:center;justify-content:center;padding:24px;z-index:80}
+.qr-overlay.on{display:flex;animation:fade .2s ease}
+.qr-modal{width:100%;max-width:420px;padding:26px 26px 22px;position:relative;border-radius:var(--radius-lg);box-shadow:var(--shadow-pop)}
+.qr-close{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;background:var(--bg-subtle);border:1px solid var(--border);display:grid;place-items:center;color:var(--text-muted)}
+.qr-close:hover{color:var(--text-strong);border-color:var(--border-strong)}
+.qr-close svg{width:16px;height:16px}
+.qr-title{font-size:19px;font-weight:600;color:var(--text-strong);padding-right:34px;line-height:1.3}
+.qr-sub{color:var(--text-muted);font-size:13px;margin-top:2px;font-variant-numeric:tabular-nums}
+.qr-stage{margin:20px auto 14px;width:240px;height:240px;border:1px solid var(--border);border-radius:var(--radius-md);background:var(--bg-subtle);display:grid;place-items:center;overflow:hidden}
+.qr-stage svg{width:210px;height:210px}
+.qr-skel{width:100%;height:100%;background:linear-gradient(100deg,#eef0f4 30%,#f7f7fa 50%,#eef0f4 70%);background-size:200% 100%;animation:shimmer 1.2s infinite}
+@keyframes shimmer{from{background-position:200% 0}to{background-position:-200% 0}}
+.qr-hint{display:flex;align-items:center;justify-content:center;gap:8px;color:var(--text-faint);font-size:12px;margin-bottom:16px}
+.qr-actions{display:flex;gap:12px}
+.qr-actions .btn{flex:1;justify-content:center}
+@media print{.qr-overlay,.qr-modal{display:none!important}}
 </style>
 </head>
 <body>
@@ -402,7 +421,7 @@ tbody tr:hover{background:#fbfaff}
             <tbody id="ledBody"></tbody>
           </table></div>
         </div>
-        <p style="color:var(--text-faint);font-size:12px">Los <b>abonos</b> (verde) suman y los <b>cargos</b> (rojo) restan, según el tipo de movimiento: venta, revenue, IVA, cancelación, devolución y contracargo (ganado/perdido).</p>
+        <p style="color:var(--text-faint);font-size:12px">Los <b>abonos</b> (verde) suman y los <b>cargos</b> (rojo) restan, según el bucket y el efecto definido en el PRD (BR-025): Sale, Revenue Velpay, IVA, Cancelación, Devolución y Contracargo (ganado/perdido).</p>
       </section>
 
       <!-- ===== CONCILIACIÓN ===== -->
@@ -417,7 +436,7 @@ tbody tr:hover{background:#fbfaff}
             </div>
             <a href="#" onclick="return false" style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;color:var(--action-primary);font-weight:600;font-size:13px">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 21h14"/></svg> Descargar plantilla de layout</a>
-            <div style="margin-top:14px;padding:11px 14px;background:var(--warn-bg);border-radius:10px;color:var(--warn-text);font-size:12px">El layout definitivo del archivo lo define el equipo de Operaciones.</div>
+            <div style="margin-top:14px;padding:11px 14px;background:var(--warn-bg);border-radius:10px;color:var(--warn-text);font-size:12px">El layout definitivo lo define Operaciones (BR-018) — pendiente de confirmar en el PRD.</div>
           </div>
           <div class="card tbl-card">
             <div style="padding:18px 22px 4px"><h3>Conciliaciones recientes</h3></div>
@@ -488,7 +507,7 @@ tbody tr:hover{background:#fbfaff}
           <span>Mostrando 4 de 318 operaciones con destino PS</span>
           <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
         </div></div>
-        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino del saldo</b> es Proveedor de Servicios.</p>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino_fondo</b> es Proveedor de Servicios (BR-019).</p>
       </section>
 
       <!-- ===== PS · MI PERFIL ===== -->
@@ -531,6 +550,21 @@ tbody tr:hover{background:#fbfaff}
   <div class="seg" id="roleSeg">
     <button class="on" data-role="dist">Distribuidor</button>
     <button data-role="ps">Proveedor</button>
+  </div>
+</div>
+
+<!-- ============ MODAL: Ver QR del comercio ============ -->
+<div class="qr-overlay" id="qrOverlay" onclick="if(event.target===this)closeQR()">
+  <div class="card qr-modal" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
+    <button class="qr-close" aria-label="Cerrar" onclick="closeQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="qr-title" id="qrTitle">Comercio</div>
+    <div class="qr-sub" id="qrSub">ID —</div>
+    <div class="qr-stage" id="qrStage"></div>
+    <div class="qr-hint" id="qrHint"><span class="spin"></span> Generando código QR…</div>
+    <div class="qr-actions" id="qrActions">
+      <button class="btn btn-primary" onclick="downloadQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Descargar QR</button>
+      <button class="btn btn-ghost" onclick="printQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>Imprimir</button>
+    </div>
   </div>
 </div>
 
@@ -638,12 +672,14 @@ $("#statusBars").innerHTML=bars.map(b=>`<div class="bar-wrap">
   <div class="bar-lbl">${b[0]}</div></div>`).join("");
 
 /* ---------- Portal PS render ---------- */
-const qrChip=`<span class="qr-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>Ver QR</span>`;
+const QR_ICON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>`;
+const qrChipFor=(name,id)=>`<span class="qr-chip clickable" role="button" tabindex="0" onclick="openQR('${name.replace(/'/g,"\\'")}','${id}')" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();openQR('${name.replace(/'/g,"\\'")}','${id}')}">${QR_ICON}Ver QR</span>`;
+function psId(i){return "CM-0"+(4831+i);}
 function maskKey(k){return "sk_live_" + "•".repeat(8) + k.slice(-4);}
 $("#psComerciosBody").innerHTML=psComercios.map((r,i)=>`<tr>
   <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
   <td>${badge(r[3], r[3]==="Activo"?"b-ok":"b-neutral")}</td>
-  <td>${qrChip}</td>
+  <td>${qrChipFor(r[0], psId(i))}</td>
   <td><span class="key"><code id="k${i}" data-full="${r[4]}" data-shown="0">${maskKey(r[4])}</code>
     <button class="key-btn" title="Revelar" onclick="toggleKey(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
     <button class="key-btn" title="Copiar" onclick="copyKey(this,${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
@@ -718,6 +754,55 @@ function startCon(){
 }
 $("#drop").addEventListener("click",startCon);
 $("#drop").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();startCon();}});
+/* ---------- Modal QR ---------- */
+let currentQR={};
+/* Placeholder de QR: patrón determinístico a partir del id (finder patterns + módulos). */
+function qrSVG(seed){
+  const N=21,M=10,pad=6,size=N*M+pad*2;
+  let h=0;for(let i=0;i<seed.length;i++){h=(h*31+seed.charCodeAt(i))>>>0;}
+  const rnd=()=>{h=(h*1103515245+12345)>>>0;return (h>>>16)/65536;};
+  const isFinder=(r,c)=>(r<7&&c<7)||(r<7&&c>=N-7)||(r>=N-7&&c<7);
+  let rects="";
+  const cell=(r,c)=>`<rect x="${pad+c*M}" y="${pad+r*M}" width="${M}" height="${M}"/>`;
+  const finder=(or,oc)=>{for(let r=0;r<7;r++)for(let c=0;c<7;c++){
+    const edge=r===0||r===6||c===0||c===6, inner=r>=2&&r<=4&&c>=2&&c<=4;
+    if(edge||inner)rects+=cell(or+r,oc+c);}};
+  finder(0,0);finder(0,N-7);finder(N-7,0);
+  for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(!isFinder(r,c)&&rnd()>0.5)rects+=cell(r,c);}
+  return `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" fill="#2d006d"><rect width="${size}" height="${size}" fill="#fff"/><g>${rects}</g></svg>`;
+}
+function openQR(name,id){
+  currentQR={name,id};
+  $("#qrTitle").textContent=name;
+  $("#qrSub").textContent="ID "+id;
+  $("#qrStage").innerHTML='<div class="qr-skel"></div>';
+  $("#qrHint").style.display="flex";
+  document.querySelectorAll("#qrActions .btn").forEach(b=>b.disabled=true);
+  $("#qrOverlay").classList.add("on");
+  document.addEventListener("keydown",qrEsc);
+  clearTimeout(openQR._t);
+  openQR._t=setTimeout(()=>{
+    $("#qrStage").innerHTML=qrSVG(id||name);
+    $("#qrHint").style.display="none";
+    document.querySelectorAll("#qrActions .btn").forEach(b=>b.disabled=false);
+  },900);
+}
+function closeQR(){$("#qrOverlay").classList.remove("on");document.removeEventListener("keydown",qrEsc);}
+function qrEsc(e){if(e.key==="Escape")closeQR();}
+function downloadQR(){
+  const svg=$("#qrStage svg");if(!svg)return;
+  const data=new XMLSerializer().serializeToString(svg);
+  const url=URL.createObjectURL(new Blob([data],{type:"image/svg+xml"}));
+  const a=document.createElement("a");a.href=url;a.download="QR-"+(currentQR.id||"comercio")+".svg";
+  document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+function printQR(){
+  const svg=$("#qrStage svg");if(!svg)return;
+  const w=window.open("","_blank","width=460,height=620");
+  if(!w){window.print();return;}
+  w.document.write(`<title>QR ${currentQR.name}</title><body style="font-family:sans-serif;text-align:center;padding:28px"><h2 style="margin:0 0 4px;color:#2d006d">${currentQR.name}</h2><div style="color:#6b7280;margin-bottom:18px">ID ${currentQR.id}</div><div style="width:280px;margin:0 auto">${new XMLSerializer().serializeToString(svg)}</div></body>`);
+  w.document.close();w.focus();setTimeout(()=>w.print(),300);
+}
 </script>
 </body>
 </html>
