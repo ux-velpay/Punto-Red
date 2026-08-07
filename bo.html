@@ -299,6 +299,24 @@
   .df-range-row .icon-btn{width:36px;height:40px}
   @media(max-width:900px){.df-row{grid-template-columns:1fr;gap:14px}.df-side{display:none}}
 
+  /* ===== Acordeón en modales de alta (Figma 131-384) ===== */
+  .acc-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
+  .acc-h>b{font-family:'Gotham','Poppins';font-size:16px;color:var(--action-primary)}
+  .acc-h-actions{display:flex;align-items:center;gap:8px}
+  .acc-h .chev,.acc-sec-h .chev{display:inline-flex;color:var(--text-secondary)}
+  .acc-h .chev svg,.acc-sec-h .chev svg{width:18px;height:18px;transition:transform .18s}
+  .acc-h:not(.open) .chev svg,.acc-sec-h:not(.open) .chev svg{transform:rotate(-90deg)}
+  .acc-body{padding-top:14px}
+  .acc-sec{border-top:1px solid var(--border);margin-top:16px}
+  .acc-sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none;padding:14px 0 2px;font-size:15px;font-weight:600;color:var(--text-primary)}
+  .acc-sec-body{padding-top:12px}
+
+  /* ===== Segmented control estilo guía (Figma 126-112) ===== */
+  .seg2{display:inline-flex;background:#eceef3;border-radius:12px;padding:4px;gap:2px}
+  .seg2 button{font-family:inherit;font-size:14px;font-weight:500;padding:9px 18px;border:none;background:none;border-radius:9px;cursor:pointer;color:var(--text-secondary);white-space:nowrap;transition:background .12s,color .12s,box-shadow .12s}
+  .seg2 button:hover:not(.on){color:var(--text-primary)}
+  .seg2 button.on{background:#fff;color:var(--text-primary);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.14)}
+
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   @media(max-width:720px){.grid2,.radio-cards{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
@@ -362,7 +380,7 @@
 
   <!-- panel Distribuidores -->
   <div class="mtab-panel" id="mtab-distribuidores" style="display:none">
-    <div class="seg" id="distSubGroup" style="margin-top:20px">
+    <div class="seg2" id="distSubGroup" style="margin-top:20px">
       <button class="on" data-dsub="dist" onclick="distSub('dist')">Distribuidores</button>
       <button data-dsub="ps" onclick="distSub('ps')">Proveedor de servicios</button>
     </div>
@@ -712,6 +730,7 @@
 <script>
   const $=s=>document.querySelector(s);
   const ICON_TRASH=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.25" stroke-linecap="round"><path d="M10 10.9999V17.0004M14 10.9999V17.0004M19 5.99953V20.0006C19 20.5311 18.7893 21.0399 18.4142 21.415C18.0391 21.7901 17.5304 22.0008 17 22.0008H7C6.46957 22.0008 5.96086 21.7901 5.58579 21.415C5.21071 21.0399 5 20.5311 5 20.0006V5.99953M3 5.99953H21M8 5.99953V3.99937C8 3.46889 8.21071 2.96014 8.58579 2.58504C8.96086 2.20994 9.46957 1.99921 10 1.99921H14C14.5304 1.99921 15.0391 2.20994 15.4142 2.58504C15.7893 2.96014 16 3.46889 16 3.99937V5.99953"/></svg>`;
+  const CHEV=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>`;
 
   /* ============ Navegación entre vistas ============ */
   let distSubMode='dist';
@@ -856,22 +875,31 @@
     return `
       <div class="grid2">
         <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
-        <div class="field"><label>Nombre de distribuidor o nombre comercial</label><input placeholder="Nombre"></div>
+        <div class="field"><label>Nombre comercial</label><input placeholder="Nombre"></div>
         <div class="field"><label>RFC (12 caracteres)</label><input placeholder="RFC"></div>
         <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
         <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
       </div>
-      <div class="section-label">Cuentas bancarias</div><div class="acc-list"></div>
-      <button class="btn-link" onclick="addAccount('${id}')">＋ Agregar cuenta</button>
-      <div class="section-label">Esquema de comisión</div>
-      <div class="radio-cards">
-        <div class="rcard sel" data-com="bruto" onclick="pickCom(this)"><span class="dot"></span><div><b>Margen bruto</b><span>Porcentaje fijo único</span></div></div>
-        <div class="rcard" data-com="var" onclick="pickCom(this)"><span class="dot"></span><div><b>Comisión variable</b><span>Por rango de monto</span></div></div>
+      <div class="acc-sec">
+        <div class="acc-sec-h" onclick="accToggle(this)"><span>Cuentas bancarias</span><span class="chev">${CHEV}</span></div>
+        <div class="acc-sec-body" style="display:none">
+          <div class="acc-list"></div>
+          <button class="btn-link" onclick="addAccount('${id}')">＋ Agregar cuenta</button>
+        </div>
       </div>
-      <div class="brutoBox ranges" style="display:block"><div class="range-row" style="grid-template-columns:1fr"><div><div class="caps">Porcentaje fijo</div><input placeholder="0.0 %"></div></div></div>
-      <div class="varBox ranges" style="display:none">
-        <div class="range-row"><div class="caps">Monto desde</div><div class="caps">Monto hasta</div><div class="caps">Porcentaje</div><div></div></div>
-        <div class="range-rows"></div><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button>
+      <div class="acc-sec">
+        <div class="acc-sec-h" onclick="accToggle(this)"><span>Esquema de comisión</span><span class="chev">${CHEV}</span></div>
+        <div class="acc-sec-body" style="display:none">
+          <div class="radio-cards">
+            <div class="rcard sel" data-com="bruto" onclick="pickCom(this)"><span class="dot"></span><div><b>Margen bruto</b><span>Porcentaje fijo único</span></div></div>
+            <div class="rcard" data-com="var" onclick="pickCom(this)"><span class="dot"></span><div><b>Comisión variable</b><span>Por rango de monto</span></div></div>
+          </div>
+          <div class="brutoBox ranges" style="display:block"><div class="range-row" style="grid-template-columns:1fr"><div><div class="caps">Porcentaje fijo</div><input placeholder="0.0 %"></div></div></div>
+          <div class="varBox ranges" style="display:none">
+            <div class="range-row"><div class="caps">Monto desde</div><div class="caps">Monto hasta</div><div class="caps">Porcentaje</div><div></div></div>
+            <div class="range-rows"></div><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button>
+          </div>
+        </div>
       </div>`;
   }
   function distTemplate(did){
@@ -879,23 +907,34 @@
     const label=isDist?'Distribuidor':'Proveedor de servicios';
     // Un distribuidor puede tener sub-afiliados; un proveedor de servicios NO.
     const subSection=isDist?`
-      <div class="divider"></div>
-      <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-        <div><div class="section-label" style="margin:0">Sub-afiliados <span style="color:var(--text-muted);font-weight:400">· opcional</span></div>
-          <p class="mini" style="margin-top:6px">Mismos datos que un afiliado, con su propio esquema de comisiones.</p></div>
-        <button class="btn-link" onclick="addSub('${did}')">＋ Agregar sub-afiliado</button>
-      </div>
-      <div class="sub-list"></div>`:'';
+      <div class="acc-sec">
+        <button class="btn-link" onclick="addSub('${did}')" style="margin-top:2px">＋ Agregar sub-afiliado</button>
+        <div class="sub-list"></div>
+      </div>`:'';
     return `<div class="dist-card aff" id="${did}">
-      <div class="dist-head"><b>${label}</b><button class="icon-btn dist-del" title="Quitar" onclick="removeDistribuidor('${did}')">${ICON_TRASH}</button></div>
-      ${affiliateBody(did)}
-      ${subSection}
+      <div class="acc-h open" onclick="accToggle(this)">
+        <b>${label}</b>
+        <div class="acc-h-actions">
+          <button class="icon-btn dist-del" title="Quitar" onclick="event.stopPropagation();removeDistribuidor('${did}')">${ICON_TRASH}</button>
+          <span class="chev">${CHEV}</span>
+        </div>
+      </div>
+      <div class="acc-body">
+        ${affiliateBody(did)}
+        ${subSection}
+      </div>
     </div>`;
   }
   function subTemplate(sid){
     return `<div class="sub-card aff" id="${sid}">
-      <div class="dist-head"><b class="sub-name">Sub-afiliado</b><button class="icon-btn" title="Quitar sub-afiliado" onclick="removeSub('${sid}')">${ICON_TRASH}</button></div>
-      ${affiliateBody(sid)}
+      <div class="acc-h open" onclick="accToggle(this)">
+        <b class="sub-name">Sub-afiliado</b>
+        <div class="acc-h-actions">
+          <button class="icon-btn" title="Quitar sub-afiliado" onclick="event.stopPropagation();removeSub('${sid}')">${ICON_TRASH}</button>
+          <span class="chev">${CHEV}</span>
+        </div>
+      </div>
+      <div class="acc-body">${affiliateBody(sid)}</div>
     </div>`;
   }
   function addDistribuidor(){
@@ -906,7 +945,7 @@
   function removeDistribuidor(did){if(distList.children.length<=1)return;document.getElementById(did).remove();renumber();updateSummary();}
   function renumber(){
     const label=altaMode==='dist'?'Distribuidor ':'Proveedor de servicios ';
-    [...distList.children].forEach((c,i)=>c.querySelector('.dist-head b').textContent=label+(i+1));
+    [...distList.children].forEach((c,i)=>c.querySelector('.acc-h b').textContent=label+(i+1));
     const only=distList.children.length<=1;
     distList.querySelectorAll('.dist-del').forEach(b=>b.style.visibility=only?'hidden':'visible');
   }
@@ -978,12 +1017,17 @@
     addAccount(sid);addRange(sid);renumberSub(did);
   }
   function removeSub(sid){const top=document.getElementById(sid).closest('.dist-card');document.getElementById(sid).remove();renumberSub(top.id);}
-  function renumberSub(did){document.getElementById(did).querySelectorAll('.sub-list > .sub-card > .dist-head > .sub-name').forEach((b,i)=>b.textContent='Sub-afiliado '+(i+1));}
+  function renumberSub(did){document.getElementById(did).querySelectorAll('.sub-list > .sub-card > .acc-h > .sub-name').forEach((b,i)=>b.textContent='Sub-afiliado '+(i+1));}
+  function accToggle(h){
+    const open=h.classList.toggle('open');
+    const body=h.nextElementSibling;
+    if(body) body.style.display=open?'block':'none';
+  }
   function pickCom(el){
-    const card=el.closest('.aff');const type=el.dataset.com;
-    card.querySelectorAll(':scope > .radio-cards .rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
-    card.querySelector(':scope > .brutoBox').style.display=type==='bruto'?'block':'none';
-    card.querySelector(':scope > .varBox').style.display=type==='var'?'block':'none';
+    const sec=el.closest('.acc-sec');const type=el.dataset.com;
+    sec.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
+    sec.querySelector('.brutoBox').style.display=type==='bruto'?'block':'none';
+    sec.querySelector('.varBox').style.display=type==='var'?'block':'none';
   }
   function addRange(did){
     const rr=document.getElementById(did).querySelector('.range-rows');
