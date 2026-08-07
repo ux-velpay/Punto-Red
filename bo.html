@@ -170,18 +170,6 @@
   .icon-btn:hover{color:var(--status-error);border-color:var(--status-error)}
 
   /* radio cards + ranges (comisión) */
-  .radio-cards{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-  .rcard{border:1.5px solid var(--border);border-radius:12px;padding:16px;cursor:pointer;display:flex;gap:12px;align-items:flex-start}
-  .rcard:hover{border-color:var(--border-strong)}
-  .rcard.sel{border-color:var(--accent);background:#faf8ff}
-  .dot{width:20px;height:20px;border-radius:50%;border:2px solid var(--border-strong);flex:none;margin-top:1px;display:grid;place-items:center}
-  .rcard.sel .dot{border-color:var(--accent)}
-  .rcard.sel .dot::after{content:"";width:10px;height:10px;border-radius:50%;background:var(--accent)}
-  .rcard b{font-size:14.5px;font-weight:600}
-  .rcard span{display:block;font-size:12.5px;color:var(--text-secondary);margin-top:2px}
-  .ranges{background:var(--surface-sunken);border:1px solid var(--border);border-radius:12px;padding:16px;margin-top:14px}
-  .range-row{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin-bottom:10px}
-  .caps{font-size:11px;font-weight:600;letter-spacing:.04em;color:var(--text-muted);text-transform:uppercase}
 
   /* PS / cuenta cards */
   .ps-list{display:flex;flex-direction:column;gap:14px;margin-top:14px}
@@ -193,7 +181,9 @@
   .ps-mode button{font-family:inherit;font-size:13px;font-weight:500;padding:7px 14px;border:none;background:none;border-radius:7px;cursor:pointer;color:var(--text-secondary)}
   .ps-mode button.on{background:#fff;color:var(--action-primary);box-shadow:0 1px 2px rgba(0,0,0,.06)}
   .mini{font-size:12px;color:var(--text-muted);margin:0 0 10px}
-  .dist-card{border:1px solid var(--card-border);border-radius:10px;padding:20px 22px;margin-bottom:16px;background:#fff;box-shadow:0 0 22px 0 rgba(0,0,0,.03)}
+  .dist-block{margin-bottom:22px}
+  .sub-foot{display:flex;margin-top:12px}
+  .dist-card{border:1px solid var(--card-border);border-radius:10px;padding:20px 22px;background:#fff;box-shadow:0 0 22px 0 rgba(0,0,0,.03)}
   .dist-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
   .dist-head b{font-family:'Gotham','Poppins';font-size:16px;color:var(--action-primary)}
   /* Cuentas bancarias gestionables */
@@ -222,11 +212,11 @@
   .acc-ico{display:inline-flex;color:var(--action-primary)}
   .acc-ico svg{width:18px;height:18px}
   .acc-view-body{display:flex;flex-wrap:wrap;padding:18px}
-  .acc-col{flex:1 1 0;min-width:150px;padding:0 18px;border-left:1px solid var(--card-border)}
-  .acc-col:first-child{flex-grow:1.6;padding-left:0;border-left:none}
-  .acc-col span{display:block;font-size:13px;color:var(--text-secondary);margin-bottom:8px}
-  .acc-col b{font-size:15px;font-weight:500;color:var(--text-primary);word-break:break-all}
-  .acc-col a{font-size:15px;color:var(--action-primary);text-decoration:underline;cursor:pointer;word-break:break-all}
+  .acc-col{flex:1 1 0;min-width:140px;padding:0 14px;border-left:1px solid var(--card-border)}
+  .acc-col:first-child{flex-grow:1.35;padding-left:0;border-left:none}
+  .acc-col>span{display:block;font-size:13px;color:var(--text-secondary);margin-bottom:8px}
+  .acc-col b{font-size:15px;font-weight:500;color:var(--text-primary);overflow-wrap:anywhere}
+  .acc-col a{font-size:15px;color:var(--action-primary);text-decoration:underline;cursor:pointer;overflow-wrap:anywhere}
   .acc-menu{position:relative;flex:none}
   .acc-menu-pop{display:none;position:absolute;right:0;top:calc(100% + 6px);min-width:180px;background:#fff;border:1px solid var(--card-border);border-radius:10px;box-shadow:0 8px 24px rgba(16,24,40,.12);padding:6px;z-index:20}
   .acc-menu.open .acc-menu-pop{display:block}
@@ -234,6 +224,17 @@
   .acc-menu-pop button:hover{background:var(--surface-sunken)}
   .acc-menu-pop button.danger{color:var(--status-error)}
   .acc-form-foot{display:flex;justify-content:flex-end;margin-top:16px}
+  .acc-brand{display:inline-flex;align-items:center;gap:8px;white-space:nowrap;vertical-align:middle}
+  .acc-brand .df-visa{flex:none}
+  /* Modal "Agregar cuenta bancaria" */
+  .modal.sm{max-width:580px;padding:26px 28px 20px}
+  .modal.sm .chk{white-space:nowrap}
+  .upload{display:flex;align-items:center;gap:14px;background:var(--surface-sunken);border:1px solid var(--border);border-radius:10px;padding:14px 16px;margin:4px 0 6px}
+  .upload-ic{display:grid;place-items:center;width:38px;height:44px;background:#fff;border:1px solid var(--border);border-radius:6px;color:var(--action-primary);flex:none}
+  .upload-ic svg{width:18px;height:18px}
+  .upload-t{font-size:14px;color:var(--text-secondary);margin-bottom:2px}
+  .upload .btn-link{padding:0;font-size:14px}
+  .upload-name{font-size:13px;color:var(--text-primary);font-weight:500;word-break:break-all}
   @media(max-width:720px){.acc-col{flex:1 1 100%;padding:0;border-left:none;margin-bottom:14px}}
   .acc-form{margin-top:12px}
   .sub-card{border:1px solid var(--border);border-radius:14px;padding:18px;background:#fff;margin-top:14px}
@@ -309,16 +310,16 @@
   .df-row{display:grid;grid-template-columns:220px 1fr;gap:32px;padding:24px 0}
   .df-row-label{font-size:15px;font-weight:600;color:var(--text-primary);padding-top:4px}
   .df-divider{height:1px;background:var(--border)}
-  .df-foot{display:flex;justify-content:flex-end;margin-top:18px}
-  .df-acc{border:1px solid var(--border);border-radius:12px;padding:16px 18px;display:grid;grid-template-columns:1fr 1fr auto;gap:24px;align-items:center;max-width:660px;margin-bottom:12px}
-  .df-acc .k{font-size:12.5px;color:var(--text-secondary);margin-bottom:6px}
-  .df-acc .v{font-size:14px;color:var(--text-primary);display:flex;align-items:center;gap:8px}
+  .df-foot{display:flex;justify-content:flex-end;gap:20px;margin-top:18px}
+  .df-acc{margin-bottom:12px}
   .df-visa{display:inline-grid;place-items:center;background:#1a1f71;color:#fff;font-size:9px;font-weight:700;border-radius:3px;padding:3px 6px;letter-spacing:.03em}
   .df-ranges{border:1px solid var(--border);border-radius:12px;overflow:hidden;max-width:660px}
   .df-ranges-head,.df-range-row{display:grid;grid-template-columns:1fr 1fr 1fr 44px;gap:14px;align-items:center}
   .df-ranges-head{background:var(--surface-sunken);padding:12px 16px;font-size:12.5px;color:var(--text-secondary);font-weight:500}
   .df-range-row{padding:12px 16px}
   .df-range-row .icon-btn{width:36px;height:40px}
+  .df-ranges.one .df-ranges-head,.df-ranges.one .df-range-row{grid-template-columns:1fr}
+  .ranges-foot{display:flex;justify-content:flex-end;margin-top:12px}
   @media(max-width:900px){.df-row{grid-template-columns:1fr;gap:14px}.df-side{display:none}}
 
   /* ===== Acordeón en modales de alta (Figma 131-384) ===== */
@@ -329,9 +330,9 @@
   .acc-h .chev svg,.acc-sec-h .chev svg{width:18px;height:18px;transition:transform .18s}
   .acc-h:not(.open) .chev svg,.acc-sec-h:not(.open) .chev svg{transform:rotate(-90deg)}
   .acc-body{padding-top:14px}
-  .acc-sec{border-top:1px solid var(--border);margin-top:16px}
-  .acc-sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none;padding:14px 0 2px;font-size:15px;font-weight:600;color:var(--text-primary)}
-  .acc-sec-body{padding-top:12px}
+  .acc-sec{border-top:1px solid var(--border);margin-top:12px}
+  .acc-sec-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none;padding:12px 0 2px;font-size:15px;font-weight:600;color:var(--text-primary)}
+  .acc-sec-body{padding-top:10px}
 
   /* ===== Segmented control estilo guía (Figma 126-112) ===== */
   .seg2{display:inline-flex;background:#eceef3;border-radius:12px;padding:4px;gap:2px}
@@ -340,7 +341,7 @@
   .seg2 button.on{background:#fff;color:var(--text-primary);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.14)}
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-  @media(max-width:720px){.grid2,.radio-cards{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}}
 </style>
 </head>
 <body>
@@ -619,6 +620,7 @@
           <button class="btn btn-navy" onclick="saveDistFull()">Guardar</button>
         </div>
       </div>
+      <div id="dfCards">
       <div class="df-card">
         <div class="df-card-head">Configurar adquirente</div>
         <div class="df-card-body">
@@ -640,14 +642,8 @@
           <div class="df-row">
             <div class="df-row-label">Cuentas bancarias</div>
             <div class="df-row-fields">
-              <div id="dfAccList">
-                <div class="df-acc">
-                  <div><div class="k">Cuenta</div><div class="v"><span class="df-visa">VISA</span>Visa ••••&nbsp;3457</div></div>
-                  <div><div class="k">Banco</div><div class="v">Banregio</div></div>
-                  <span class="badge-sm badge-default">Cuenta principal</span>
-                </div>
-              </div>
-              <button class="btn-link" onclick="addDfAccount()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+              <div class="df-acc-list"></div>
+              <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
             </div>
           </div>
           <div class="df-divider"></div>
@@ -661,16 +657,20 @@
               </div>
               <div class="df-ranges">
                 <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
-                <div id="dfRangeRows">
+                <div class="df-range-rows">
                   <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
                 </div>
               </div>
-              <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+              <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
             </div>
           </div>
         </div>
       </div>
-      <div class="df-foot"><button class="btn-link" onclick="addDfSub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar sub distribuidor</button></div>
+      </div>
+      <div class="df-foot">
+        <button class="btn-link" onclick="addDfDist()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar otro distribuidor</button>
+        <button class="btn-link" onclick="addDfSub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar sub distribuidor</button>
+      </div>
     </div>
   </div>
 </div>
@@ -687,6 +687,35 @@
     <div class="footer">
       <div class="willcreate" id="summary"></div>
       <div class="side"><button class="btn btn-ghost" onclick="closeAlta()">Cancelar</button><button class="btn btn-primary" onclick="saveAlta()">Guardar</button></div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Agregar cuenta bancaria (pantalla completa) ============ -->
+<div class="backdrop" id="backdrop-acc">
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="accMt">
+    <div class="modal-head">
+      <div><h2 class="modal-title" id="accMt">Agregar cuenta bancaria</h2></div>
+      <button class="x" aria-label="Cerrar" onclick="closeAccModal()">✕</button>
+    </div>
+    <div class="field"><label>CLABE</label><input id="accClabe" placeholder="18 dígitos"></div>
+    <div class="field"><label>Cuenta</label><input id="accCuenta" placeholder="Número de cuenta"></div>
+    <div class="field"><label>Banco</label><input id="accBanco" placeholder="Banco"></div>
+    <div class="upload">
+      <span class="upload-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4M12 4L7 9M12 4l5 5"/><path d="M4 16v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg></span>
+      <div>
+        <div class="upload-t">Carátula del edo de cuenta</div>
+        <button class="btn-link" onclick="document.getElementById('accDoc').click()">Subir archivo</button>
+        <div class="upload-name" id="accDocName"></div>
+      </div>
+      <input type="file" id="accDoc" hidden onchange="accDocPicked()">
+    </div>
+    <div class="footer">
+      <label class="chk"><input type="checkbox" id="accDefault" checked> Asignar como cuenta principal</label>
+      <div class="side">
+        <button class="btn btn-ghost" onclick="closeAccModal()">Cancelar</button>
+        <button class="btn btn-navy" onclick="confirmAccModal()">Confirmar</button>
+      </div>
     </div>
   </div>
 </div>
@@ -911,14 +940,22 @@
       <div class="acc-sec">
         <div class="acc-sec-h" onclick="accToggle(this)"><span>Esquema de comisión</span><span class="chev">${CHEV}</span></div>
         <div class="acc-sec-body" style="display:none">
-          <div class="radio-cards">
-            <div class="rcard sel" data-com="bruto" onclick="pickCom(this)"><span class="dot"></span><div><b>Margen bruto</b><span>Porcentaje fijo único</span></div></div>
-            <div class="rcard" data-com="var" onclick="pickCom(this)"><span class="dot"></span><div><b>Comisión variable</b><span>Por rango de monto</span></div></div>
+          <div class="radios" style="margin-bottom:14px">
+            <label class="radio"><input type="radio" name="com-${id}" value="bruto" checked onchange="pickCom(this)"> Margen bruto</label>
+            <label class="radio"><input type="radio" name="com-${id}" value="var" onchange="pickCom(this)"> Comisión variable</label>
           </div>
-          <div class="brutoBox ranges" style="display:block"><div class="range-row" style="grid-template-columns:1fr"><div><div class="caps">Porcentaje fijo</div><input placeholder="0.0 %"></div></div></div>
-          <div class="varBox ranges" style="display:none">
-            <div class="range-row"><div class="caps">Monto desde</div><div class="caps">Monto hasta</div><div class="caps">Porcentaje</div><div></div></div>
-            <div class="range-rows"></div><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button>
+          <div class="brutoBox">
+            <div class="df-ranges one">
+              <div class="df-ranges-head"><div>Porcentaje fijo</div></div>
+              <div class="df-range-row"><div><input placeholder="0.0 %"></div></div>
+            </div>
+          </div>
+          <div class="varBox" style="display:none">
+            <div class="df-ranges">
+              <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+              <div class="range-rows"></div>
+            </div>
+            <div class="ranges-foot"><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button></div>
           </div>
         </div>
       </div>`;
@@ -927,23 +964,24 @@
     const isDist=altaMode==='dist';
     const label=isDist?'Distribuidor':'Proveedor de servicios';
     // Un distribuidor puede tener sub-afiliados; un proveedor de servicios NO.
+    // El botón de sub-afiliado y sus cards viven FUERA de la card del distribuidor.
     const subSection=isDist?`
-      <div class="acc-sec">
-        <button class="btn-link" onclick="addSub('${did}')" style="margin-top:2px">＋ Agregar sub-afiliado</button>
-        <div class="sub-list"></div>
-      </div>`:'';
-    return `<div class="dist-card aff" id="${did}">
-      <div class="acc-h open" onclick="accToggle(this)">
-        <b>${label}</b>
-        <div class="acc-h-actions">
-          <button class="icon-btn dist-del" title="Quitar" onclick="event.stopPropagation();removeDistribuidor('${did}')">${ICON_TRASH}</button>
-          <span class="chev">${CHEV}</span>
+      <div class="sub-list"></div>
+      <div class="sub-foot"><button class="btn-link" onclick="addSub('${did}')">＋ Agregar sub-afiliado</button></div>`:'';
+    return `<div class="dist-block" id="${did}">
+      <div class="dist-card aff">
+        <div class="acc-h open" onclick="accToggle(this)">
+          <b>${label}</b>
+          <div class="acc-h-actions">
+            <button class="icon-btn dist-del" title="Quitar" onclick="event.stopPropagation();removeDistribuidor('${did}')">${ICON_TRASH}</button>
+            <span class="chev">${CHEV}</span>
+          </div>
+        </div>
+        <div class="acc-body">
+          ${affiliateBody(did)}
         </div>
       </div>
-      <div class="acc-body">
-        ${affiliateBody(did)}
-        ${subSection}
-      </div>
+      ${subSection}
     </div>`;
   }
   function subTemplate(sid){
@@ -1007,32 +1045,38 @@
       const banco=c.querySelector('.f-banco').value||'—';
       const clabe=c.querySelector('.f-clabe').value, cuenta=c.querySelector('.f-cuenta').value;
       const f=c.querySelector('.f-doc'), doc=(f&&f.files&&f.files[0])?f.files[0].name:'';
-      c.querySelector('.acc-summary').innerHTML=`
-        <div class="acc-view-head">
-          <div class="acc-view-title">${ICON_CARD}<b>Cuenta bancaria</b>
-            ${isDef?'<span class="badge-sm badge-default">Cuenta principal</span>':''}</div>
-          <div class="acc-menu">
-            <button class="kebab" aria-label="Acciones de la cuenta" onclick="toggleAccMenu(event,'${id}')">⋯</button>
-            <div class="acc-menu-pop">
-              <button onclick="editAcc('${id}')">Editar</button>
-              ${isDef?'':`<button onclick="setDefault('${did}','${id}')">Marcar como principal</button>`}
-              <button class="danger" onclick="delAcc('${did}','${id}')">Eliminar</button>
-            </div>
+      c.querySelector('.acc-summary').innerHTML=bankCardHTML({clabe,cuenta,banco,doc,isDef},`
+        <div class="acc-menu">
+          <button class="kebab" aria-label="Acciones de la cuenta" onclick="toggleAccMenu(event)">⋯</button>
+          <div class="acc-menu-pop">
+            <button onclick="editAcc('${id}')">Editar</button>
+            ${isDef?'':`<button onclick="setDefault('${did}','${id}')">Marcar como principal</button>`}
+            <button class="danger" onclick="delAcc('${did}','${id}')">Eliminar</button>
           </div>
-        </div>
-        <div class="acc-view-body">
-          <div class="acc-col"><span>CLABE</span><b>${clabe||'—'}</b></div>
-          <div class="acc-col"><span>Cuenta</span><b>${cuenta?('••••'+cuenta.slice(-4)):'—'}</b></div>
-          <div class="acc-col"><span>Banco</span><b>${banco}</b></div>
-          <div class="acc-col"><span>Documento</span>${doc?`<a title="${doc}">${doc}</a>`:'<b>—</b>'}</div>
-        </div>`;
+        </div>`);
     }
     c.querySelector('.acc-actions').innerHTML=editing
       ? `<button class="lnk danger" onclick="delAcc('${did}','${id}')">Eliminar</button>` : '';
   }
-  function toggleAccMenu(e,id){
+  /* Tarjeta de cuenta guardada — compartida por el modal de alta y la pantalla completa */
+  function bankCardHTML(d,menuHTML){
+    const marca=d.marca?`<span class="acc-brand"><span class="df-visa">${d.marca.toUpperCase()}</span>${d.marca}</span> `:'';
+    const cuenta=d.cuenta?`${marca}••••${String(d.cuenta).slice(-4)}`:'—';
+    return `<div class="acc-view-head">
+        <div class="acc-view-title">${ICON_CARD}<b>Cuenta bancaria</b>
+          ${d.isDef?'<span class="badge-sm badge-default">Cuenta principal</span>':''}</div>
+        ${menuHTML||''}
+      </div>
+      <div class="acc-view-body">
+        <div class="acc-col"><span>CLABE</span><b>${d.clabe||'—'}</b></div>
+        <div class="acc-col"><span>Cuenta</span><b>${cuenta}</b></div>
+        <div class="acc-col"><span>Banco</span><b>${d.banco||'—'}</b></div>
+        <div class="acc-col"><span>Documento</span>${d.doc?`<a title="${d.doc}">${d.doc}</a>`:'<b>—</b>'}</div>
+      </div>`;
+  }
+  function toggleAccMenu(e){
     e.stopPropagation();
-    const m=document.getElementById(id).querySelector('.acc-menu');
+    const m=e.currentTarget.closest('.acc-menu');
     const wasOpen=m.classList.contains('open');
     document.querySelectorAll('.acc-menu.open').forEach(x=>x.classList.remove('open'));
     if(!wasOpen)m.classList.add('open');
@@ -1063,7 +1107,7 @@
     list.insertAdjacentHTML('beforeend',subTemplate(sid));
     addAccount(sid);addRange(sid);renumberSub(did);
   }
-  function removeSub(sid){const top=document.getElementById(sid).closest('.dist-card');document.getElementById(sid).remove();renumberSub(top.id);}
+  function removeSub(sid){const top=document.getElementById(sid).closest('.dist-block');document.getElementById(sid).remove();renumberSub(top.id);}
   function renumberSub(did){document.getElementById(did).querySelectorAll('.sub-list > .sub-card > .acc-h > .sub-name').forEach((b,i)=>b.textContent='Sub-afiliado '+(i+1));}
   function accToggle(h){
     const open=h.classList.toggle('open');
@@ -1071,15 +1115,14 @@
     if(body) body.style.display=open?'block':'none';
   }
   function pickCom(el){
-    const sec=el.closest('.acc-sec');const type=el.dataset.com;
-    sec.querySelectorAll('.rcard').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');
+    const sec=el.closest('.acc-sec');const type=el.value;
     sec.querySelector('.brutoBox').style.display=type==='bruto'?'block':'none';
     sec.querySelector('.varBox').style.display=type==='var'?'block':'none';
   }
   function addRange(did){
     const rr=document.getElementById(did).querySelector('.range-rows');
-    const r=document.createElement('div');r.className='range-row';
-    r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="$ Sin límite"></div><div><input placeholder="0.0 %"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.range-row').remove()">${ICON_TRASH}</button>`;
+    const r=document.createElement('div');r.className='df-range-row';
+    r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()">${ICON_TRASH}</button>`;
     rr.appendChild(r);
   }
   function setIsPS(did,v){
@@ -1178,24 +1221,92 @@
     document.querySelectorAll('.page').forEach(p=>p.style.display='none');
     $('#view-distfull').style.display='block';
     // inyecta el ícono de basura en la fila de rango estática (ICON_TRASH es JS)
-    document.querySelectorAll('#dfRangeRows .icon-btn:empty').forEach(b=>b.innerHTML=ICON_TRASH);
+    document.querySelectorAll('.df-range-rows .icon-btn:empty').forEach(b=>b.innerHTML=ICON_TRASH);
+    const list=document.querySelector('#dfCards .df-card .df-acc-list');
+    if(list&&!list.children.length)list.appendChild(dfAccCard({...EJEMPLO_ACC}));
     window.scrollTo({top:0});
   }
   function closeDistFull(){$('#view-distfull').style.display='none';$('#view-module').style.display='block';}
   function saveDistFull(){closeDistFull();toast('<b>Distribuidor guardado</b><ul><li>Wallet creada automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>');}
   function dfTree(el){document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',i===el));}
-  function addDfRange(){
-    const rr=$('#dfRangeRows');const r=document.createElement('div');r.className='df-range-row';
+  function addDfRange(btn){
+    const rr=btn.closest('.df-row-fields').querySelector('.df-range-rows');
+    const r=document.createElement('div');r.className='df-range-row';
     r.innerHTML=`<div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()">${ICON_TRASH}</button>`;
     rr.appendChild(r);
   }
-  let dfAccN=1;
-  function addDfAccount(){
-    dfAccN++;const el=document.createElement('div');el.className='df-acc';
-    el.innerHTML=`<div><div class="k">Cuenta</div><div class="v">Cuenta ${dfAccN} · CLABE ••••&nbsp;0000</div></div>
-      <div><div class="k">Banco</div><div class="v">Banco</div></div>
-      <button class="icon-btn" aria-label="Eliminar cuenta" onclick="this.closest('.df-acc').remove()">${ICON_TRASH}</button>`;
-    $('#dfAccList').appendChild(el);
+
+  /* ---- Cuentas bancarias en pantalla completa ---- */
+  const EJEMPLO_ACC={clabe:'32587398257932875',cuenta:'9876543457',banco:'Banregio',doc:'Caratula Edo cuenta',marca:'Visa',isDef:true};
+  let accTarget=null, accEditing=null;
+  function dfAccCard(d){
+    const el=document.createElement('div');
+    el.className='acc-card saved df-acc';
+    el.dataset.acc=JSON.stringify(d);
+    el.innerHTML='<div class="acc-summary"></div>';
+    renderDfAcc(el);return el;
+  }
+  function renderDfAcc(el){
+    el.querySelector('.acc-summary').innerHTML=bankCardHTML(JSON.parse(el.dataset.acc),`
+      <div class="acc-menu">
+        <button class="kebab" aria-label="Acciones de la cuenta" onclick="toggleAccMenu(event)">⋯</button>
+        <div class="acc-menu-pop">
+          <button onclick="dfAccEdit(this)">Editar</button>
+          <button class="danger" onclick="dfAccDel(this)">Eliminar</button>
+        </div>
+      </div>`);
+  }
+  function openAccModal(btn){
+    accTarget=btn.closest('.df-row-fields').querySelector('.df-acc-list');accEditing=null;
+    $('#accMt').textContent='Agregar cuenta bancaria';
+    $('#accClabe').value='';$('#accCuenta').value='';$('#accBanco').value='';
+    $('#accDoc').value='';$('#accDocName').textContent='';
+    $('#accDefault').checked=accTarget.children.length===0;
+    $('#backdrop-acc').style.display='flex';
+  }
+  function closeAccModal(){$('#backdrop-acc').style.display='none';}
+  function accDocPicked(){const f=$('#accDoc').files[0];$('#accDocName').textContent=f?f.name:'';}
+  function confirmAccModal(){
+    const prev=accEditing?JSON.parse(accEditing.dataset.acc):{};
+    const f=$('#accDoc').files[0];
+    const d={clabe:$('#accClabe').value,cuenta:$('#accCuenta').value,banco:$('#accBanco').value,
+             doc:f?f.name:(prev.doc||''),marca:prev.marca||'',isDef:$('#accDefault').checked};
+    if(d.isDef)[...accTarget.children].forEach(c=>{
+      if(c===accEditing)return;
+      const o=JSON.parse(c.dataset.acc);o.isDef=false;c.dataset.acc=JSON.stringify(o);renderDfAcc(c);});
+    if(accEditing){accEditing.dataset.acc=JSON.stringify(d);renderDfAcc(accEditing);}
+    else accTarget.appendChild(dfAccCard(d));
+    closeAccModal();
+  }
+  function dfAccEdit(btn){
+    const el=btn.closest('.acc-card'),d=JSON.parse(el.dataset.acc);
+    accTarget=el.closest('.df-acc-list');accEditing=el;
+    $('#accMt').textContent='Editar cuenta bancaria';
+    $('#accClabe').value=d.clabe||'';$('#accCuenta').value=d.cuenta||'';$('#accBanco').value=d.banco||'';
+    $('#accDoc').value='';$('#accDocName').textContent=d.doc||'';
+    $('#accDefault').checked=!!d.isDef;
+    $('#backdrop-acc').style.display='flex';
+  }
+  function dfAccDel(btn){
+    const el=btn.closest('.acc-card'),list=el.closest('.df-acc-list');
+    const wasDef=JSON.parse(el.dataset.acc).isDef;el.remove();
+    if(wasDef&&list.firstElementChild){
+      const c=list.firstElementChild,o=JSON.parse(c.dataset.acc);
+      o.isDef=true;c.dataset.acc=JSON.stringify(o);renderDfAcc(c);}
+  }
+  function addDfDist(){
+    const cards=$('#dfCards'),c=cards.firstElementChild.cloneNode(true);
+    const n='dfCom'+(cards.children.length+1);
+    c.querySelectorAll('input').forEach(i=>{
+      if(i.type==='radio'){i.name=n;i.checked=i.defaultChecked;return;}
+      if(i.type==='checkbox'){i.checked=i.defaultChecked;return;}
+      i.value='';});
+    c.querySelectorAll('select').forEach(s=>s.selectedIndex=0);
+    c.querySelectorAll('.df-acc-list').forEach(l=>l.innerHTML='');
+    c.querySelectorAll('.df-range-rows').forEach(rr=>{while(rr.children.length>1)rr.lastElementChild.remove();});
+    c.style.marginTop='18px';
+    cards.appendChild(c);
+    c.scrollIntoView({behavior:'smooth',block:'start'});
   }
   function addDfSub(){
     document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',/sub/i.test(i.textContent)));
