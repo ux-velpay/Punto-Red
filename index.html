@@ -20,7 +20,7 @@
   --tertiary-border:#d0d5dd;
   --tertiary-border-hover:#6b7280;
 
-  --bg-app:#f4f4f7;
+  --bg-app:#F3F4F6;
   --bg-surface:#ffffff;
   --bg-subtle:#f7f7fa;
   --bg-sidebar:#ffffff;
@@ -129,7 +129,7 @@ button{font-family:inherit;cursor:pointer}
 .btn-sm{padding:8px 13px;font-size:13px}
 
 /* ---------- Cards / grid ---------- */
-.card{background:#fff;border:1.14px solid #EAECF0;border-radius:11.397px;box-shadow:var(--shadow-card)}
+.card{background:#FFF;border:1.397px solid #EAECF0;border-radius:10px;box-shadow:var(--shadow-card)}
 .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-bottom:20px}
 .kpi{padding:20px 20px 18px}
 .kpi .lbl{color:var(--text-muted);font-size:13px;font-weight:500;display:flex;align-items:center;gap:6px}
@@ -265,6 +265,36 @@ tbody tr:hover{background:#fbfaff}
 .qr-actions{display:flex;gap:12px}
 .qr-actions .btn{flex:1;justify-content:center}
 @media print{.qr-overlay,.qr-modal{display:none!important}}
+/* ---------- PS Dashboard ---------- */
+.ps-filters{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:18px}
+.fsel{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid var(--border-strong);border-radius:var(--radius-pill);padding:8px 14px;font-size:13.5px;color:var(--text-muted)}
+.fsel svg{width:16px;height:16px}
+.fsel select{border:none;background:transparent;font:inherit;font-size:13.5px;color:var(--text-strong);font-weight:600;outline:none;cursor:pointer}
+.scope-note{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-muted)}
+.seg-sm{display:inline-flex;background:var(--bg-subtle);border-radius:var(--radius-sm);padding:3px;border:1px solid var(--border);flex-shrink:0}
+.seg-sm button{border:none;background:transparent;padding:5px 12px;font:inherit;font-size:12.5px;font-weight:600;color:var(--text-muted);border-radius:7px;cursor:pointer}
+.seg-sm button.on{background:#fff;color:var(--action-secondary);box-shadow:0 1px 3px rgba(45,0,109,.12)}
+.bar-stack .seg-part{width:100%;flex-shrink:0;transition:height .5s cubic-bezier(.2,.8,.2,1)}
+.ps-tip{position:fixed;z-index:200;background:#fff;color:var(--text-body);padding:12px 14px;border-radius:12px;font-size:12px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s;box-shadow:var(--shadow-pop);border:1px solid var(--border);min-width:212px}
+.ps-tip.on{opacity:1;transform:translateY(0)}
+.ps-tip .tip-h{font-weight:600;color:#2d006d;font-size:13px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ps-tip .tip-row{display:flex;justify-content:space-between;gap:18px;padding:3px 0;color:var(--text-muted)}
+.ps-tip .tip-row span{display:flex;align-items:center}
+.ps-tip .tip-row i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:7px;flex-shrink:0}
+.ps-tip .tip-row b{color:var(--text-strong);font-weight:600;font-variant-numeric:tabular-nums}
+.ps-tip .tip-total{display:flex;justify-content:space-between;gap:18px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);color:var(--text-body);font-weight:500}
+.ps-tip .tip-total b{color:#2d006d;font-variant-numeric:tabular-nums}
+.retenido-link{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.retenido-link:hover{color:var(--action-primary)!important}
+.settle-date{font-size:12px;color:var(--text-muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
+.hbars{display:flex;flex-direction:column;gap:14px;margin-top:6px}
+.hbar{display:grid;grid-template-columns:minmax(120px,170px) 1fr auto;align-items:center;gap:14px}
+.hbar .hname{font-size:13px;color:var(--text-body);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.hbar .htrack{background:var(--bg-subtle);border-radius:8px;height:18px;overflow:hidden}
+.hbar .hfill{height:100%;background:linear-gradient(90deg,#8a67f4,#754bf1);border-radius:8px;transition:width .6s cubic-bezier(.2,.8,.2,1)}
+.hbar.dim .hfill{background:linear-gradient(90deg,#d5cbff,#b9a6f5)}
+.hbar .hval{font-size:12.5px;font-weight:600;color:var(--text-strong);font-variant-numeric:tabular-nums}
+@media(max-width:560px){.hbar{grid-template-columns:1fr auto;gap:6px}.hbar .htrack{grid-column:1 / -1}}
 </style>
 </head>
 <body>
@@ -365,6 +395,71 @@ tbody tr:hover{background:#fbfaff}
         </div>
       </section>
 
+      <!-- ===== PS · DASHBOARD ===== -->
+      <section class="view" id="view-ps-dashboard">
+        <div class="ps-filters">
+          <span class="pill" style="border-color:#d8ccff;background:#f3f0ff;color:var(--action-secondary)">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>
+            Mis comercios asignados</span>
+          <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+            <select id="psPeriod" aria-label="Período"><option value="jul2026">Julio 2026</option><option value="jun2026">Junio 2026</option><option value="d7">Últimos 7 días</option></select></span>
+          <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/></svg>
+            <select id="psMerchant" aria-label="Comercio"><option value="all">Todos mis comercios</option><option value="CM-04831">Refaccionaria El Motor</option><option value="CM-04832">Servicios TecnoRed</option><option value="CM-04833">Autopartes del Norte</option><option value="CM-04834">Taller Mecánico Díaz</option></select></span>
+          <span class="scope-note"><span style="width:7px;height:7px;border-radius:50%;background:#e5484d;display:inline-block"></span>Datos demo</span>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
+            <div class="lbl">Monto procesado (mis comercios)</div>
+            <div class="val" id="psKpiMonto">$416,500</div>
+            <div class="sub up">▲ 8.6% vs. mes anterior</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1 1.1-1.8 2.5-1.8s2.5.8 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg></div>
+            <div class="lbl">Comisión confirmada</div>
+            <div class="val" id="psKpiCom">$31,238</div>
+            <div class="sub" id="psKpiComBadge"></div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M20 17H4m16 0l-3 3"/></svg></div>
+            <div class="lbl">Transacciones del día</div>
+            <div class="val" id="psKpiTx">312</div>
+            <div class="sub up">▲ 2.4% vs. ayer</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/></svg></div>
+            <div class="lbl">Comercios activos</div>
+            <div class="val" id="psKpiAct">3 / 4</div>
+            <div class="sub down" id="psKpiActSub">1 inactivo · Taller Mecánico Díaz</div>
+          </div>
+        </div>
+
+        <div class="two-col">
+          <div class="card panel">
+            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
+              <div><h3>Transacciones por estatus</h3><div class="cap" id="psStatusCap">Julio 2026 · mis comercios asignados</div></div>
+              <div class="seg-sm" id="psMetric"><button class="on" data-metric="count">N° de Trx</button><button data-metric="amount">Monto de Trx</button></div>
+            </div>
+            <div class="bars" id="psStatusBars"></div>
+            <div class="legend" id="psStatusLegend"></div>
+          </div>
+          <div class="card panel">
+            <h3>Saldo por estado</h3><div class="cap">Volumen liquidable por estado del Ledger</div>
+            <div class="donut-wrap">
+              <svg id="psDonut" width="128" height="128" viewBox="0 0 42 42" style="flex-shrink:0"></svg>
+              <div class="rows" id="psDonutRows"></div>
+            </div>
+            <div class="settle-date">Liquidación estimada: <b style="color:var(--text-body)">11 ago 2026</b> · T+1</div>
+          </div>
+        </div>
+
+        <div class="card panel" style="margin-top:18px">
+          <h3>Volumen por comercio</h3><div class="cap">Top comercios asignados por volumen procesado</div>
+          <div class="hbars" id="psTopBars"></div>
+        </div>
+      </section>
+
       <!-- ===== COMERCIOS ===== -->
       <section class="view" id="view-comercios">
         <div class="toolbar">
@@ -426,25 +521,12 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== CONCILIACIÓN ===== -->
       <section class="view" id="view-conciliacion">
-        <div class="two-col" style="grid-template-columns:1fr 1.3fr;align-items:start">
-          <div class="card panel">
-            <h3>Nueva conciliación</h3><div class="cap">Sube el archivo con el layout Velpay para conciliar el periodo.</div>
-            <div class="drop" id="drop" role="button" tabindex="0">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
-              <div class="t">Arrastra tu archivo o haz clic para subir</div>
-              <div class="s">.xlsx o .csv con el layout Velpay · máx. 10 MB</div>
-            </div>
-            <a href="#" onclick="return false" style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;color:var(--action-primary);font-weight:600;font-size:13px">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 21h14"/></svg> Descargar plantilla de layout</a>
-            <div style="margin-top:14px;padding:11px 14px;background:var(--warn-bg);border-radius:10px;color:var(--warn-text);font-size:12px">El layout definitivo lo define Operaciones (BR-018) — pendiente de confirmar en el PRD.</div>
-          </div>
-          <div class="card tbl-card">
-            <div style="padding:18px 22px 4px"><h3>Conciliaciones recientes</h3></div>
-            <div class="tbl-scroll"><table>
-              <thead><tr><th>Archivo</th><th>Periodo</th><th>Cargado</th><th>Estado</th><th>Diferencias</th><th></th></tr></thead>
-              <tbody id="conBody"></tbody>
-            </table></div>
-          </div>
+        <div class="card tbl-card">
+          <div style="padding:18px 22px 4px"><h3>Conciliaciones recientes</h3></div>
+          <div class="tbl-scroll"><table>
+            <thead><tr><th>Archivo</th><th>Periodo</th><th>Cargado</th><th>Estado</th><th>Diferencias</th><th></th></tr></thead>
+            <tbody id="conBody"></tbody>
+          </table></div>
         </div>
       </section>
 
@@ -565,6 +647,41 @@ tbody tr:hover{background:#fbfaff}
       <button class="btn btn-primary" onclick="downloadQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Descargar QR</button>
       <button class="btn btn-ghost" onclick="printQR()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V3h12v6M6 18H4a2 2 0 0 1-2-2v-3a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-2M6 14h12v7H6z"/></svg>Imprimir</button>
     </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Nueva conciliación ============ -->
+<div class="qr-overlay" id="conOverlay" onclick="if(event.target===this)closeConModal()">
+  <div class="card qr-modal" role="dialog" aria-modal="true" aria-labelledby="conModalTitle">
+    <button class="qr-close" aria-label="Cerrar" onclick="closeConModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="qr-title" id="conModalTitle">Nueva conciliación</div>
+    <div class="qr-sub">Sube el archivo con el layout Velpay para conciliar el periodo.</div>
+    <div class="drop" id="drop" role="button" tabindex="0" style="margin-top:18px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+      <div class="t">Arrastra tu archivo o haz clic para subir</div>
+      <div class="s">.xlsx o .csv con el layout Velpay · máx. 10 MB</div>
+    </div>
+    <a href="#" onclick="return false" style="display:inline-flex;align-items:center;gap:7px;margin-top:14px;color:var(--action-primary);font-weight:600;font-size:13px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4"/><path d="M5 21h14"/></svg> Descargar plantilla de layout</a>
+    <div style="margin-top:14px;padding:11px 14px;background:var(--warn-bg);border-radius:10px;color:var(--warn-text);font-size:12px">El layout definitivo lo define Operaciones (BR-018) — pendiente de confirmar en el PRD.</div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Retenido / en revisión ============ -->
+<div class="qr-overlay" id="retOverlay" onclick="if(event.target===this)closeRet()">
+  <div class="card qr-modal" style="max-width:560px" role="dialog" aria-modal="true" aria-labelledby="retTitle">
+    <button class="qr-close" aria-label="Cerrar" onclick="closeRet()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+    <div class="qr-title" id="retTitle">Transacciones retenidas / en revisión</div>
+    <div class="qr-sub">$3,120 · 3 operaciones · datos demo</div>
+    <div class="tbl-scroll" style="margin-top:16px"><table>
+      <thead><tr><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Motivo</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">OP-7734590</td><td>Servicios TecnoRed</td><td class="num">$1,280.00</td><td><span class="badge b-info"><span class="bd"></span>Validación de riesgo</span></td></tr>
+        <tr><td class="mono">OP-7734612</td><td>Autopartes del Norte</td><td class="num">$920.00</td><td><span class="badge b-warn"><span class="bd"></span>Documentación pendiente</span></td></tr>
+        <tr><td class="mono">OP-7734655</td><td>Refaccionaria El Motor</td><td class="num">$920.00</td><td><span class="badge b-warn"><span class="bd"></span>Revisión antifraude</span></td></tr>
+      </tbody>
+    </table></div>
+    <div style="margin-top:14px;padding:11px 14px;background:var(--info-bg);border-radius:10px;color:var(--info-text);font-size:12px">Los fondos retenidos no llegan a Settlement hasta resolverse la revisión. No se muestran datos sensibles (PAN, CVV, CLABE).</div>
   </div>
 </div>
 
@@ -693,6 +810,123 @@ $("#psTxBody").innerHTML=psTx.map(r=>`<tr>
   <td class="num">${r[3]}</td><td>${r[4]}</td><td>${badge(r[5],r[6])}</td><td>${badge("PS","b-info")}</td>
   <td><button class="kebab">⋯</button></td></tr>`).join("");
 
+/* ---------- PS Dashboard ---------- */
+const PS_MERCHANTS=[
+  {id:"CM-04831",name:"Refaccionaria El Motor",active:true,share:0.343,vol:142880},
+  {id:"CM-04832",name:"Servicios TecnoRed",active:true,share:0.303,vol:126300},
+  {id:"CM-04833",name:"Autopartes del Norte",active:true,share:0.238,vol:99120},
+  {id:"CM-04834",name:"Taller Mecánico Díaz",active:false,share:0.116,vol:48200},
+];
+/* columnas: [Aprobadas, Rechazadas, Canceladas, Devoluciones, Contracargos] */
+const PS_STATUS=[
+  {label:"Aprobadas",color:"#754bf1"},
+  {label:"Rechazadas",color:"#d64545"},
+  {label:"Canceladas",color:"#94a3b8"},
+  {label:"Devoluciones",color:"#e0a325"},
+  {label:"Contracargos",color:"#7c2d12"},
+];
+const PS_BUCKETS={
+  jul2026:{label:"Julio 2026",labels:["Sem 1","Sem 2","Sem 3","Sem 4"],data:[[520,30,18,14,8],[560,34,20,16,9],[610,28,16,12,7],[640,36,22,18,10]]},
+  jun2026:{label:"Junio 2026",labels:["Sem 1","Sem 2","Sem 3","Sem 4"],data:[[470,26,15,12,6],[510,30,18,14,8],[540,24,14,10,6],[560,32,19,15,9]]},
+  d7:{label:"Últimos 7 días",labels:["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"],data:[[70,5,3,2,1],[82,6,4,3,1],[65,4,2,2,1],[90,7,4,3,2],[100,8,5,4,2],[58,3,2,1,1],[44,3,1,1,0]]},
+};
+const AVG=195;
+const psState={period:"jul2026",merchant:"all",metric:"count"};
+let psBucketData=[];
+const psMoney=n=>"$"+Math.round(n).toLocaleString("en-US");
+const psMerch=()=>psState.merchant==="all"?null:PS_MERCHANTS.find(m=>m.id===psState.merchant);
+const psFactor=()=>{const m=psMerch();return m?m.share:1;};
+
+function renderPsKpis(){
+  const m=psMerch();
+  const monto=m?m.vol:416500;
+  const com=Math.round(monto*0.075), pend=Math.round(com*0.285);
+  const txDia=m?Math.round(312*m.share):312;
+  const act=m?(m.active?"1 / 1":"0 / 1"):"3 / 4";
+  $("#psKpiMonto").textContent=psMoney(monto);
+  $("#psKpiCom").textContent=psMoney(com);
+  $("#psKpiComBadge").innerHTML=`<span class="badge b-warn"><span class="bd"></span>Pendiente de pago ${psMoney(pend)}</span>`;
+  $("#psKpiTx").textContent=txDia.toLocaleString("en-US");
+  $("#psKpiAct").innerHTML=act.replace(/ \/ (\d+)/,' <span style="font-size:15px;color:var(--text-faint);font-weight:500">/ $1</span>');
+  $("#psKpiActSub").textContent=m?(m.active?"comercio activo":"comercio inactivo"):"1 inactivo · Taller Mecánico Díaz";
+}
+function renderPsStatus(){
+  const B=PS_BUCKETS[psState.period], f=psFactor(), metric=psState.metric;
+  const rows=B.data.map(r=>r.map(v=>Math.round(v*f)));
+  const val=c=>metric==="count"?c:c*AVG;
+  const totals=rows.map(r=>r.reduce((a,c)=>a+val(c),0));
+  const maxT=Math.max(...totals,1);
+  const order=[4,3,2,1,0]; // arriba→abajo: contracargos … aprobadas
+  psBucketData=rows.map((r,bi)=>({
+    label:`${B.labels[bi]} · ${B.label}`,
+    segs:PS_STATUS.map((s,i)=>({label:s.label,color:s.color,count:r[i],amount:r[i]*AVG})),
+    totalCount:r.reduce((a,c)=>a+c,0), totalAmount:r.reduce((a,c)=>a+c,0)*AVG
+  }));
+  $("#psStatusBars").innerHTML=rows.map((r,bi)=>{
+    const parts=order.map(i=>{
+      const c=r[i], h=(val(c)/maxT)*140, s=PS_STATUS[i];
+      return `<div class="seg-part" style="height:${h}px;background:${s.color}"></div>`;
+    }).join("");
+    return `<div class="bar-wrap" data-idx="${bi}"><div class="bar-val">${metric==="count"?totals[bi].toLocaleString("en-US"):psMoney(totals[bi])}</div>
+      <div class="bar-track"><div class="bar-stack">${parts}</div></div>
+      <div class="bar-lbl">${B.labels[bi]}</div></div>`;
+  }).join("");
+  $("#psStatusCap").textContent=`${B.label} · mis comercios asignados`;
+  $("#psStatusLegend").innerHTML=PS_STATUS.map(s=>`<span><i class="dot" style="background:${s.color}"></i>${s.label}</span>`).join("");
+}
+function renderPsDonut(){
+  const f=psFactor();
+  const segs=[["Pending",86240*f,"#d946ef"],["Available",121500*f,"#a855f7"],["Settlement",184260*f,"#754bf1"]];
+  const total=segs.reduce((a,s)=>a+s[1],0);
+  let acc=0;
+  const circles=segs.map(s=>{
+    const pct=total?s[1]/total*100:0;
+    const c=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="${s[2]}" stroke-width="6" stroke-dasharray="${pct.toFixed(2)} ${(100-pct).toFixed(2)}" stroke-dashoffset="${(25-acc).toFixed(2)}"/>`;
+    acc+=pct; return c;
+  }).join("");
+  $("#psDonut").innerHTML=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="#eceaf2" stroke-width="6"/>${circles}
+    <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="700" fill="#2d006d" font-family="Work Sans">$${Math.round(total/1000)}k</text>
+    <text x="21" y="26" text-anchor="middle" font-size="3.2" fill="#9497a3">liquidable</text>`;
+  $("#psDonutRows").innerHTML=segs.map(s=>`<div class="drow"><span class="name"><i class="dot" style="background:${s[2]}"></i>${s[0]}</span><span class="amt">${psMoney(s[1])}</span></div>`).join("")
+    +`<div class="drow"><span class="name retenido-link" role="button" tabindex="0" onclick="openRet()" onkeydown="if(event.key==='Enter'){openRet()}" style="color:var(--text-muted)">Retenido / en revisión ›</span><span class="amt retenido-link" onclick="openRet()" style="color:var(--text-muted)">${psMoney(3120*f)}</span></div>`;
+}
+function renderPsTop(){
+  const sorted=[...PS_MERCHANTS].sort((a,b)=>b.vol-a.vol);
+  const max=Math.max(...sorted.map(m=>m.vol));
+  $("#psTopBars").innerHTML=sorted.map(m=>{
+    const dim=(psState.merchant!=="all"&&psState.merchant!==m.id)?" dim":"";
+    return `<div class="hbar${dim}"><div class="hname">${m.name}${m.active?"":' <span style="color:var(--text-faint);font-size:11px">· inactivo</span>'}</div>
+      <div class="htrack"><div class="hfill" style="width:${(m.vol/max*100).toFixed(1)}%"></div></div>
+      <div class="hval">${psMoney(m.vol)}</div></div>`;
+  }).join("");
+}
+function psRender(){renderPsKpis();renderPsStatus();renderPsDonut();renderPsTop();}
+function openRet(){$("#retOverlay").classList.add("on");document.addEventListener("keydown",retEsc);}
+function closeRet(){$("#retOverlay").classList.remove("on");document.removeEventListener("keydown",retEsc);}
+function retEsc(e){if(e.key==="Escape")closeRet();}
+(function initPsDash(){
+  const tip=document.createElement("div");tip.className="ps-tip";document.body.appendChild(tip);
+  const bars=$("#psStatusBars");
+  bars.addEventListener("mouseover",e=>{const w=e.target.closest(".bar-wrap");if(!w)return;
+    const d=psBucketData[+w.dataset.idx];if(!d)return;
+    tip.innerHTML=`<div class="tip-h">${d.label}</div>`
+      +d.segs.map(s=>`<div class="tip-row"><span><i style="background:${s.color}"></i>${s.label}</span><b>${s.count.toLocaleString("en-US")} · ${psMoney(s.amount)}</b></div>`).join("")
+      +`<div class="tip-total"><span>Total</span><b>${d.totalCount.toLocaleString("en-US")} · ${psMoney(d.totalAmount)}</b></div>`;
+    tip.classList.add("on");});
+  bars.addEventListener("mousemove",e=>{
+    tip.style.left=Math.min(e.clientX+14,window.innerWidth-232)+"px";
+    tip.style.top=Math.min(e.clientY+14,window.innerHeight-190)+"px";});
+  bars.addEventListener("mouseleave",()=>tip.classList.remove("on"));
+  $("#psPeriod").addEventListener("change",e=>{psState.period=e.target.value;renderPsStatus();});
+  $("#psMerchant").addEventListener("change",e=>{psState.merchant=e.target.value;psRender();});
+  document.querySelectorAll("#psMetric button").forEach(b=>b.addEventListener("click",()=>{
+    psState.metric=b.dataset.metric;
+    document.querySelectorAll("#psMetric button").forEach(x=>x.classList.toggle("on",x===b));
+    renderPsStatus();
+  }));
+  psRender();
+})();
+
 /* ---------- Navigation ---------- */
 const NAV={
   dist:{
@@ -707,19 +941,19 @@ const NAV={
     ]},
   ps:{
     items:[
-      ["dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
+      ["ps-dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
       ["ps-comercios","Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
       ["ps-transacciones","Transacciones",`<path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/>`],
       ["conciliacion","Conciliación",`<path d="M20 6L9 17l-5-5"/><path d="M4 20h16" opacity=".4"/>`],
       ["ps-perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
     ]},
 };
-const titles={dashboard:"Dashboard",comercios:"Comercios",transacciones:["Ventas /","Transacciones"],comisiones:"Comisiones",estado:"Estado de Cuenta",conciliacion:"Conciliación",perfil:"Mi Perfil","ps-comercios":"Comercios","ps-transacciones":["Ventas /","Transacciones"],"ps-perfil":"Mi Perfil"};
+const titles={dashboard:"Dashboard",comercios:"Comercios",transacciones:["Ventas /","Transacciones"],comisiones:"Comisiones",estado:"Estado de Cuenta",conciliacion:"Conciliación",perfil:"Mi Perfil","ps-comercios":"Comercios","ps-transacciones":["Ventas /","Transacciones"],"ps-perfil":"Mi Perfil","ps-dashboard":"Dashboard"};
 const DL=t=>`<button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>${t}</button>`;
 const actions={
   dashboard:"",comercios:DL("Descargar"),transacciones:DL("Descargar"),comisiones:DL("Descargar"),
-  estado:DL("Descargar estado"),conciliacion:"",perfil:"",
-  "ps-comercios":DL("Descargar"),"ps-transacciones":DL("Descargar"),"ps-perfil":""
+  estado:DL("Descargar estado"),conciliacion:`<button class="btn btn-secondary" onclick="openConModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M5 12h14"/></svg>Nueva conciliación</button>`,perfil:"",
+  "ps-comercios":DL("Descargar"),"ps-transacciones":DL("Descargar"),"ps-perfil":"","ps-dashboard":""
 };
 function go(view){
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.view===view));
@@ -748,12 +982,17 @@ $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 /* conciliación async simulation */
 function startCon(){
   const name="conciliacion_jul_s4.xlsx";
-  con.unshift([name,"22–28 jul","24/07/26 "+new Date().toTimeString().slice(0,5),"—","proc"]);
+  con.unshift([name,"22–28 jul","24/07/26 "+new Date().toTimeString().slice(0,5),"—","—","proc"]);
   renderCon();
+  closeConModal();
   setTimeout(()=>{con[0][5]="ok";con[0][3]="Lista";con[0][4]="0";renderCon();},2600);
 }
 $("#drop").addEventListener("click",startCon);
 $("#drop").addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();startCon();}});
+/* ---------- Modal Nueva conciliación ---------- */
+function openConModal(){$("#conOverlay").classList.add("on");document.addEventListener("keydown",conEsc);}
+function closeConModal(){$("#conOverlay").classList.remove("on");document.removeEventListener("keydown",conEsc);}
+function conEsc(e){if(e.key==="Escape")closeConModal();}
 /* ---------- Modal QR ---------- */
 let currentQR={};
 /* Placeholder de QR: patrón determinístico a partir del id (finder patterns + módulos). */
