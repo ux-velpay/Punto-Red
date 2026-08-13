@@ -153,6 +153,7 @@
   input,select{font-family:inherit;font-size:14.5px;color:var(--text-primary);background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;width:100%}
   input::placeholder{color:var(--text-muted)}
   input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(117,75,241,.14)}
+  select:disabled{background-color:#f3f4f6;color:var(--text-primary);cursor:not-allowed;opacity:1}
   select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' fill='none' stroke='%236b7280' stroke-width='1.6'%3E%3Cpath d='M4 6l4 4 4-4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 13px center}
   .section-label{font-size:15px;font-weight:600;color:var(--text-primary);margin:22px 0 12px}
   .divider{height:1px;background:var(--border);margin:24px 0}
@@ -277,6 +278,14 @@
   .dest{border:1px solid var(--border);border-radius:12px;padding:16px;background:#fff}
   .dest-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
   .dest-top b{font-size:14px;font-weight:600}
+  /* Split Payments · tarjetas anidadas (Comercio / Proveedor de servicios) */
+  .subcard{border:1px solid var(--border);border-radius:10px;overflow:hidden;background:#fff}
+  .subcard+.subcard{margin-top:18px}
+  .subcard>.sc-head{background:var(--header-bg);padding:12px 16px;font-family:'Gotham','Poppins';font-weight:600;font-size:14px;color:#111827;border-bottom:1px solid var(--border)}
+  .subcard>.sc-body{padding:16px}
+  .prov-row{display:grid;grid-template-columns:1fr 1fr auto;gap:14px;align-items:end}
+  .prov-row+.prov-row{margin-top:16px;padding-top:16px;border-top:1px solid var(--border)}
+  .prov-row .field{margin-bottom:0}
   .cfg-footer{position:absolute;bottom:0;left:250px;right:0;background:#fff;display:flex;justify-content:space-between;align-items:center;gap:12px;padding:16px 32px;border-top:1px solid var(--border)}
   .cfg-footer .eff{font-size:12.5px;color:var(--text-secondary);max-width:480px;line-height:1.5}
   .cfg-footer .eff b{color:var(--text-primary)}
@@ -341,7 +350,7 @@
   .seg2 button.on{background:#fff;color:var(--text-primary);font-weight:600;box-shadow:0 1px 3px rgba(16,24,40,.14)}
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
-  @media(max-width:720px){.grid2{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}}
+  @media(max-width:720px){.grid2{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}.prov-row{grid-template-columns:1fr 1fr}.prov-row .icon-btn{grid-column:1/-1;justify-self:end}}
 </style>
 </head>
 <body>
@@ -742,26 +751,33 @@
             </div>
           </div>
           <div id="splitNo">
-            <div class="note plain">Liquidación <b>100% al comercio</b>, a la cuenta dada de alta en Assistant.</div>
-            <div class="acct"><span class="dotk"></span>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</div>
+            <div class="subcard">
+              <div class="sc-head">Comercio</div>
+              <div class="sc-body">
+                <div class="field" style="margin-bottom:0"><label>Selecciona la cuenta del comercio a la que se dispersa.</label>
+                  <select disabled><option>BBVA · CLABE ••••&nbsp;7731</option></select>
+                </div>
+              </div>
+            </div>
           </div>
           <div id="splitSi" style="display:none">
-            <!-- Destino fijo: cuenta(s) del comercio -->
-            <div class="row-inline" style="margin-top:6px">
-              <div><div class="lbl">Cuenta del comercio</div><p class="mini">Selecciona la cuenta del comercio a la que se dispersa.</p></div>
-            </div>
-            <div class="dest">
-              <div class="dest-top"><b>Comercio</b></div>
-              <div class="field" style="margin-bottom:0"><label>Cuenta bancaria del comercio</label>
-                <select><option>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</option><option>BBVA · CLABE ••••&nbsp;3390</option></select>
+            <!-- Destino: cuenta del comercio -->
+            <div class="subcard">
+              <div class="sc-head">Comercio</div>
+              <div class="sc-body">
+                <div class="field" style="margin-bottom:0"><label>Selecciona la cuenta del comercio a la que se dispersa.</label>
+                  <select><option>Cuenta del comercio (Assistant) · CLABE ••••&nbsp;4821</option><option>BBVA · CLABE ••••&nbsp;3390</option></select>
+                </div>
               </div>
             </div>
             <!-- Destinos: proveedores de servicios (uno o más) -->
-            <div class="row-inline" style="margin-top:18px">
-              <div><div class="lbl">Proveedores de servicios</div><p class="mini">Agrega uno o más proveedores de servicios del catálogo y la cuenta a la que se dispersa.</p></div>
-              <button class="btn-link" onclick="addDest()" style="flex:none;margin-left:auto">＋ Agregar proveedor de servicios</button>
+            <div class="subcard">
+              <div class="sc-head">Proveedor de servicios</div>
+              <div class="sc-body">
+                <div class="dest-list" id="destList" style="margin-top:0"></div>
+                <button class="btn-link" onclick="addDest()" style="margin-top:14px">＋ Agregar otro proveedor</button>
+              </div>
             </div>
-            <div class="dest-list" id="destList"></div>
           </div>
         </div>
       </div></div>
@@ -1197,16 +1213,15 @@
   let dN=0;
   function addDest(){
     dN++;const id='d'+dN;const psOpts=PS2.map(p=>`<option>${p}</option>`).join('');
-    const el=document.createElement('div');el.className='dest';el.id=id;
-    el.innerHTML=`<div class="dest-top"><b>Proveedor de servicios ${$('#destList').children.length+1}</b>
-        <button class="icon-btn" aria-label="Quitar proveedor de servicios" onclick="delDest('${id}')">${ICON_TRASH}</button></div>
-      <div class="grid2">
-        <div class="field"><label>Proveedor de servicios (catálogo)</label><select><option>Selecciona…</option>${psOpts}</select></div>
-        <div class="field"><label>Cuenta bancaria del PS</label><select><option>Selecciona cuenta…</option><option>BBVA · CLABE ••••&nbsp;7731</option><option>Banorte · CLABE ••••&nbsp;0192</option></select></div>
-      </div>`;
+    const n=$('#destList').children.length+1;
+    const el=document.createElement('div');el.className='prov-row';el.id=id;
+    el.innerHTML=`
+      <div class="field"><label>Proveedor de servicios</label><select><option>Selecciona…</option>${psOpts}</select></div>
+      <div class="field"><label>Cuenta bancaria del Proveedor ${n}</label><select><option>Selecciona cuenta…</option><option>BBVA · CLABE ••••&nbsp;7731</option><option>Banorte · CLABE ••••&nbsp;0192</option></select></div>
+      <button class="icon-btn" aria-label="Quitar proveedor de servicios" onclick="delDest('${id}')">${ICON_TRASH}</button>`;
     $('#destList').appendChild(el);updateEff();
   }
-  function delDest(id){document.getElementById(id).remove();[...$('#destList').children].forEach((c,i)=>c.querySelector('.dest-top b').textContent='Proveedor de servicios '+(i+1));updateEff();}
+  function delDest(id){document.getElementById(id).remove();[...$('#destList').children].forEach((c,i)=>{const lab=c.querySelectorAll('.field label')[1];if(lab)lab.textContent='Cuenta bancaria del Proveedor '+(i+1);});updateEff();}
   function updateEff(){
     if(!$('#chkLiq').checked){$('#eff').innerHTML='Liquidación deshabilitada para este comercio.';return;}
     let t='Al guardar se crean/actualizan las <b>wallets de ventas del comercio</b> (solo si el comercio está Activo).';
