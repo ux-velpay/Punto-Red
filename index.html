@@ -55,10 +55,23 @@ body{
 }
 h1,h2,h3,h4{font-family:'Work Sans',system-ui,sans-serif;color:var(--text-strong);margin:0;font-weight:500}
   b,strong{font-weight:500}
-b,strong{font-weight:500}
 a{color:inherit}
 button{font-family:inherit;cursor:pointer}
 :focus-visible{outline:2px solid var(--action-primary);outline-offset:2px;border-radius:6px}
+/* Paginación numerada */
+.tbl-foot{display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px;gap:14px;flex-wrap:wrap}
+.pager{display:flex;align-items:center;gap:4px}
+.pg-arrow,.pg-num{height:34px;min-width:34px;padding:0 6px;display:inline-grid;place-items:center;border:none;background:none;border-radius:8px;font-family:inherit;font-size:14px;color:var(--action-secondary)}
+.pg-arrow svg{width:20px;height:20px}
+.pg-num:hover,.pg-arrow:hover:not(:disabled){background:var(--bg-subtle)}
+.pg-num.on{background:var(--action-primary);color:#fff;font-weight:500}
+.pg-arrow:disabled{color:var(--tertiary-border);cursor:default}
+.pg-dots{min-width:22px;text-align:center;color:var(--text-muted)}
+/* Tabs (perfil) */
+.tabs{display:flex;gap:28px;border-bottom:1px solid var(--border);margin-bottom:22px;flex-wrap:wrap}
+.tab{background:none;border:none;padding:0 0 12px;font-family:inherit;font-size:15px;font-weight:500;color:var(--text-muted);position:relative}
+.tab.on{color:var(--action-secondary)}
+.tab.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;background:var(--action-primary);border-radius:2px}
 
 /* ---------- Layout ---------- */
 .app{display:flex;min-height:100vh}
@@ -482,9 +495,13 @@ tbody tr:hover{background:#fbfaff}
           <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Destino</th><th></th></tr></thead>
           <tbody id="txBody"></tbody>
         </table></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
+        <div class="tbl-foot">
           <span>Mostrando 6 de 1,284 operaciones</span>
-          <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
+          <div class="pager">
+            <button class="pg-arrow" aria-label="Anterior" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
+            <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><button class="pg-num">4</button><button class="pg-num">5</button><span class="pg-dots">…</span><button class="pg-num">6</button>
+            <button class="pg-arrow" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+          </div>
         </div></div>
         <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La columna <b>Destino</b> indica a dónde se liquida cada transacción: <b>Comercio</b> o <b>Proveedor de Servicios</b>, según el Split Payments configurado del comercio.</p>
       </section>
@@ -519,8 +536,8 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== CONCILIACIÓN ===== -->
       <section class="view" id="view-conciliacion">
+        <h3 style="margin-bottom:14px">Conciliaciones recientes</h3>
         <div class="card tbl-card">
-          <div style="padding:18px 22px 4px"><h3>Conciliaciones recientes</h3></div>
           <div class="tbl-scroll"><table>
             <thead><tr><th>Archivo</th><th>Periodo</th><th>Cargado</th><th>Estado</th><th>Diferencias</th><th></th></tr></thead>
             <tbody id="conBody"></tbody>
@@ -575,7 +592,6 @@ tbody tr:hover{background:#fbfaff}
       <section class="view" id="view-ps-transacciones">
         <div class="toolbar">
           <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por comercio, correo, teléfono o n° de operación"></div>
-          <span class="pill" style="color:var(--action-secondary);border-color:#d8ccff;background:#f3f0ff"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color:var(--action-primary)"><path d="M12 2l3 7h7l-5.5 4 2 7L12 17l-6.5 5 2-7L2 9h7z"/></svg> Destino del saldo: Proveedor de Servicios <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px"><path d="M6 9l6 6 6-6"/></svg></span>
           <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg> 01/07/26 – 31/07/26</span>
           <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
         </div>
@@ -583,17 +599,26 @@ tbody tr:hover{background:#fbfaff}
           <thead><tr><th>Fecha / hora</th><th>N° operación</th><th>Comercio</th><th>Monto</th><th>Tarjeta</th><th>Estatus</th><th>Destino</th><th></th></tr></thead>
           <tbody id="psTxBody"></tbody>
         </table></div>
-        <div style="display:flex;justify-content:space-between;align-items:center;padding:14px 20px;border-top:1px solid var(--border);color:var(--text-muted);font-size:13px">
+        <div class="tbl-foot">
           <span>Mostrando 4 de 318 operaciones con destino PS</span>
-          <div style="display:flex;gap:8px"><button class="btn btn-ghost btn-sm" disabled>Anterior</button><button class="btn btn-ghost btn-sm">Siguiente</button></div>
+          <div class="pager">
+            <button class="pg-arrow" aria-label="Anterior" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
+            <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><button class="pg-num">4</button><button class="pg-num">5</button><span class="pg-dots">…</span><button class="pg-num">6</button>
+            <button class="pg-arrow" aria-label="Siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+          </div>
         </div></div>
         <p style="color:var(--text-faint);font-size:12px;margin-top:12px">El PS solo ve las transacciones cuyo <b>destino_fondo</b> es Proveedor de Servicios (BR-019).</p>
       </section>
 
       <!-- ===== PS · MI PERFIL ===== -->
       <section class="view" id="view-ps-perfil">
-        <div class="two-col" style="align-items:start">
-          <div class="card panel">
+        <div class="tabs">
+          <button class="tab on" data-ptab="datos" onclick="perfilTab(this)">Datos del proveedor</button>
+          <button class="tab" data-ptab="distribuidor" onclick="perfilTab(this)">Distribuidor relacionado</button>
+          <button class="tab" data-ptab="seguridad" onclick="perfilTab(this)">Seguridad</button>
+        </div>
+        <div class="ptab-panel" id="ptab-datos">
+          <div class="card panel" style="max-width:680px">
             <h3>Datos del proveedor</h3>
             <div class="sec-title">General</div>
             <div class="field"><span class="k">Razón social</span><span class="v">Servicios TecnoRed S.A. de C.V.</span></div>
@@ -605,17 +630,19 @@ tbody tr:hover{background:#fbfaff}
             <div class="field"><span class="k">Correo</span><span class="v">contacto@tecnored.mx</span></div>
             <div class="field"><span class="k">Teléfono</span><span class="v mono">+52 81 2233 4455</span></div>
           </div>
-          <div>
-            <div class="card panel" style="margin-bottom:18px">
-              <h3>Distribuidor relacionado</h3><div class="cap">Distribuidor al que pertenece tu figura dentro de la red Velpay.</div>
-              <div class="field"><span class="k">Distribuidor</span><span class="v">Punto Red S.A. de C.V.</span></div>
-              <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
-              <div class="field"><span class="k">Relación</span><span class="v">PS externo asignado</span></div>
-            </div>
-            <div class="card panel">
-              <h3>Seguridad</h3><div class="cap">Última contraseña actualizada hace 1 mes.</div>
-              <button class="btn btn-ghost" style="margin-top:6px">Cambiar contraseña</button>
-            </div>
+        </div>
+        <div class="ptab-panel" id="ptab-distribuidor" hidden>
+          <div class="card panel" style="max-width:680px">
+            <h3>Distribuidor relacionado</h3><div class="cap">Distribuidor al que pertenece tu figura dentro de la red Velpay.</div>
+            <div class="field"><span class="k">Distribuidor</span><span class="v">Punto Red S.A. de C.V.</span></div>
+            <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
+            <div class="field"><span class="k">Relación</span><span class="v">PS externo asignado</span></div>
+          </div>
+        </div>
+        <div class="ptab-panel" id="ptab-seguridad" hidden>
+          <div class="card panel" style="max-width:680px">
+            <h3>Seguridad</h3><div class="cap">Última contraseña actualizada hace 1 mes.</div>
+            <button class="btn btn-ghost" style="margin-top:6px">Cambiar contraseña</button>
           </div>
         </div>
       </section>
@@ -802,6 +829,7 @@ $("#psComerciosBody").innerHTML=psComercios.map((r,i)=>`<tr>
   <td><button class="kebab">⋯</button></td></tr>`).join("");
 function toggleKey(i){const el=$("#k"+i);const on=el.dataset.shown==="1";el.textContent=on?maskKey(el.dataset.full):el.dataset.full;el.dataset.shown=on?"0":"1";}
 function copyKey(b,i){const el=$("#k"+i);navigator.clipboard&&navigator.clipboard.writeText(el.dataset.full);const o=b.innerHTML;b.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#188a4a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';setTimeout(()=>b.innerHTML=o,1200);}
+function perfilTab(el){const root=el.closest(".view");root.querySelectorAll(".tab").forEach(t=>t.classList.toggle("on",t===el));const id=el.dataset.ptab;root.querySelectorAll(".ptab-panel").forEach(p=>p.hidden=(p.id!=="ptab-"+id));}
 
 $("#psTxBody").innerHTML=psTx.map(r=>`<tr>
   <td class="mono">${r[0]}</td><td class="mono sub-2">${r[1]}</td><td>${r[2]}</td>
