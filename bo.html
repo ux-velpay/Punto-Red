@@ -264,7 +264,7 @@
 
   /* Modal Configuración (dos paneles) */
   .cfg{background:var(--surface);width:100%;max-width:1000px;height:min(80vh,720px);border-radius:var(--radius-lg);box-shadow:var(--shadow-modal);display:flex;overflow:hidden;position:relative;margin:auto}
-  .cfg-side{width:250px;flex:none;background:#f9fafb;border-right:1px solid var(--border);padding:26px 16px}
+  .cfg-side{width:250px;flex:none;background:#f9fafb;border-right:1px solid var(--border);padding:40px 16px 26px}
   .grp{margin-bottom:22px}
   .grp .glabel{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 10px 8px}
   .grp .item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:14px;color:var(--text-primary);cursor:pointer;margin-bottom:2px}
@@ -275,7 +275,7 @@
   .cfg-body{flex:1;min-width:0;overflow-y:auto;padding:28px 32px 90px}
   .cfg-body h2{font-family:'Gotham','Poppins';font-size:22px;font-weight:500;color:var(--navy);margin:0 0 22px}
   .cfg .x{position:absolute;top:18px;right:18px}
-  .cfg-card{border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
+  .cfg-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
   .cfg-card .head{background:var(--surface-sunken);padding:14px 18px;font-family:'Gotham','Poppins';font-weight:500;font-size:15px;color:var(--navy);border-bottom:1px solid var(--border)}
   .cfg-card .body{padding:16px 18px}
   .chk{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--text-primary);cursor:pointer;user-select:none}
@@ -308,7 +308,7 @@
   .toast ul{margin:8px 0 0;padding-left:18px}
 
   /* ===== Propuesta B · Alta de distribuidor en PANTALLA COMPLETA ===== */
-  #view-distfull{background:var(--bg-page)}
+  #view-distfull,#view-cfgfull{background:var(--bg-page)}
   .df-wrap{display:flex;min-height:calc(100vh - 64px)}
   .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px}
   .df-back{display:inline-flex;align-items:center;color:var(--navy);cursor:pointer}
@@ -625,7 +625,7 @@
   <div class="df-wrap">
     <aside class="df-side">
       <span class="df-back" onclick="closeDistFull()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4.5L3 12L10.5 19.5M3 12L21 12"/></svg></span>
-      <div class="df-side-title">Agregar distribuidor</div>
+      <div class="df-side-title" id="dfSideTitle">Agregar distribuidor</div>
       <div class="df-nav-group">Detalle</div>
       <div class="df-tree">
         <div class="df-item active" onclick="dfTree(this)">Distribuidor</div>
@@ -634,7 +634,7 @@
     </aside>
     <div class="df-main">
       <div class="df-head">
-        <h1>Detalle del distribuidor</h1>
+        <h1 id="dfMainTitle">Detalle del distribuidor</h1>
         <div class="df-actions">
           <button class="btn btn-ghost" onclick="closeDistFull()">Cancelar</button>
           <button class="btn btn-navy" onclick="saveDistFull()">Guardar</button>
@@ -695,22 +695,6 @@
   </div>
 </div>
 
-<!-- ============ MODAL: Alta de distribuidores ============ -->
-<div class="backdrop" id="backdrop-alta">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mt">
-    <div class="modal-head">
-      <div><h2 class="modal-title" id="mt">Agregar distribuidores
-        <small>Da de alta uno o más distribuidores.</small></h2></div>
-      <button class="x" aria-label="Cerrar" onclick="closeAlta()">✕</button>
-    </div>
-    <div id="dist-list"></div>
-    <div class="footer">
-      <div class="willcreate" id="summary"></div>
-      <div class="side"><button class="btn btn-ghost" onclick="closeAlta()">Cancelar</button><button class="btn btn-primary" onclick="saveAlta()">Guardar</button></div>
-    </div>
-  </div>
-</div>
-
 <!-- ============ MODAL: Agregar cuenta bancaria (pantalla completa) ============ -->
 <div class="backdrop" id="backdrop-acc">
   <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="accMt">
@@ -740,16 +724,25 @@
   </div>
 </div>
 
-<!-- ============ MODAL: Configuración (Config de Liquidación) ============ -->
-<div class="backdrop" id="backdrop-cfg">
-  <div class="cfg" role="dialog" aria-modal="true" aria-label="Configuración del comercio">
-    <button class="x" aria-label="Cerrar" onclick="closeCfg()">✕</button>
+<!-- ============ VISTA: Configuración (Config de Liquidación) · PANTALLA COMPLETA ============ -->
+<div id="view-cfgfull" style="display:none">
+  <div class="df-wrap">
     <aside class="cfg-side">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:26px">
+        <span class="df-back" onclick="closeCfg()" style="color:var(--text-secondary)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>
+        <span style="font-family:'Gotham','Poppins',sans-serif;font-size:19px;font-weight:500;color:var(--text-primary)">Configuración</span>
+      </div>
       <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.658674 3.84079C1.53735 4.71947 2.96198 4.71947 3.84065 3.84079C3.94863 3.73282 4.04334 3.6166 4.12477 3.49416C4.52788 4.10033 5.21712 4.49983 5.99966 4.49983C6.78231 4.49983 7.47163 4.10023 7.87472 3.49392C7.9562 3.61646 8.05096 3.73277 8.15901 3.84082C9.03769 4.7195 10.4623 4.7195 11.341 3.84082C12.2197 2.96214 12.2197 1.53752 11.341 0.65884L11.1215 0.43934C10.8402 0.158035 10.4587 0 10.0608 0H1.93881C1.54098 0 1.15945 0.158035 0.878148 0.43934L0.658674 0.658813C-0.220006 1.53749 -0.220006 2.96211 0.658674 3.84079Z"/><path d="M0.749664 5.27417C1.82066 5.80551 3.11511 5.73296 4.12509 5.05653C4.6609 5.41505 5.3057 5.62483 5.99966 5.62483C6.69369 5.62483 7.33854 5.41501 7.87439 5.05643C8.88429 5.73291 10.1787 5.80555 11.2497 5.27436V10.875H11.4372C11.7478 10.875 11.9997 11.1268 11.9997 11.4375C11.9997 11.7482 11.7478 12 11.4372 12H8.06216C7.7515 12 7.49966 11.7482 7.49966 11.4375V8.8125C7.49966 8.50184 7.24782 8.25 6.93716 8.25H5.06216C4.7515 8.25 4.49966 8.50184 4.49966 8.8125V11.4375C4.49966 11.7482 4.24782 12 3.93716 12H0.562164C0.251504 12 -0.000335693 11.7482 -0.000335693 11.4375C-0.000335693 11.1268 0.251504 10.875 0.562164 10.875H0.749664V5.27417Z"/></svg> General</div><div class="item on">Operativas</div></div>
       <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.699997 2.97483C1.13872 2.6453 1.68405 2.45002 2.275 2.45002H11.725C12.3159 2.45002 12.8613 2.6453 13.3 2.97484C13.2999 2.10507 12.5948 1.40002 11.725 1.40002H2.275C1.40521 1.40002 0.700101 2.10507 0.699997 2.97483Z"/><path d="M0.699997 5.07483C1.13872 4.7453 1.68405 4.55002 2.275 4.55002H11.725C12.3159 4.55002 12.8613 4.7453 13.3 5.07484C13.2999 4.20507 12.5948 3.50002 11.725 3.50002H2.275C1.40521 3.50002 0.700101 4.20507 0.699997 5.07483Z"/><path d="M4.9 5.60002C5.2866 5.60002 5.6 5.91343 5.6 6.30002C5.6 7.07322 6.2268 7.70002 7 7.70002C7.7732 7.70002 8.4 7.07322 8.4 6.30002C8.4 5.91343 8.7134 5.60002 9.1 5.60002H11.725C12.5948 5.60002 13.3 6.30518 13.3 7.17502V11.025C13.3 11.8949 12.5948 12.6 11.725 12.6H2.275C1.40515 12.6 0.699997 11.8949 0.699997 11.025V7.17502C0.699997 6.30518 1.40515 5.60002 2.275 5.60002H4.9Z"/></svg> Condiciones</div><div class="item">Otros servicios</div><div class="item">Métodos de pago</div></div>
     </aside>
-    <div class="cfg-body">
-      <h2>Operativas</h2>
+    <div class="df-main">
+      <div class="df-head">
+        <h1>Operativas</h1>
+        <div class="df-actions">
+          <button class="btn btn-ghost" onclick="closeCfg()">Cancelar</button>
+          <button class="btn btn-navy" onclick="saveCfg()">Guardar</button>
+        </div>
+      </div>
       <div class="cfg-card"><div class="head">Facturación</div><div class="body"><label class="chk"><input type="checkbox"> Habilitar Facturación</label></div></div>
       <div class="cfg-card"><div class="head">Liquidación</div><div class="body">
         <label class="chk"><input type="checkbox" id="chkLiq" checked onchange="toggleLiq()"> Habilitar Liquidación</label>
@@ -792,10 +785,7 @@
           </div>
         </div>
       </div></div>
-    </div>
-    <div class="cfg-footer">
-      <div class="eff" id="eff"></div>
-      <div class="side"><button class="btn btn-ghost" onclick="closeCfg()">Cancelar</button><button class="btn btn-primary" onclick="saveCfg()">Guardar</button></div>
+      <div class="eff" id="eff" style="margin-top:16px;font-size:12.5px;color:var(--text-secondary);max-width:640px;line-height:1.5"></div>
     </div>
   </div>
 </div>
@@ -828,8 +818,7 @@
     const c=$('#distCount'); if(c) c.textContent=mode==='dist'?'Mostrando 46 resultados':'Mostrando 12 resultados';
     $('#moduleTitle').textContent=mode==='dist'?'Listado de distribuidores':'Listado de proveedores de servicios';
     const addSvg=`<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg>`;
-    const full=mode==='dist'?`<button class="btn btn-ghost" onclick="openDistFull()" title="Propuesta B · pantalla completa">Pantalla completa</button>`:'';
-    $('#moduleAction').innerHTML=`<div style="display:flex;gap:12px">${full}<button class="btn btn-primary" onclick="openAlta('${mode}')">${addSvg}Agregar</button></div>`;
+    $('#moduleAction').innerHTML=`<button class="btn btn-primary" onclick="openDistFull('${mode}')">${addSvg}Agregar</button>`;
   }
   function openComercio(name){
     $('#comercioName').textContent=name||'EDIT 38 COPAYMENT';
@@ -936,13 +925,8 @@
   /* ============ MODAL: Alta de distribuidores ============ */
   const backdropAlta=$('#backdrop-alta');
   let altaMode='dist';
-  function openAlta(mode){
-    altaMode=mode||'dist';const isDist=altaMode==='dist';
-    $('#mt').innerHTML=(isDist?'Agregar distribuidores':'Agregar proveedores de servicios')+`<small>${isDist?'Da de alta uno o más distribuidores.':'Da de alta uno o más proveedores de servicios.'}</small>`;
-    distList.innerHTML='';addDistribuidor();
-    backdropAlta.style.display='flex';backdropAlta.scrollTop=0;
-  }
-  function closeAlta(){backdropAlta.style.display='none';}
+  function openAlta(mode){openDistFull(mode);}
+  function closeAlta(){}
 
   const distList=$('#dist-list');
   let distSeq=0, psSeq=0;
@@ -1214,7 +1198,6 @@
     const noun=altaMode==='dist'?'distribuidor(es)':'proveedor(es) de servicios';
     $('#summary').innerHTML=`Se dará(n) de alta <b>${nd}</b> ${noun}. Al guardar se crean las wallets correspondientes y se envía activación por <b>correo + OTP</b>.`;
   }
-  addDistribuidor();
   function saveAlta(){
     closeAlta();
     const nd=distList.children.length;
@@ -1224,8 +1207,8 @@
 
   /* ============ MODAL: Configuración (Config de Liquidación) ============ */
   const backdropCfg=$('#backdrop-cfg');
-  function openCfg(){backdropCfg.style.display='flex';}
-  function closeCfg(){backdropCfg.style.display='none';}
+  function openCfg(){document.querySelectorAll('.page').forEach(p=>p.style.display='none');$('#view-distfull').style.display='none';$('#view-cfgfull').style.display='block';window.scrollTo({top:0});}
+  function closeCfg(){$('#view-cfgfull').style.display='none';$('#view-comercio').style.display='block';window.scrollTo({top:0});}
   function toggleLiq(){$('#splitBox').style.display=$('#chkLiq').checked?'block':'none';updateEff();}
   let split=false;
   function setSplit(v){
@@ -1256,9 +1239,13 @@
   function saveCfg(){closeCfg();toast('<b>Configuración de liquidación guardada.</b>');}
 
   /* ============ VISTA: Alta de distribuidor · Pantalla completa (Propuesta B) ============ */
-  function openDistFull(){
+  function openDistFull(mode){
+    altaMode=mode||altaMode||'dist';const isDist=altaMode==='dist';
     document.querySelectorAll('.page').forEach(p=>p.style.display='none');
+    $('#view-cfgfull').style.display='none';
     $('#view-distfull').style.display='block';
+    $('#dfSideTitle').textContent=isDist?'Agregar distribuidor':'Agregar proveedor de servicios';
+    $('#dfMainTitle').textContent=isDist?'Detalle del distribuidor':'Detalle del proveedor de servicios';
     // inyecta el ícono de basura en la fila de rango estática (ICON_TRASH es JS)
     document.querySelectorAll('.df-range-rows .icon-btn:empty').forEach(b=>b.innerHTML=ICON_TRASH);
     const list=document.querySelector('#dfCards .df-card .df-acc-list');
