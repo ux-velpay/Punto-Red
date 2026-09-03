@@ -724,6 +724,41 @@
   </div>
 </div>
 
+<!-- ============ MODAL: Eliminar cuenta principal — advertencia ============ -->
+<div class="backdrop" id="backdrop-del-acc-warn">
+  <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="delAccWarnTitle">
+    <div class="modal-head">
+      <div style="display:flex;align-items:center;gap:12px">
+        <span style="display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--status-error-bg);flex:none">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--status-error)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+        </span>
+        <h2 class="modal-title" id="delAccWarnTitle">Eliminar cuenta principal</h2>
+      </div>
+      <button class="x" aria-label="Cerrar" onclick="closeDelAccWarn()">✕</button>
+    </div>
+    <div style="background:var(--status-error-bg);border:1px solid #f5c6c6;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#7a1f1f;line-height:1.5">
+      Esta es la <b>cuenta principal</b> del distribuidor. Al eliminarla, las liquidaciones y dispersiones quedarán sin una cuenta destino asignada.
+    </div>
+    <div id="delAccSelRow">
+      <div class="field">
+        <label>Nueva cuenta principal <span class="req">*</span></label>
+        <select id="delAccNewPrincipal"></select>
+      </div>
+      <p style="font-size:13px;color:var(--text-secondary);margin:4px 0 0;line-height:1.4">La cuenta seleccionada se asignará automáticamente como principal.</p>
+    </div>
+    <div id="delAccNoOthers" style="display:none;font-size:14px;color:var(--text-secondary);background:var(--surface-sunken);border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.5">
+      No hay otras cuentas registradas. Puedes eliminarla y agregar una nueva cuenta principal posteriormente.
+    </div>
+    <div class="footer">
+      <span></span>
+      <div class="side">
+        <button class="btn btn-ghost" onclick="closeDelAccWarn()">Cancelar</button>
+        <button class="btn" style="background:var(--status-error);color:#fff;border:none;box-shadow:0 2px 8px rgba(214,69,69,.3)" onclick="confirmDelAccWarn()">Eliminar cuenta</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ============ VISTA: Configuración (Config de Liquidación) · PANTALLA COMPLETA ============ -->
 <div id="view-cfgfull" style="display:none">
   <div class="df-wrap">
@@ -1115,8 +1150,9 @@
   function delAcc(did,id){
     const list=document.getElementById(id).closest('.acc-list');
     if(list.children.length<=1)return; // debe quedar al menos una
-    const c=document.getElementById(id);const wasDef=c.dataset.default==='1';c.remove();
-    if(wasDef){const first=list.firstElementChild;if(first){first.dataset.default='1';refreshAcc(first.id);}}
+    const c=document.getElementById(id);
+    if(c.dataset.default==='1'){openDelAccWarn(c,list,'alta');return;}
+    c.remove();
     renumberAccList(list);
   }
   function renumberAccList(list){
@@ -1315,10 +1351,9 @@
   }
   function dfAccDel(btn){
     const el=btn.closest('.acc-card'),list=el.closest('.df-acc-list');
-    const wasDef=JSON.parse(el.dataset.acc).isDef;el.remove();
-    if(wasDef&&list.firstElementChild){
-      const c=list.firstElementChild,o=JSON.parse(c.dataset.acc);
-      o.isDef=true;c.dataset.acc=JSON.stringify(o);renderDfAcc(c);}
+    const d=JSON.parse(el.dataset.acc);
+    if(d.isDef){openDelAccWarn(el,list,'df');return;}
+    el.remove();
   }
   function addDfDist(){
     const cards=$('#dfCards'),c=cards.firstElementChild.cloneNode(true);
@@ -1337,6 +1372,61 @@
   function addDfSub(){
     document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',/sub/i.test(i.textContent)));
     toast('<b>Sub-afiliado agregado</b><ul><li>Captura sus datos, cuentas y esquema de comisión</li></ul>');
+  }
+
+  /* ---- Modal: Eliminar cuenta principal ---- */
+  let _delWarnCard=null,_delWarnList=null,_delWarnCtx=null;
+  function openDelAccWarn(card,list,ctx){
+    _delWarnCard=card;_delWarnList=list;_delWarnCtx=ctx;
+    const others=[...list.children].filter(c=>c!==card);
+    const sel=$('#delAccNewPrincipal');
+    sel.innerHTML='';
+    if(others.length===0){
+      $('#delAccSelRow').style.display='none';
+      $('#delAccNoOthers').style.display='block';
+    } else {
+      $('#delAccSelRow').style.display='block';
+      $('#delAccNoOthers').style.display='none';
+      others.forEach((c,i)=>{
+        const opt=document.createElement('option');
+        opt.value=i;
+        if(ctx==='df'){
+          const d=JSON.parse(c.dataset.acc);
+          opt.textContent=`${d.banco||'Banco'} · CLABE ••••${String(d.clabe||'').slice(-4)||'??'}`;
+        } else {
+          const banco=c.querySelector('.f-banco')?.value||'—';
+          const clabe=c.querySelector('.f-clabe')?.value||'';
+          opt.textContent=`${banco} · CLABE ••••${String(clabe).slice(-4)||'??'}`;
+        }
+        sel.appendChild(opt);
+      });
+    }
+    $('#backdrop-del-acc-warn').style.display='flex';
+  }
+  function closeDelAccWarn(){$('#backdrop-del-acc-warn').style.display='none';}
+  function confirmDelAccWarn(){
+    const others=[..._delWarnList.children].filter(c=>c!==_delWarnCard);
+    if(others.length>0){
+      const idx=parseInt($('#delAccNewPrincipal').value);
+      const newPrincipal=others[idx];
+      if(_delWarnCtx==='df'){
+        others.forEach(c=>{
+          const o=JSON.parse(c.dataset.acc);
+          o.isDef=(c===newPrincipal);
+          c.dataset.acc=JSON.stringify(o);
+          renderDfAcc(c);
+        });
+      } else {
+        [..._delWarnList.children].forEach(c=>{
+          if(c===_delWarnCard)return;
+          c.dataset.default=(c===newPrincipal)?'1':'0';
+          refreshAcc(c.id);
+        });
+      }
+    }
+    _delWarnCard.remove();
+    if(_delWarnCtx==='alta')renumberAccList(_delWarnList);
+    closeDelAccWarn();
   }
 
   /* ============ Toast compartido ============ */
