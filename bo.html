@@ -362,6 +362,16 @@
 
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
   @media(max-width:720px){.grid2{grid-template-columns:1fr}.br-grid{grid-template-columns:1fr}.nav-links{display:none}.prov-row{grid-template-columns:1fr 1fr}.prov-row .icon-btn{grid-column:1/-1;justify-self:end}}
+
+  /* Toggle switch */
+  .sw{display:inline-flex;align-items:center;gap:0;cursor:pointer}
+  .sw input{position:absolute;opacity:0;width:0;height:0}
+  .sw-track{width:38px;height:22px;border-radius:11px;background:#d1d5db;transition:background .18s;display:flex;align-items:center;padding:0 3px;flex:none}
+  .sw input:checked+.sw-track{background:var(--accent)}
+  .sw-thumb{width:16px;height:16px;border-radius:50%;background:#fff;transition:transform .18s;box-shadow:0 1px 3px rgba(0,0,0,.25)}
+  .sw input:checked+.sw-track .sw-thumb{transform:translateX(16px)}
+  .com-toggle-row{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
+  .com-toggle-row span{font-size:14px;color:var(--text-secondary)}
 </style>
 </head>
 <body>
@@ -671,17 +681,23 @@
           <div class="df-row">
             <div class="df-row-label">Esquema de comisión</div>
             <div class="df-row-fields">
-              <div class="radios" style="margin-bottom:16px">
-                <label class="radio"><input type="radio" name="dfCom" checked> Margen bruto</label>
-                <label class="radio"><input type="radio" name="dfCom"> Comisión variable</label>
+              <div class="com-toggle-row">
+                <span>Configurar esquema de comisión</span>
+                <label class="sw"><input type="checkbox" checked onchange="this.closest('.df-row-fields').querySelector('.com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
               </div>
-              <div class="df-ranges">
-                <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
-                <div class="df-range-rows">
-                  <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+              <div class="com-config">
+                <div class="radios" style="margin-bottom:16px">
+                  <label class="radio"><input type="radio" name="dfCom" checked> Margen bruto</label>
+                  <label class="radio"><input type="radio" name="dfCom"> Comisión variable</label>
                 </div>
+                <div class="df-ranges">
+                  <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+                  <div class="df-range-rows">
+                    <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+                  </div>
+                </div>
+                <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
               </div>
-              <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
             </div>
           </div>
         </div>
@@ -728,12 +744,7 @@
 <div class="backdrop" id="backdrop-del-acc-warn">
   <div class="modal sm" role="dialog" aria-modal="true" aria-labelledby="delAccWarnTitle">
     <div class="modal-head">
-      <div style="display:flex;align-items:center;gap:12px">
-        <span style="display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:var(--status-error-bg);flex:none">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="var(--status-error)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-        </span>
-        <h2 class="modal-title" id="delAccWarnTitle">Eliminar cuenta principal</h2>
-      </div>
+      <div><h2 class="modal-title" id="delAccWarnTitle">Eliminar cuenta principal</h2></div>
       <button class="x" aria-label="Cerrar" onclick="closeDelAccWarn()">✕</button>
     </div>
     <div style="background:var(--status-error-bg);border:1px solid #f5c6c6;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#7a1f1f;line-height:1.5">
@@ -753,7 +764,7 @@
       <span></span>
       <div class="side">
         <button class="btn btn-ghost" onclick="closeDelAccWarn()">Cancelar</button>
-        <button class="btn" style="background:var(--status-error);color:#fff;border:none;box-shadow:0 2px 8px rgba(214,69,69,.3)" onclick="confirmDelAccWarn()">Eliminar cuenta</button>
+        <button class="btn" style="background:var(--status-error);color:#fff;border:none;box-shadow:0 2px 8px rgba(214,69,69,.3)" onclick="confirmDelAccWarn()">Confirmar</button>
       </div>
     </div>
   </div>
@@ -987,22 +998,28 @@
       <div class="acc-sec">
         <div class="acc-sec-h" onclick="accToggle(this)"><span>Esquema de comisión</span><span class="chev">${CHEV}</span></div>
         <div class="acc-sec-body" style="display:none">
-          <div class="radios" style="margin-bottom:14px">
-            <label class="radio"><input type="radio" name="com-${id}" value="bruto" checked onchange="pickCom(this)"> Margen bruto</label>
-            <label class="radio"><input type="radio" name="com-${id}" value="var" onchange="pickCom(this)"> Comisión variable</label>
+          <div class="com-toggle-row">
+            <span>Configurar esquema de comisión</span>
+            <label class="sw"><input type="checkbox" checked onchange="this.closest('.acc-sec-body').querySelector('.com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
           </div>
-          <div class="brutoBox">
-            <div class="df-ranges one">
-              <div class="df-ranges-head"><div>Porcentaje fijo</div></div>
-              <div class="df-range-row"><div><input placeholder="0.0 %"></div></div>
+          <div class="com-config">
+            <div class="radios" style="margin-bottom:14px">
+              <label class="radio"><input type="radio" name="com-${id}" value="bruto" checked onchange="pickCom(this)"> Margen bruto</label>
+              <label class="radio"><input type="radio" name="com-${id}" value="var" onchange="pickCom(this)"> Comisión variable</label>
             </div>
-          </div>
-          <div class="varBox" style="display:none">
-            <div class="df-ranges">
-              <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
-              <div class="range-rows"></div>
+            <div class="brutoBox">
+              <div class="df-ranges one">
+                <div class="df-ranges-head"><div>Porcentaje fijo</div></div>
+                <div class="df-range-row"><div><input placeholder="0.0 %"></div></div>
+              </div>
             </div>
-            <div class="ranges-foot"><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button></div>
+            <div class="varBox" style="display:none">
+              <div class="df-ranges">
+                <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+                <div class="range-rows"></div>
+              </div>
+              <div class="ranges-foot"><button class="btn-link" onclick="addRange('${id}')">＋ Agregar rango</button></div>
+            </div>
           </div>
         </div>
       </div>`;
@@ -1216,7 +1233,11 @@
           <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Único en el sistema · activación OTP</span></div>
         </div>
         <div class="field"><label>Cuenta bancaria (CLABE)</label><input placeholder="18 dígitos"></div>
-        <div class="field" style="margin-bottom:0"><label>Esquema de comisión</label><select><option>Margen bruto (porcentaje fijo)</option><option>Comisión variable (por rango)</option></select></div>
+        <div class="com-toggle-row" style="margin-bottom:10px">
+          <span style="font-size:14px;font-weight:500;color:var(--text-primary)">Esquema de comisión</span>
+          <label class="sw"><input type="checkbox" checked onchange="this.closest('.ps-body-new').querySelector('.ps-com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+        </div>
+        <div class="ps-com-config field" style="margin-bottom:0"><select><option>Margen bruto (porcentaje fijo)</option><option>Comisión variable (por rango)</option></select></div>
       </div>`;
     list.appendChild(c);updateSummary();
   }
