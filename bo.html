@@ -749,21 +749,34 @@
     <div style="background:var(--status-error-bg);border:1px solid #f5c6c6;border-radius:10px;padding:14px 16px;margin-bottom:20px;font-size:14px;color:#7a1f1f;line-height:1.5">
       Esta es la <b>cuenta principal</b> del distribuidor. Al eliminarla, las liquidaciones y dispersiones quedarán sin una cuenta destino asignada.
     </div>
-    <div id="delAccSelRow">
-      <div class="field">
-        <label>Nueva cuenta principal <span class="req">*</span></label>
-        <select id="delAccNewPrincipal"></select>
-      </div>
-      <p style="font-size:13px;color:var(--text-secondary);margin:4px 0 0;line-height:1.4">La cuenta seleccionada se asignará automáticamente como principal.</p>
+    <div class="field">
+      <label>Nueva cuenta principal <span class="req">*</span></label>
+      <select id="delAccNewPrincipal"></select>
     </div>
-    <div id="delAccNoOthers" style="display:none;font-size:14px;color:var(--text-secondary);background:var(--surface-sunken);border:1px solid var(--border);border-radius:10px;padding:14px 16px;line-height:1.5">
-      No hay otras cuentas registradas. Puedes eliminarla y agregar una nueva cuenta principal posteriormente.
-    </div>
+    <p style="font-size:13px;color:var(--text-secondary);margin:4px 0 0;line-height:1.4">La cuenta seleccionada se asignará automáticamente como principal.</p>
     <div class="footer">
       <span></span>
       <div class="side">
         <button class="btn btn-ghost" onclick="closeDelAccWarn()">Cancelar</button>
         <button class="btn" style="background:var(--status-error);color:#fff;border:none;box-shadow:0 2px 8px rgba(214,69,69,.3)" onclick="confirmDelAccWarn()">Confirmar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Eliminar cuenta secundaria — confirmación ============ -->
+<div class="backdrop" id="backdrop-del-sec-acc">
+  <div class="modal sm" role="dialog" aria-modal="true">
+    <div class="modal-head">
+      <div><h2 class="modal-title">Eliminar cuenta bancaria</h2></div>
+      <button class="x" aria-label="Cerrar" onclick="closeDelSecAccWarn()">✕</button>
+    </div>
+    <p style="font-size:14px;color:var(--text-secondary);line-height:1.6;margin:0">¿Estás seguro de que deseas eliminar esta cuenta bancaria? Esta acción no se puede deshacer.</p>
+    <div class="footer">
+      <span></span>
+      <div class="side">
+        <button class="btn btn-ghost" onclick="closeDelSecAccWarn()">Cancelar</button>
+        <button class="btn btn-navy" onclick="confirmDelSecAccWarn()">Confirmar</button>
       </div>
     </div>
   </div>
@@ -1165,11 +1178,10 @@
   }
   function delAcc(did,id){
     const list=document.getElementById(id).closest('.acc-list');
-    if(list.children.length<=1)return; // debe quedar al menos una
+    if(list.children.length<=1)return;
     const c=document.getElementById(id);
     if(c.dataset.default==='1'){openDelAccWarn(c,list,'alta');return;}
-    c.remove();
-    renumberAccList(list);
+    openDelSecAccWarn(c,list,'alta');
   }
   function renumberAccList(list){
     [...list.children].forEach((c,i)=>{const n=c.querySelector('.acc-name');if(n)n.textContent='Cuenta '+(i+1);});
@@ -1371,9 +1383,10 @@
   }
   function dfAccDel(btn){
     const el=btn.closest('.acc-card'),list=el.closest('.df-acc-list');
+    if(list.children.length<=1){toast('Agrega otra cuenta bancaria antes de eliminar esta.');return;}
     const d=JSON.parse(el.dataset.acc);
     if(d.isDef){openDelAccWarn(el,list,'df');return;}
-    el.remove();
+    openDelSecAccWarn(el,list,'df');
   }
   function addDfDist(){
     const cards=$('#dfCards'),c=cards.firstElementChild.cloneNode(true);
@@ -1401,27 +1414,33 @@
     const others=[...list.children].filter(c=>c!==card);
     const sel=$('#delAccNewPrincipal');
     sel.innerHTML='';
-    if(others.length===0){
-      $('#delAccSelRow').style.display='none';
-      $('#delAccNoOthers').style.display='block';
-    } else {
-      $('#delAccSelRow').style.display='block';
-      $('#delAccNoOthers').style.display='none';
-      others.forEach((c,i)=>{
-        const opt=document.createElement('option');
-        opt.value=i;
-        if(ctx==='df'){
-          const d=JSON.parse(c.dataset.acc);
-          opt.textContent=`${d.banco||'Banco'} · CLABE ••••${String(d.clabe||'').slice(-4)||'??'}`;
-        } else {
-          const banco=c.querySelector('.f-banco')?.value||'—';
-          const clabe=c.querySelector('.f-clabe')?.value||'';
-          opt.textContent=`${banco} · CLABE ••••${String(clabe).slice(-4)||'??'}`;
-        }
-        sel.appendChild(opt);
-      });
-    }
+    others.forEach((c,i)=>{
+      const opt=document.createElement('option');
+      opt.value=i;
+      if(ctx==='df'){
+        const d=JSON.parse(c.dataset.acc);
+        opt.textContent=`${d.banco||'Banco'} · CLABE ••••${String(d.clabe||'').slice(-4)||'??'}`;
+      } else {
+        const banco=c.querySelector('.f-banco')?.value||'—';
+        const clabe=c.querySelector('.f-clabe')?.value||'';
+        opt.textContent=`${banco} · CLABE ••••${String(clabe).slice(-4)||'??'}`;
+      }
+      sel.appendChild(opt);
+    });
     $('#backdrop-del-acc-warn').style.display='flex';
+  }
+
+  /* Modal: Eliminar cuenta secundaria */
+  let _delSecCard=null,_delSecList=null,_delSecCtx=null;
+  function openDelSecAccWarn(card,list,ctx){
+    _delSecCard=card;_delSecList=list;_delSecCtx=ctx;
+    $('#backdrop-del-sec-acc').style.display='flex';
+  }
+  function closeDelSecAccWarn(){$('#backdrop-del-sec-acc').style.display='none';}
+  function confirmDelSecAccWarn(){
+    _delSecCard.remove();
+    if(_delSecCtx==='alta')renumberAccList(_delSecList);
+    closeDelSecAccWarn();
   }
   function closeDelAccWarn(){$('#backdrop-del-acc-warn').style.display='none';}
   function confirmDelAccWarn(){
