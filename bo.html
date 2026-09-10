@@ -310,11 +310,11 @@
   /* ===== Propuesta B · Alta de distribuidor en PANTALLA COMPLETA ===== */
   #view-distfull,#view-cfgfull{background:var(--bg-page)}
   .df-wrap{display:flex;min-height:calc(100vh - 64px)}
-  .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px}
+  .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px;position:sticky;top:0;height:calc(100vh - 64px);overflow-y:auto}
   .df-back{display:inline-flex;align-items:center;color:var(--navy);cursor:pointer}
   .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:500;color:var(--text-primary);margin:14px 0 26px}
   .df-nav-group{font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 8px 10px}
-  .df-tree{margin-left:8px;border-left:2px solid var(--border);padding-left:10px;display:flex;flex-direction:column;gap:4px}
+  .df-tree{margin-left:8px;padding-left:10px;display:flex;flex-direction:column;gap:4px}
   .df-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);padding:9px 12px;border-radius:9px;cursor:pointer}
   .df-item::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--border-strong);flex:none}
   .df-item:hover{background:var(--surface-sunken)}
@@ -341,6 +341,29 @@
   .df-ranges.one .df-ranges-head,.df-ranges.one .df-range-row{grid-template-columns:1fr}
   .ranges-foot{display:flex;justify-content:flex-end;margin-top:12px}
   @media(max-width:900px){.df-row{grid-template-columns:1fr;gap:14px}.df-side{display:none}}
+
+  /* --- Distribuidor: lista de cards --- */
+  .df-dist-list{display:flex;flex-direction:column;gap:12px;margin-top:4px}
+  .df-dist-item{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px 20px;cursor:pointer;display:flex;align-items:center;gap:14px;transition:border-color .15s,box-shadow .15s}
+  .df-dist-item:hover{border-color:var(--action-primary);box-shadow:0 2px 12px rgba(117,75,241,.1)}
+  .df-dist-initials{width:40px;height:40px;border-radius:50%;background:var(--info-bg);color:var(--action-primary);display:grid;place-items:center;font-weight:600;font-size:14px;flex:none;letter-spacing:.02em}
+  .df-dist-info{flex:1;min-width:0}
+  .df-dist-name{font-size:15px;font-weight:500;color:var(--text-primary);margin-bottom:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .df-dist-meta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;font-size:12.5px;color:var(--text-secondary)}
+  .df-dist-chev{color:var(--text-muted);flex:none}
+
+  /* --- Sub-distribuidor cards --- */
+  .df-sub-list{display:flex;flex-direction:column;gap:12px}
+  .df-sub-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
+  .df-sub-head{background:var(--surface-sunken);border-bottom:1px solid var(--border);padding:12px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .df-sub-head-name{font-size:14px;font-weight:500;color:var(--text-primary)}
+  .df-sub-summary{padding:14px 20px;display:flex;gap:20px;flex-wrap:wrap;align-items:flex-start}
+  .df-sub-field{font-size:13px;color:var(--text-secondary);min-width:120px}
+  .df-sub-field b{display:block;color:var(--text-primary);font-size:13.5px;font-weight:500;margin-top:3px}
+  .df-sub-extra{display:none;padding:16px 20px 4px;border-top:1px solid var(--border)}
+  .df-sub-extra.open{display:block}
+  .df-sub-foot{padding:10px 20px;border-top:1px solid var(--border)}
+  .df-sub-foot .btn-link{font-size:13.5px}
 
   /* ===== Acordeón en modales de alta (Figma 131-384) ===== */
   .acc-h{display:flex;align-items:center;justify-content:space-between;gap:12px;cursor:pointer;user-select:none}
@@ -630,83 +653,160 @@
   </div>
 </div>
 
-<!-- ============ VISTA: Alta de distribuidor · PANTALLA COMPLETA (Propuesta B) ============ -->
+<!-- ============ VISTA: Distribuidor · PANTALLA COMPLETA ============ -->
 <div id="view-distfull" style="display:none">
   <div class="df-wrap">
     <aside class="df-side">
       <span class="df-back" onclick="closeDistFull()"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M10.5 4.5L3 12L10.5 19.5M3 12L21 12"/></svg></span>
       <div class="df-side-title" id="dfSideTitle">Agregar distribuidor</div>
       <div class="df-nav-group">Detalle</div>
-      <div class="df-tree">
-        <div class="df-item active" onclick="dfTree(this)">Distribuidor</div>
-        <div class="df-item" onclick="dfTree(this)">Sub-afiliado</div>
+      <div class="df-tree" id="dfNavTree">
+        <div class="df-item active" data-dfnav="dist" onclick="dfNavScroll(this,'dfDistForm')">Distribuidor</div>
+        <div class="df-item" data-dfnav="sub" onclick="openSubSection();dfNavScroll(this,'dfSubSection')">Sub-distribuidor</div>
       </div>
     </aside>
+
     <div class="df-main">
-      <div class="df-head">
-        <h1 id="dfMainTitle">Detalle del distribuidor</h1>
-        <div class="df-actions">
-          <button class="btn btn-ghost" onclick="closeDistFull()">Cancelar</button>
-          <button class="btn btn-navy" onclick="saveDistFull()">Guardar</button>
+
+      <!-- ══ Sección 1: Formulario del distribuidor ══ -->
+      <div id="dfDistForm">
+        <div class="df-head">
+          <h1 id="dfMainTitle">Detalle del distribuidor</h1>
+          <div class="df-actions">
+            <button class="btn btn-ghost" onclick="closeDistFull()">Cancelar</button>
+            <button class="btn btn-navy" onclick="saveDistFull()">Guardar</button>
+          </div>
         </div>
-      </div>
-      <div id="dfCards">
-      <div class="df-card">
-        <div class="df-card-head">Configurar adquirente</div>
-        <div class="df-card-body">
-          <!-- Datos del distribuidor -->
-          <div class="df-row">
-            <div class="df-row-label">Datos del distribuidor</div>
-            <div class="df-row-fields">
-              <div class="grid2">
-                <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
-                <div class="field"><label>Nombre de distribuidor o nombre comercial</label><input placeholder="Nombre" value="AFIRME-514044-1000"></div>
-                <div class="field"><label>RFC (12 caracteres)</label><input placeholder="RFC" value="AFIRME-B062"></div>
-                <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
-                <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
-              </div>
-            </div>
-          </div>
-          <div class="df-divider"></div>
-          <!-- Cuentas bancarias -->
-          <div class="df-row">
-            <div class="df-row-label">Cuentas bancarias</div>
-            <div class="df-row-fields">
-              <div class="df-acc-list"></div>
-              <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
-            </div>
-          </div>
-          <div class="df-divider"></div>
-          <!-- Esquema de comisión -->
-          <div class="df-row">
-            <div class="df-row-label">Esquema de comisión</div>
-            <div class="df-row-fields">
-              <div class="com-toggle-row">
-                <span>Configurar esquema de comisión</span>
-                <label class="sw"><input type="checkbox" checked onchange="this.closest('.df-row-fields').querySelector('.com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
-              </div>
-              <div class="com-config">
-                <div class="radios" style="margin-bottom:16px">
-                  <label class="radio"><input type="radio" name="dfCom" checked> Margen bruto</label>
-                  <label class="radio"><input type="radio" name="dfCom"> Comisión variable</label>
-                </div>
-                <div class="df-ranges">
-                  <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
-                  <div class="df-range-rows">
-                    <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+        <div id="dfCards">
+          <div class="df-card">
+            <div class="df-card-head">Distribuidor</div>
+            <div class="df-card-body">
+              <div class="df-row">
+                <div class="df-row-label">Datos del distribuidor</div>
+                <div class="df-row-fields">
+                  <div class="grid2">
+                    <div class="field"><label>Tipo de persona</label><select><option>Moral</option><option>Física</option></select></div>
+                    <div class="field"><label>Nombre de distribuidor o nombre comercial</label><input placeholder="Nombre"></div>
+                    <div class="field"><label>RFC (12 caracteres)</label><input placeholder="RFC"></div>
+                    <div class="field"><label>Razón social</label><input placeholder="Razón social"></div>
+                    <div class="field"><label>Correo electrónico</label><input placeholder="correo@dominio.com"><span class="hint">Debe ser único en el sistema. Recibirá la activación por OTP.</span></div>
                   </div>
                 </div>
-                <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+              </div>
+              <div class="df-divider"></div>
+              <div class="df-row">
+                <div class="df-row-label">Cuentas bancarias</div>
+                <div class="df-row-fields">
+                  <div class="df-acc-list"></div>
+                  <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+                </div>
+              </div>
+              <div class="df-divider"></div>
+              <div class="df-row">
+                <div class="df-row-label">Esquema de comisión</div>
+                <div class="df-row-fields">
+                  <div class="com-toggle-row">
+                    <span>Configurar esquema de comisión</span>
+                    <label class="sw"><input type="checkbox" checked onchange="this.closest('.df-row-fields').querySelector('.com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+                  </div>
+                  <div class="com-config">
+                    <div class="radios" style="margin-bottom:16px">
+                      <label class="radio"><input type="radio" name="dfCom" checked> Margen bruto</label>
+                      <label class="radio"><input type="radio" name="dfCom"> Comisión variable</label>
+                    </div>
+                    <div class="df-ranges">
+                      <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+                      <div class="df-range-rows">
+                        <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
-      </div>
-      <div class="df-foot">
-        <button class="btn-link" onclick="addDfSub()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar sub distribuidor</button>
-      </div>
-    </div>
+        <div class="df-foot" id="dfSubTrigger">
+          <button class="btn-link" onclick="openSubSection()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar sub-distribuidor</button>
+        </div>
+      </div><!-- /dfDistForm -->
+
+      <!-- ══ Sección 2: Sub-distribuidores (scroll continuo) ══ -->
+      <div id="dfSubSection" style="display:none;margin-top:32px;padding-top:28px;border-top:2px solid var(--border)">
+        <div class="df-head" style="margin-bottom:20px">
+          <h2 style="font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:500;color:var(--text-primary);margin:0">Sub-distribuidores</h2>
+        </div>
+
+        <!-- Cards de sub-distribuidores guardados -->
+        <div id="dfSubList" class="df-sub-list"></div>
+
+        <!-- Formulario inline para agregar sub-distribuidor (mismo que distribuidor) -->
+        <div id="dfSubForm" style="display:none;margin-top:20px">
+          <div class="df-card">
+            <div class="df-card-head" style="display:flex;align-items:center;justify-content:space-between">
+              <span>Nuevo sub-distribuidor</span>
+              <button class="btn-link" style="font-size:13px" onclick="cancelSubForm()">Cancelar</button>
+            </div>
+            <div class="df-card-body">
+              <div class="df-row">
+                <div class="df-row-label">Datos del sub-distribuidor</div>
+                <div class="df-row-fields">
+                  <div class="grid2">
+                    <div class="field"><label>Tipo de persona</label><select id="sdTipo"><option>Moral</option><option>Física</option></select></div>
+                    <div class="field"><label>Nombre comercial</label><input id="sdNombre" placeholder="Nombre"></div>
+                    <div class="field"><label>RFC</label><input id="sdRfc" placeholder="RFC"></div>
+                    <div class="field"><label>Razón social</label><input id="sdRazon" placeholder="Razón social"></div>
+                    <div class="field"><label>Correo electrónico</label><input id="sdEmail" placeholder="correo@dominio.com"><span class="hint">Recibirá la activación por OTP.</span></div>
+                  </div>
+                </div>
+              </div>
+              <div class="df-divider"></div>
+              <div class="df-row">
+                <div class="df-row-label">Cuentas bancarias</div>
+                <div class="df-row-fields">
+                  <div class="df-acc-list" id="sdAccList"></div>
+                  <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+                </div>
+              </div>
+              <div class="df-divider"></div>
+              <div class="df-row">
+                <div class="df-row-label">Esquema de comisión</div>
+                <div class="df-row-fields">
+                  <div class="com-toggle-row">
+                    <span>Configurar esquema de comisión</span>
+                    <label class="sw"><input type="checkbox" checked onchange="this.closest('.df-row-fields').querySelector('.com-config').style.display=this.checked?'block':'none'"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+                  </div>
+                  <div class="com-config">
+                    <div class="radios" style="margin-bottom:16px">
+                      <label class="radio"><input type="radio" name="sdCom" checked> Margen bruto</label>
+                      <label class="radio"><input type="radio" name="sdCom"> Comisión variable</label>
+                    </div>
+                    <div class="df-ranges">
+                      <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+                      <div class="df-range-rows" id="sdRangeRows">
+                        <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" aria-label="Eliminar rango" onclick="this.closest('.df-range-row').remove()"></button></div>
+                      </div>
+                    </div>
+                    <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:flex-end;gap:12px;margin-top:16px">
+            <button class="btn btn-ghost" onclick="cancelSubForm()">Cancelar</button>
+            <button class="btn btn-navy" onclick="saveSubDist()">Guardar sub-distribuidor</button>
+          </div>
+        </div>
+
+        <!-- Botón para agregar otro sub-distribuidor (visible tras guardar al menos uno) -->
+        <div id="dfSubAddAnother" style="display:none;margin-top:18px">
+          <button class="btn-link" onclick="showSubForm()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> + Agregar otro sub-distribuidor</button>
+        </div>
+      </div><!-- /dfSubSection -->
+
+    </div><!-- /df-main -->
   </div>
 </div>
 
@@ -1306,7 +1406,7 @@
   updateEff();
   function saveCfg(){closeCfg();toast('<b>Configuración de liquidación guardada.</b>');}
 
-  /* ============ VISTA: Alta de distribuidor · Pantalla completa (Propuesta B) ============ */
+  /* ============ VISTA: Alta de distribuidor · Pantalla completa ============ */
   function openDistFull(mode){
     altaMode=mode||altaMode||'dist';const isDist=altaMode==='dist';
     document.querySelectorAll('.page').forEach(p=>p.style.display='none');
@@ -1314,15 +1414,149 @@
     $('#view-distfull').style.display='block';
     $('#dfSideTitle').textContent=isDist?'Agregar distribuidor':'Agregar proveedor de servicios';
     $('#dfMainTitle').textContent=isDist?'Detalle del distribuidor':'Detalle del proveedor de servicios';
-    // inyecta el ícono de basura en la fila de rango estática (ICON_TRASH es JS)
+    // reset sub section
+    $('#dfSubSection').style.display='none';
+    $('#dfSubList').innerHTML='';
+    $('#dfSubForm').style.display='none';
+    $('#dfSubAddAnother').style.display='none';
+    $('#dfSubTrigger').style.display='';
+    // reset sidebar tree
+    document.querySelectorAll('#dfNavTree .df-item').forEach(i=>i.classList.toggle('active',i.dataset.dfnav==='dist'));
+    // init main form
     document.querySelectorAll('.df-range-rows .icon-btn:empty').forEach(b=>b.innerHTML=ICON_TRASH);
-    const list=document.querySelector('#dfCards .df-card .df-acc-list');
-    if(list&&!list.children.length)list.appendChild(dfAccCard({...EJEMPLO_ACC}));
+    const accList=$('#dfCards .df-acc-list');
+    if(accList&&!accList.children.length)accList.appendChild(dfAccCard({...EJEMPLO_ACC}));
     window.scrollTo({top:0});
   }
+
   function closeDistFull(){$('#view-distfull').style.display='none';$('#view-module').style.display='block';}
+
   function saveDistFull(){closeDistFull();toast('<b>Distribuidor guardado</b><ul><li>Wallet creada automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>');}
+
+  function dfNavScroll(el,targetId){
+    document.querySelectorAll('#dfNavTree .df-item').forEach(i=>i.classList.toggle('active',i===el));
+    const target=document.getElementById(targetId);
+    if(target)target.scrollIntoView({behavior:'smooth',block:'start'});
+  }
+
+  /* Sub-distribuidores */
+  function openSubSection(){
+    if($('#dfSubSection').style.display==='block') return;
+    $('#dfSubSection').style.display='block';
+    $('#dfSubTrigger').style.display='none';
+    document.querySelectorAll('#dfNavTree .df-item').forEach(i=>i.classList.toggle('active',i.dataset.dfnav==='sub'));
+    showSubForm();
+    setTimeout(()=>$('#dfSubSection').scrollIntoView({behavior:'smooth',block:'start'}),60);
+  }
+
+  function showSubForm(){
+    ['sdNombre','sdRfc','sdRazon','sdEmail'].forEach(id=>{const el=$('#'+id);if(el)el.value='';});
+    $('#sdTipo').selectedIndex=0;
+    $('#sdAccList').innerHTML='';
+    const rr=$('#sdRangeRows');
+    while(rr.children.length>1)rr.lastElementChild.remove();
+    rr.querySelectorAll('input').forEach(i=>i.value='');
+    rr.querySelectorAll('.icon-btn').forEach(b=>{if(!b.innerHTML.trim())b.innerHTML=ICON_TRASH;});
+    document.querySelectorAll('[name=sdCom]').forEach((r,i)=>r.checked=i===0);
+    $('#dfSubAddAnother').style.display='none';
+    $('#dfSubForm').style.display='block';
+    setTimeout(()=>$('#dfSubForm').scrollIntoView({behavior:'smooth',block:'start'}),60);
+  }
+
+  function cancelSubForm(){
+    const hasSaved=$('#dfSubList').querySelectorAll('.df-sub-card').length>0;
+    $('#dfSubForm').style.display='none';
+    if(hasSaved){
+      $('#dfSubAddAnother').style.display='block';
+    } else {
+      $('#dfSubSection').style.display='none';
+      $('#dfSubTrigger').style.display='';
+      document.querySelectorAll('#dfNavTree .df-item').forEach(i=>i.classList.toggle('active',i.dataset.dfnav==='dist'));
+    }
+  }
+
+  function saveSubDist(){
+    const nombre=$('#sdNombre').value.trim()||'Sub-distribuidor';
+    const tipo=$('#sdTipo').value;
+    const rfc=$('#sdRfc').value.trim()||'—';
+    const razon=$('#sdRazon').value.trim();
+    const email=$('#sdEmail').value.trim();
+
+    const list=$('#dfSubList');
+    const n=list.querySelectorAll('.df-sub-card').length+1;
+    const rid='sdCom'+Date.now();
+
+    const card=document.createElement('div');
+    card.className='df-sub-card';
+    card.innerHTML=`
+      <div class="df-sub-head">
+        <span class="df-sub-head-name">${nombre}</span>
+        <span class="badge ok"><span class="bd"></span>Activo</span>
+      </div>
+      <div class="df-sub-summary">
+        <div class="df-sub-field">Tipo de persona<b>${tipo}</b></div>
+        <div class="df-sub-field">RFC<b>${rfc}</b></div>
+        <div class="df-sub-field">Estatus<b>Activo</b></div>
+      </div>
+      <div class="df-sub-extra">
+        <div class="df-row" style="padding:20px 0 4px">
+          <div class="df-row-label">Datos del sub-distribuidor</div>
+          <div class="df-row-fields">
+            <div class="grid2">
+              <div class="field"><label>Tipo de persona</label><select><option${tipo==='Moral'?' selected':''}>Moral</option><option${tipo==='Física'?' selected':''}>Física</option></select></div>
+              <div class="field"><label>Nombre comercial</label><input value="${nombre}" placeholder="Nombre"></div>
+              <div class="field"><label>RFC</label><input value="${rfc==='—'?'':rfc}" placeholder="RFC"></div>
+              <div class="field"><label>Razón social</label><input value="${razon}" placeholder="Razón social"></div>
+              <div class="field"><label>Correo electrónico</label><input value="${email}" placeholder="correo@dominio.com"></div>
+            </div>
+          </div>
+        </div>
+        <div class="df-divider"></div>
+        <div class="df-row" style="padding:20px 0 4px">
+          <div class="df-row-label">Cuentas bancarias</div>
+          <div class="df-row-fields">
+            <div class="df-acc-list"></div>
+            <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+          </div>
+        </div>
+        <div class="df-divider"></div>
+        <div class="df-row" style="padding:20px 0 16px">
+          <div class="df-row-label">Esquema de comisión</div>
+          <div class="df-row-fields">
+            <div class="radios" style="margin-bottom:16px">
+              <label class="radio"><input type="radio" name="${rid}" checked> Margen bruto</label>
+              <label class="radio"><input type="radio" name="${rid}"> Comisión variable</label>
+            </div>
+            <div class="df-ranges">
+              <div class="df-ranges-head"><div>Monto desde</div><div>Monto Hasta</div><div>$ Comisión</div><div></div></div>
+              <div class="df-range-rows">
+                <div class="df-range-row"><div><input placeholder="$ 0.00"></div><div><input placeholder="Sin límite"></div><div><input placeholder="% 0.00"></div><button class="icon-btn" onclick="this.closest('.df-range-row').remove()">${ICON_TRASH}</button></div>
+              </div>
+            </div>
+            <div style="display:flex;justify-content:flex-end;margin-top:12px"><button class="btn-link" onclick="addDfRange(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar rango</button></div>
+          </div>
+        </div>
+      </div>
+      <div class="df-sub-foot">
+        <button class="btn-link" onclick="toggleSubExtra(this)">Ver más</button>
+      </div>`;
+    list.appendChild(card);
+
+    $('#dfSubForm').style.display='none';
+    $('#dfSubAddAnother').style.display='block';
+    toast(`<b>${nombre} guardado</b><ul><li>Wallet creada automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>`);
+    card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function toggleSubExtra(btn){
+    const extra=btn.closest('.df-sub-card').querySelector('.df-sub-extra');
+    const open=extra.classList.toggle('open');
+    btn.textContent=open?'Ver menos':'Ver más';
+  }
+
+  function addDfSub(){openSubSection();}
   function dfTree(el){document.querySelectorAll('.df-tree .df-item').forEach(i=>i.classList.toggle('active',i===el));}
+
   function addDfRange(btn){
     const rr=btn.closest('.df-row-fields').querySelector('.df-range-rows');
     const r=document.createElement('div');r.className='df-range-row';
