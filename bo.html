@@ -110,6 +110,20 @@
   .doc-undo{background:none;border:none;color:var(--action-primary);font-weight:500;font-size:14px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;font-family:inherit;white-space:nowrap}
   .doc-undo svg{width:17px;height:17px}
   .doc-body{padding:24px;display:grid;grid-template-columns:1fr 1fr;gap:36px}
+  /* Multiselect · Proveedor de servicios */
+  .ms-wrap{position:relative}
+  .ms-trigger{display:flex;align-items:center;justify-content:space-between;gap:8px;background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:11px 13px;font-size:14.5px;cursor:pointer;user-select:none;color:var(--text-primary)}
+  .ms-trigger:hover{border-color:var(--text-muted)}
+  .ms-trigger.open{border-color:var(--action-primary);outline:2px solid rgba(117,75,241,.15)}
+  .ms-trigger svg{width:16px;height:16px;color:var(--text-muted);flex:none;transition:transform .15s}
+  .ms-trigger.open svg{transform:rotate(180deg)}
+  .ms-label{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+
+  .ms-dropdown{position:absolute;top:calc(100% + 4px);left:0;right:0;background:#fff;border:1px solid var(--border);border-radius:var(--radius);box-shadow:0 8px 24px rgba(45,0,109,.12);z-index:30;max-height:220px;overflow-y:auto;display:none}
+  .ms-dropdown.open{display:block}
+  .ms-item{display:flex;align-items:center;gap:12px;padding:10px 16px;cursor:pointer;font-size:14px;color:var(--text-primary)}
+  .ms-item:hover{background:var(--surface-sunken)}
+  .ms-item input[type=checkbox]{width:17px;height:17px;accent-color:var(--action-primary);cursor:pointer;flex:none;border-radius:4px}
   .doc-body.single{grid-template-columns:1fr}
   .doc-col .lab{font-size:14px;color:var(--text-primary);margin-bottom:12px}
   .filebox{border:1.5px solid var(--border-strong);border-radius:12px;padding:22px;display:flex;align-items:center;gap:16px}
@@ -632,19 +646,33 @@
       <div class="doc-card">
         <div class="doc-head"><h3>Distribuidores y Proveedor de servicios</h3></div>
         <div class="doc-body">
-          <div class="doc-col">
+          <div class="doc-col" id="docLeftCol">
             <div class="lab">Selecciona un Distribuidor</div>
             <select id="docDist" onchange="onDocDistChange()"></select>
-            <!-- Sub-distribuidor: solo si el distribuidor tiene ligados -->
+            <!-- Sub-distribuidor (oculto por defecto) -->
             <div id="docSubDistWrap" style="display:none;margin-top:16px">
               <div class="lab">Selecciona un Sub-distribuidor</div>
               <select id="docSubDist"></select>
             </div>
+            <!-- Región: izquierda por defecto (se mueve a derecha cuando hay sub-dist) -->
+            <div id="docRegionWrap" style="margin-top:16px">
+              <div class="lab">Región</div>
+              <select id="docRegion">
+                <option value="">Selecciona una región</option>
+                <option value="norte">Norte</option>
+                <option value="centro">Centro</option>
+              </select>
+            </div>
           </div>
-          <div class="doc-col">
+          <div class="doc-col" id="docRightCol">
             <div class="lab">Proveedor de servicios <span style="color:var(--text-muted)">· opcional</span></div>
-            <select id="docPS"></select>
-            <p class="mini" style="margin-top:8px">Se actualiza con el alta de Proveedores de Servicio.</p>
+            <div class="ms-wrap" id="docPSWrap">
+              <div class="ms-trigger" id="docPSTrigger" onclick="toggleDocPS(event)">
+                <span class="ms-label" id="docPSLabel">Sin proveedor de servicios</span>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 9l6 6 6-6"/></svg>
+              </div>
+              <div class="ms-dropdown" id="docPSDropdown"></div>
+            </div>
           </div>
         </div>
       </div>
@@ -1020,17 +1048,59 @@
   function initDocDist(){
     const d=$('#docDist'); if(!d) return;
     d.innerHTML='<option value="">Selecciona una opción</option>'+DOC_DISTS.map((x,i)=>`<option value="${i}">${x.name}</option>`).join('');
-    // PS opcional — se alimenta del alta de Proveedores de Servicio
+    // Multiselect PS
     const activos=proveedores.filter(p=>p[6]==='Activo').map(p=>p[0]);
-    $('#docPS').innerHTML='<option value="">Sin proveedor de servicios</option>'+activos.map(n=>`<option>${n}</option>`).join('');
+    const drop=$('#docPSDropdown');
+    drop.innerHTML=activos.map(n=>`
+      <label class="ms-item">
+        <input type="checkbox" value="${n}" onchange="updateDocPSLabel()">
+        <span>${n}</span>
+      </label>`).join('');
   }
+
+  function toggleDocPS(e){
+    e.stopPropagation();
+    const trigger=$('#docPSTrigger'), drop=$('#docPSDropdown');
+    const open=drop.classList.toggle('open');
+    trigger.classList.toggle('open',open);
+  }
+
+  function updateDocPSLabel(){
+    const checked=[...$('#docPSDropdown').querySelectorAll('input:checked')];
+    const label=$('#docPSLabel');
+    if(checked.length===0){
+      label.textContent='Sin proveedor de servicios';
+    } else if(checked.length===1){
+      label.textContent=checked[0].value;
+    } else {
+      label.textContent=checked.length+' seleccionados';
+    }
+  }
+
+  // Cierra el multiselect al hacer clic fuera
+  document.addEventListener('click',e=>{
+    if(!e.target.closest('#docPSWrap')){
+      $('#docPSDropdown')?.classList.remove('open');
+      $('#docPSTrigger')?.classList.remove('open');
+    }
+  });
   function onDocDistChange(){
     const i=$('#docDist').value, wrap=$('#docSubDistWrap'), sel=$('#docSubDist');
     const subs=(i!==''&&DOC_DISTS[i])?DOC_DISTS[i].subs:[];
+    const regionWrap=$('#docRegionWrap');
     if(subs.length){
       sel.innerHTML='<option value="">Selecciona una opción</option>'+subs.map(s=>`<option>${s}</option>`).join('');
       wrap.style.display='block';
-    }else{wrap.style.display='none';sel.innerHTML='';}
+      // Región → columna derecha, alineada con Sub-distribuidor
+      regionWrap.style.marginTop='16px';
+      $('#docRightCol').appendChild(regionWrap);
+    } else {
+      wrap.style.display='none';
+      sel.innerHTML='';
+      // Región → columna izquierda, bajo Distribuidor
+      regionWrap.style.marginTop='16px';
+      $('#docLeftCol').appendChild(regionWrap);
+    }
   }
   function detailTab(el){
     document.querySelectorAll('#view-comercio .tabs span').forEach(s=>s.classList.toggle('active',s===el));
@@ -1491,12 +1561,10 @@
     card.innerHTML=`
       <div class="df-sub-head">
         <span class="df-sub-head-name">${nombre}</span>
-        <span class="badge ok"><span class="bd"></span>Activo</span>
       </div>
       <div class="df-sub-summary">
         <div class="df-sub-field">Tipo de persona<b>${tipo}</b></div>
         <div class="df-sub-field">RFC<b>${rfc}</b></div>
-        <div class="df-sub-field">Estatus<b>Activo</b></div>
       </div>
       <div class="df-sub-extra">
         <div class="df-row" style="padding:20px 0 4px">
