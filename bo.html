@@ -284,13 +284,13 @@
   .grp .item{display:flex;align-items:center;gap:9px;padding:10px 12px;border-radius:9px;font-size:14px;color:var(--text-primary);cursor:pointer;margin-bottom:2px}
   .grp .item::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--border-strong)}
   .grp .item:hover{background:#e5e7eb}
-  .grp .item.on{background:#e5e7eb;color:var(--navy);font-weight:500}
+  .grp .item.on{background:#e5e7eb;color:#111827;font-weight:400}
   .grp .item.on::before{background:var(--accent)}
   .cfg-body{flex:1;min-width:0;overflow-y:auto;padding:28px 32px 90px}
   .cfg-body h2{font-family:'Gotham','Poppins';font-size:22px;font-weight:500;color:var(--navy);margin:0 0 22px}
   .cfg .x{position:absolute;top:18px;right:18px}
   .cfg-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:18px;overflow:hidden}
-  .cfg-card .head{background:var(--surface-sunken);padding:14px 18px;font-family:'Gotham','Poppins';font-weight:500;font-size:15px;color:var(--navy);border-bottom:1px solid var(--border)}
+  .cfg-card .head{background:#F9FAFB;padding:14px 18px;font-family:'Gotham','Poppins';font-weight:500;font-size:15px;color:#111827;border-bottom:1px solid #E5E7EB}
   .cfg-card .body{padding:16px 18px}
   .chk{display:flex;align-items:center;gap:12px;font-size:14.5px;color:var(--text-primary);cursor:pointer;user-select:none}
   .chk input{width:18px;height:18px;accent-color:var(--accent);cursor:pointer}
@@ -326,17 +326,17 @@
   .df-wrap{display:flex;min-height:calc(100vh - 64px)}
   .df-side{width:264px;flex:none;background:var(--surface);border-right:1px solid var(--border);padding:24px 20px;position:sticky;top:0;height:calc(100vh - 64px);overflow-y:auto}
   .df-back{display:inline-flex;align-items:center;color:var(--navy);cursor:pointer}
-  .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:500;color:var(--text-primary);margin:14px 0 26px}
+  .df-side-title{font-family:'Gotham','Poppins',sans-serif;font-size:17px;font-weight:500;color:var(--text-primary);margin:14px 0 26px}
   .df-nav-group{font-size:13px;color:var(--text-secondary);font-weight:500;padding:0 8px 10px}
-  .df-tree{margin-left:8px;padding-left:10px;display:flex;flex-direction:column;gap:4px}
-  .df-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);padding:9px 12px;border-radius:9px;cursor:pointer}
+  .df-tree{margin-left:0;padding-left:0;display:flex;flex-direction:column;gap:4px}
+  .df-item{display:flex;align-items:center;gap:10px;font-size:14px;color:var(--text-primary);padding:9px 8px;border-radius:9px;cursor:pointer}
   .df-item::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--border-strong);flex:none}
   .df-item:hover{background:var(--surface-sunken)}
   .df-item.active{background:#eceaf6;color:var(--navy);font-weight:500}
   .df-item.active::before{background:var(--action-primary)}
   .df-main{flex:1;min-width:0;padding:26px 40px 60px}
   .df-head{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:22px}
-  .df-head h1{font-family:'Gotham','Poppins',sans-serif;font-size:24px;font-weight:500;color:var(--text-primary);margin:0}
+  .df-head h1{font-family:'Gotham','Poppins',sans-serif;font-size:20px;font-weight:500;color:var(--text-primary);margin:0}
   .df-actions{display:flex;gap:12px;flex:none}
   .df-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);overflow:hidden}
   .df-card-head{background:var(--surface-sunken);border-bottom:1px solid var(--border);padding:16px 24px;font-size:15px;font-weight:500;color:var(--text-primary)}
@@ -791,10 +791,27 @@
               </div>
               <div class="df-divider"></div>
               <div class="df-row">
-                <div class="df-row-label">Cuentas bancarias</div>
+                <div class="df-row-label">Cuenta bancaria <span style="color:var(--text-muted);font-weight:400;font-size:13px">· opcional</span></div>
                 <div class="df-row-fields">
-                  <div class="df-acc-list" id="sdAccList"></div>
-                  <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+                  <div style="margin-bottom:16px">
+                    <div style="font-size:14px;color:var(--text-secondary);margin-bottom:12px">¿Quién realiza la dispersión?</div>
+                    <div class="radios">
+                      <label class="radio"><input type="radio" name="sdDispersa" value="velpay" checked onchange="sdOnDispersaChange(this)"> Velpay</label>
+                      <label class="radio"><input type="radio" name="sdDispersa" value="distribuidor" onchange="sdOnDispersaChange(this)"> Distribuidor</label>
+                    </div>
+                  </div>
+                  <!-- Velpay: mostrar agregar cuenta -->
+                  <div id="sdAccSection">
+                    <div class="df-acc-list" id="sdAccList"></div>
+                    <button class="btn-link" onclick="openAccModal(this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar cuenta bancaria</button>
+                  </div>
+                  <!-- Distribuidor: mensaje informativo -->
+                  <div id="sdAccMsg" style="display:none;background:var(--info-bg);border-radius:var(--radius);padding:14px 16px;display:none">
+                    <div style="font-size:13.5px;color:var(--info);line-height:1.5">
+                      <b style="display:block;margin-bottom:4px">La dispersión es gestionada por el distribuidor</b>
+                      No es necesario registrar una cuenta bancaria. El distribuidor maneja la liquidación de forma externa a Velpay.
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="df-divider"></div>
@@ -830,7 +847,7 @@
 
         <!-- Botón para agregar otro sub-distribuidor (visible tras guardar al menos uno) -->
         <div id="dfSubAddAnother" style="display:none;margin-top:18px">
-          <button class="btn-link" onclick="showSubForm()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> + Agregar otro sub-distribuidor</button>
+          <button class="btn-link" onclick="showSubForm()"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M12 5v14M5 12h14"/></svg> Agregar otro sub-distribuidor</button>
         </div>
       </div><!-- /dfSubSection -->
 
@@ -916,7 +933,7 @@
     <aside class="cfg-side">
       <div style="display:flex;align-items:center;gap:10px;margin-bottom:26px">
         <span class="df-back" onclick="closeCfg()" style="color:var(--text-secondary)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 6l-6 6 6 6"/></svg></span>
-        <span style="font-family:'Gotham','Poppins',sans-serif;font-size:19px;font-weight:500;color:var(--text-primary)">Configuración</span>
+        <span style="font-family:'Gotham','Poppins',sans-serif;font-size:18px;font-weight:500;color:var(--text-primary)">Configuración</span>
       </div>
       <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 12 12" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.658674 3.84079C1.53735 4.71947 2.96198 4.71947 3.84065 3.84079C3.94863 3.73282 4.04334 3.6166 4.12477 3.49416C4.52788 4.10033 5.21712 4.49983 5.99966 4.49983C6.78231 4.49983 7.47163 4.10023 7.87472 3.49392C7.9562 3.61646 8.05096 3.73277 8.15901 3.84082C9.03769 4.7195 10.4623 4.7195 11.341 3.84082C12.2197 2.96214 12.2197 1.53752 11.341 0.65884L11.1215 0.43934C10.8402 0.158035 10.4587 0 10.0608 0H1.93881C1.54098 0 1.15945 0.158035 0.878148 0.43934L0.658674 0.658813C-0.220006 1.53749 -0.220006 2.96211 0.658674 3.84079Z"/><path d="M0.749664 5.27417C1.82066 5.80551 3.11511 5.73296 4.12509 5.05653C4.6609 5.41505 5.3057 5.62483 5.99966 5.62483C6.69369 5.62483 7.33854 5.41501 7.87439 5.05643C8.88429 5.73291 10.1787 5.80555 11.2497 5.27436V10.875H11.4372C11.7478 10.875 11.9997 11.1268 11.9997 11.4375C11.9997 11.7482 11.7478 12 11.4372 12H8.06216C7.7515 12 7.49966 11.7482 7.49966 11.4375V8.8125C7.49966 8.50184 7.24782 8.25 6.93716 8.25H5.06216C4.7515 8.25 4.49966 8.50184 4.49966 8.8125V11.4375C4.49966 11.7482 4.24782 12 3.93716 12H0.562164C0.251504 12 -0.000335693 11.7482 -0.000335693 11.4375C-0.000335693 11.1268 0.251504 10.875 0.562164 10.875H0.749664V5.27417Z"/></svg> General</div><div class="item on">Operativas</div></div>
       <div class="grp"><div class="glabel"><svg width="15" height="15" viewBox="0 0 14 14" fill="currentColor" xmlns="http://www.w3.org/2000/svg"><path d="M0.699997 2.97483C1.13872 2.6453 1.68405 2.45002 2.275 2.45002H11.725C12.3159 2.45002 12.8613 2.6453 13.3 2.97484C13.2999 2.10507 12.5948 1.40002 11.725 1.40002H2.275C1.40521 1.40002 0.700101 2.10507 0.699997 2.97483Z"/><path d="M0.699997 5.07483C1.13872 4.7453 1.68405 4.55002 2.275 4.55002H11.725C12.3159 4.55002 12.8613 4.7453 13.3 5.07484C13.2999 4.20507 12.5948 3.50002 11.725 3.50002H2.275C1.40521 3.50002 0.700101 4.20507 0.699997 5.07483Z"/><path d="M4.9 5.60002C5.2866 5.60002 5.6 5.91343 5.6 6.30002C5.6 7.07322 6.2268 7.70002 7 7.70002C7.7732 7.70002 8.4 7.07322 8.4 6.30002C8.4 5.91343 8.7134 5.60002 9.1 5.60002H11.725C12.5948 5.60002 13.3 6.30518 13.3 7.17502V11.025C13.3 11.8949 12.5948 12.6 11.725 12.6H2.275C1.40515 12.6 0.699997 11.8949 0.699997 11.025V7.17502C0.699997 6.30518 1.40515 5.60002 2.275 5.60002H4.9Z"/></svg> Condiciones</div><div class="item">Otros servicios</div><div class="item">Métodos de pago</div></div>
@@ -1522,6 +1539,10 @@
   function showSubForm(){
     ['sdNombre','sdRfc','sdRazon','sdEmail'].forEach(id=>{const el=$('#'+id);if(el)el.value='';});
     $('#sdTipo').selectedIndex=0;
+    // reset dispersa radio
+    document.querySelectorAll('[name=sdDispersa]').forEach((r,i)=>r.checked=i===0);
+    $('#sdAccSection').style.display='block';
+    $('#sdAccMsg').style.display='none';
     $('#sdAccList').innerHTML='';
     const rr=$('#sdRangeRows');
     while(rr.children.length>1)rr.lastElementChild.remove();
@@ -1614,6 +1635,12 @@
     $('#dfSubAddAnother').style.display='block';
     toast(`<b>${nombre} guardado</b><ul><li>Wallet creada automáticamente</li><li>Correo de activación enviado (OTP pendiente)</li></ul>`);
     card.scrollIntoView({behavior:'smooth',block:'nearest'});
+  }
+
+  function sdOnDispersaChange(radio){
+    const isVelpay=radio.value==='velpay';
+    $('#sdAccSection').style.display=isVelpay?'block':'none';
+    $('#sdAccMsg').style.display=isVelpay?'none':'block';
   }
 
   function toggleSubExtra(btn){
