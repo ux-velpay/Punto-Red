@@ -426,60 +426,150 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== DASHBOARD ===== -->
       <section class="view on" id="view-dashboard">
-        <div style="margin-bottom:18px"><span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9h18M3 9l0 10a1 1 0 001 1h16a1 1 0 001-1V9M8 3v4M16 3v4"/></svg> Julio 2026 · Toda la red <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px"><path d="M6 9l6 6 6-6"/></svg></span></div>
-        <div class="kpi-grid">
+        <!-- Filtros -->
+        <div class="ps-filters" style="margin-bottom:20px">
+          <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
+            <select aria-label="Período"><option>Septiembre 2026</option><option>Agosto 2026</option><option>Julio 2026</option><option>Últimos 7 días</option></select></span>
+          <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h8M4 18h4"/></svg>
+            <select aria-label="Comparar con"><option>vs. mes anterior</option><option>vs. mismo mes año ant.</option><option>Sin comparación</option></select></span>
+          <span class="fsel">
+            <select aria-label="Giro"><option>Todos los giros</option><option>Abarrotes</option><option>Farmacia</option><option>Refaccionaria</option><option>Servicios</option></select></span>
+          <span class="fsel">
+            <select aria-label="Comercio"><option>Todos los comercios</option><option>Abarrotes La Esquina</option><option>Farmacia San José</option><option>Refaccionaria El Motor</option></select></span>
+          <span style="flex:1"></span>
+          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
+        </div>
+
+        <!-- KPIs fila 1 -->
+        <div class="kpi-grid" style="margin-bottom:14px">
           <div class="card kpi">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg></div>
-            <div class="lbl">Revenue generado</div>
-            <div class="val">$418,650</div>
-            <div class="sub up">▲ 12.4% vs. mes anterior</div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div class="lbl">Volumen de cartera</div>
+            <div class="val">$4,218,640</div>
+            <div class="sub up">▲ 11.3% vs. agosto</div>
           </div>
           <div class="card kpi">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1 1.1-1.8 2.5-1.8s2.5.8 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg></div>
-            <div class="lbl">Comisión confirmada</div>
-            <div class="val">$31,240</div>
-            <div class="sub"><span class="badge b-warn"><span class="bd"></span>Pendiente de pago $8,910</span></div>
+            <div class="lbl">Comisión del periodo <span class="tip"><span class="q">?</span><span class="box">Comisión confirmada sobre volumen ya liquidado. No incluye estimaciones.</span></span></div>
+            <div class="val">$42,186</div>
+            <div class="sub"><span class="badge b-info"><span class="bd"></span>Pendiente de pago · 05/oct</span></div>
           </div>
           <div class="card kpi">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M20 17H4m16 0l-3 3"/></svg></div>
-            <div class="lbl">Transacciones del día</div>
-            <div class="val">1,284</div>
-            <div class="sub up">▲ 3.1% vs. ayer</div>
-          </div>
-          <div class="card kpi">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/></svg></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></div>
             <div class="lbl">Comercios activos</div>
-            <div class="val">142<span style="font-size:15px;color:var(--text-faint);font-weight:500"> / 156</span></div>
-            <div class="sub down">14 inactivos este mes</div>
+            <div class="val">138<span style="font-size:15px;color:var(--text-faint);font-weight:500"> / 156</span></div>
+            <div class="sub down">18 sin actividad este mes</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic" style="background:var(--info-bg);color:var(--info-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></div>
+            <div class="lbl">Altas en proceso</div>
+            <div class="val" style="color:var(--info-text)">7</div>
+            <div class="sub" style="color:var(--text-muted)">3 esperando documentos</div>
           </div>
         </div>
 
-        <div class="two-col">
+        <!-- KPIs fila 2 -->
+        <div class="kpi-grid" style="margin-bottom:20px">
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/></svg></div>
+            <div class="lbl">Transacciones del periodo</div>
+            <div class="val">12,841</div>
+            <div class="sub up">▲ 9.2% vs. agosto</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic" style="background:var(--err-bg);color:var(--err-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/><path d="M9 9h.01M15 15h.01"/></svg></div>
+            <div class="lbl">Contracargos</div>
+            <div class="val" style="color:var(--err-text)">$12,380</div>
+            <div class="sub down">24 operaciones · 0.29% del vol.</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic" style="background:var(--warn-bg);color:var(--warn-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
+            <div class="lbl">Devoluciones</div>
+            <div class="val" style="color:var(--warn-text)">$8,940</div>
+            <div class="sub" style="color:var(--warn-text)">38 operaciones</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="lbl">Ticket promedio</div>
+            <div class="val">$328</div>
+            <div class="sub up">▲ $14 vs. agosto</div>
+          </div>
+        </div>
+
+        <!-- Gráficas fila 1 -->
+        <div class="two-col" style="margin-bottom:18px">
           <div class="card panel">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start">
-              <div><h3>Transacciones por estatus</h3><div class="cap">Últimos 7 días · toda la red</div></div>
-            </div>
-            <div class="bars" id="statusBars"></div>
-            <div class="legend">
-              <span><i class="dot" style="background:#754bf1"></i>Aprobadas</span>
-              <span><i class="dot" style="background:#a98cff"></i>Otras (rechazo, cancelación, devolución, contracargo)</span>
-            </div>
+            <h3>Comisión por mes</h3><div class="cap">2026 · acumulado confirmado</div>
+            <div class="bars" id="distComBars"></div>
+            <div class="legend"><span><i class="dot" style="background:#754bf1"></i>En proceso</span><span><i class="dot" style="background:#d5cbff"></i>Pagada</span></div>
           </div>
           <div class="card panel">
-            <h3>Saldo por destino</h3><div class="cap">Distribución del volumen liquidable</div>
+            <h3>Volumen de cartera</h3><div class="cap">Últimos 6 meses</div>
+            <div class="bars" id="distVolBars"></div>
+            <div class="legend"><span><i class="dot" style="background:#754bf1"></i>Volumen mensual</span></div>
+          </div>
+        </div>
+
+        <!-- Gráficas fila 2 -->
+        <div class="two-col" style="margin-bottom:18px">
+          <div class="card panel">
+            <h3>Composición de cartera</h3><div class="cap">Por giro · periodo actual</div>
             <div class="donut-wrap">
               <svg width="128" height="128" viewBox="0 0 42 42" style="flex-shrink:0">
                 <circle cx="21" cy="21" r="15.9" fill="none" stroke="#eceaf2" stroke-width="3.5"/>
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#754BF1" stroke-width="3.5" stroke-dasharray="68 32" stroke-dashoffset="25" stroke-linecap="round"/>
-                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#B5A4F0" stroke-width="3.5" stroke-dasharray="32 68" stroke-dashoffset="-43" stroke-linecap="round"/>
-                <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="500" fill="#2d006d" font-family="Work Sans">$392k</text>
-                <text x="21" y="26" text-anchor="middle" font-size="3.2" fill="#9497a3">liquidable</text>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#754BF1" stroke-width="3.5" stroke-dasharray="35 65" stroke-dashoffset="25"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#B5A4F0" stroke-width="3.5" stroke-dasharray="28 72" stroke-dashoffset="-10"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#D5CBFF" stroke-width="3.5" stroke-dasharray="22 78" stroke-dashoffset="-38"/>
+                <circle cx="21" cy="21" r="15.9" fill="none" stroke="#9aa0ad" stroke-width="3.5" stroke-dasharray="15 85" stroke-dashoffset="-60"/>
+                <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="500" fill="#2d006d" font-family="Work Sans">156</text>
+                <text x="21" y="26" text-anchor="middle" font-size="3.2" fill="#9497a3">comercios</text>
               </svg>
               <div class="rows">
-                <div class="drow"><span class="name"><i class="dot" style="background:#754bf1"></i>Comercio</span><span class="amt">$266,560 · 68%</span></div>
-                <div class="drow"><span class="name"><i class="dot" style="background:#B5A4F0"></i>Proveedor de Servicios</span><span class="amt">$125,440 · 32%</span></div>
-                <div class="drow"><span class="name" style="color:var(--text-muted)">Retenido / en revisión</span><span class="amt" style="color:var(--text-muted)">$3,120</span></div>
+                <div class="drow"><span class="name"><i class="dot" style="background:#754bf1"></i>Abarrotes / Tienda</span><span class="amt">35% · 55</span></div>
+                <div class="drow"><span class="name"><i class="dot" style="background:#B5A4F0"></i>Farmacia / Salud</span><span class="amt">28% · 44</span></div>
+                <div class="drow"><span class="name"><i class="dot" style="background:#D5CBFF"></i>Refaccionaria</span><span class="amt">22% · 34</span></div>
+                <div class="drow"><span class="name"><i class="dot" style="background:#9aa0ad"></i>Otros</span><span class="amt">15% · 23</span></div>
               </div>
+            </div>
+          </div>
+          <div class="card panel">
+            <h3>Contracargos y devoluciones</h3><div class="cap">Top comercios por incidencia</div>
+            <div class="hbars" id="distCbkBars"></div>
+          </div>
+        </div>
+
+        <!-- Mapa de la cartera (6 listados) -->
+        <div class="card panel" style="margin-bottom:18px">
+          <h3 style="margin-bottom:14px">Mapa de la cartera</h3>
+          <div class="loco-grid">
+            <div class="loco-card" id="distLoco"></div>
+            <div class="loco-card" id="distAscenso"></div>
+            <div class="loco-card" id="distRitmo"></div>
+            <div class="loco-card" id="distPausa"></div>
+            <div class="loco-card" id="distFoco"></div>
+            <div class="loco-card" id="distDespegar"></div>
+          </div>
+        </div>
+
+        <!-- Avisos y pendientes -->
+        <div class="card panel">
+          <h3 style="margin-bottom:14px">Avisos y pendientes</h3>
+          <div class="aviso-list">
+            <div class="aviso">
+              <div class="av-icon" style="background:var(--err-bg);color:var(--err-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.3l-8.2 14.2a2 2 0 001.7 3h16.4a2 2 0 001.7-3L13.7 3.3a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+              <div class="av-body"><div class="av-title">Contracargo elevado · Taller Mecánico Díaz</div><div class="av-sub">8.4% del volumen en contracargos este mes. Revisa en Mi Cartera → Focos de atención.</div></div>
+            </div>
+            <div class="aviso">
+              <div class="av-icon" style="background:var(--info-bg);color:var(--info-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 00-4-4H6a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M19 8v6M22 11h-6"/></svg></div>
+              <div class="av-body"><div class="av-title">3 altas pendientes de documentos</div><div class="av-sub">Refaccionaria Pérez, Ferretería Norteña y Lavandería Pronto llevan más de 5 días esperando documentos del comercio.</div></div>
+            </div>
+            <div class="aviso">
+              <div class="av-icon" style="background:var(--ok-bg);color:var(--ok-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
+              <div class="av-body"><div class="av-title">Comisión de agosto 2026 depositada</div><div class="av-sub">$37,592 enviados a tu cuenta ••••4821 el 05/sep/26 · Ref. SPEI-2609050018</div></div>
+            </div>
+            <div class="aviso">
+              <div class="av-icon" style="background:var(--warn-bg);color:var(--warn-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5M8 17h3"/></svg></div>
+              <div class="av-body"><div class="av-title">Factura de comisión pendiente de cargar</div><div class="av-sub">Comisión septiembre · $42,186 · CFDI requerido para liberar el pago. Ve a Pagos y Facturación.</div></div>
             </div>
           </div>
         </div>
@@ -653,15 +743,53 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== COMISIONES ===== -->
       <section class="view" id="view-comisiones">
-        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
-          <div class="card kpi"><div class="lbl">Comisión estimada <span class="tip"><span class="q">?</span><span class="box">Proyección sobre transacciones aún en <b>Pending/Available</b>. Puede cambiar hasta que liquiden.</span></span></div><div class="val" style="color:var(--text-muted)">$12,480</div><div class="sub" style="color:var(--text-faint)">No disponible para retiro</div></div>
-          <div class="card kpi"><div class="lbl">Comisión confirmada <span class="tip"><span class="q">?</span><span class="box">Calculada sobre transacciones ya liquidadas (<b>Settlement</b>). Pendiente de dispersión.</span></span></div><div class="val" style="color:var(--action-secondary)">$31,240</div><div class="sub"><span class="badge b-info"><span class="bd"></span>Se dispersa el 05/08</span></div></div>
-          <div class="card kpi"><div class="lbl">Comisión pagada <span class="tip"><span class="q">?</span><span class="box">Ya dispersada a tu cuenta en el periodo seleccionado.</span></span></div><div class="val" style="color:var(--ok-text)">$96,720</div><div class="sub up">Acumulado 2026</div></div>
+        <div class="kpi-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:20px">
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div class="lbl">Volumen del periodo</div>
+            <div class="val">$4,218,640</div>
+            <div class="sub up">▲ 11.3% vs. mes anterior</div>
+          </div>
+          <div class="card kpi">
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1 1.1-1.8 2.5-1.8s2.5.8 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg></div>
+            <div class="lbl">Comisión confirmada</div>
+            <div class="val" style="color:var(--action-secondary)">$42,186</div>
+            <div class="sub"><span class="badge b-info"><span class="bd"></span>Se paga al cargar CFDI · 05/oct</span></div>
+          </div>
         </div>
-        <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Periodo</th><th>Comercios</th><th>Volumen liquidado</th><th>Tasa</th><th>Comisión</th><th>Estado</th><th></th></tr></thead>
-          <tbody id="comBody"></tbody>
-        </table></div></div>
+
+        <div class="sec-tabs">
+          <button class="sec-tab on" data-stab="com-historial" onclick="conTab(this)">Historial de cortes</button>
+          <button class="sec-tab" data-stab="com-esquema" onclick="conTab(this)">Mi esquema</button>
+        </div>
+
+        <div class="sec-panel on" id="stab-com-historial">
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Periodo</th><th>Comercios</th><th>Volumen</th><th>Comisión bruta</th><th>Ajustes</th><th>Saldo anterior</th><th>Comisión neta</th><th>Estatus</th><th></th></tr></thead>
+            <tbody id="comBody"></tbody>
+          </table></div></div>
+        </div>
+
+        <div class="sec-panel" id="stab-com-esquema">
+          <div class="two-col" style="align-items:start">
+            <div class="card panel">
+              <h3 style="margin-bottom:6px">Frase de tu negocio</h3>
+              <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Así está configurado tu esquema en Velpay. Para cambios contacta a tu ejecutivo de cuenta.</p>
+              <div style="background:var(--bg-subtle);border-radius:12px;padding:16px 18px;margin-bottom:16px">
+                <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Tipo de esquema</div>
+                <div style="font-weight:500;color:var(--text-strong);font-size:15px">Porcentaje sobre volumen liquidado</div>
+              </div>
+              <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · corte último día del mes</span></div>
+              <div class="field"><span class="k">Condición de pago</span><span class="v">CFDI previo a la dispersión</span></div>
+              <div class="field"><span class="k">Ajustes</span><span class="v">Contracargos y devoluciones se descuentan</span></div>
+            </div>
+            <div class="card panel">
+              <h3 style="margin-bottom:14px">Evolución de comisión</h3>
+              <div class="hbars" id="distEsquemaBars"></div>
+              <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La tasa exacta es gestionada por Operaciones Velpay y no se muestra en el portal.</p>
+            </div>
+          </div>
+        </div>
       </section>
 
       <!-- ===== ESTADO DE CUENTA ===== -->
@@ -775,6 +903,138 @@ tbody tr:hover{background:#fbfaff}
               <h3>Seguridad</h3><div class="cap">Última contraseña actualizada hace 3 meses.</div>
               <button class="btn btn-ghost" style="margin-top:6px">Cambiar contraseña</button>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DIST · MI CARTERA ===== -->
+      <section class="view" id="view-dist-cartera">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+          <h2 style="font-size:16px;color:var(--text-strong)">Altas en proceso <span class="badge b-info" style="vertical-align:middle"><span class="bd"></span>7</span></h2>
+          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Filtrar</button>
+        </div>
+        <div class="card tbl-card" style="margin-bottom:26px"><div class="tbl-scroll"><table>
+          <thead><tr><th>Comercio</th><th>Etapa</th><th>Documentos</th><th>Tiempo en etapa</th><th>Responsable</th><th>Acción</th></tr></thead>
+          <tbody id="distAltasBody"></tbody>
+        </table></div></div>
+
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
+          <h2 style="font-size:16px;color:var(--text-strong)">Comercios activos <span class="badge b-ok" style="vertical-align:middle"><span class="bd"></span>138</span></h2>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <div class="search" style="min-width:200px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID"></div>
+            <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
+          </div>
+        </div>
+        <div class="card tbl-card"><div class="tbl-scroll"><table>
+          <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Ingreso Velpay</th><th>Tu comisión</th><th></th></tr></thead>
+          <tbody id="distCarteraBody"></tbody>
+        </table></div>
+        <div class="tbl-foot">
+          <span>Mostrando 6 de 138 comercios</span>
+          <div class="pager">
+            <button class="pg-arrow" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
+            <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><span class="pg-dots">…</span><button class="pg-num">24</button>
+            <button class="pg-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+          </div>
+        </div></div>
+        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. <b>Ingreso Velpay</b> = revenue de la plataforma sobre el volumen de ese comercio. <b>Tu comisión</b> = lo que te corresponde según tu esquema pactado. Tasas y márgenes no se muestran.</p>
+      </section>
+
+      <!-- ===== DIST · PAGOS Y FACTURACIÓN ===== -->
+      <section class="view" id="view-dist-pagos">
+        <div class="sec-tabs">
+          <button class="sec-tab on" data-stab="dist-pfacturar" onclick="conTab(this)">Por facturar</button>
+          <button class="sec-tab" data-stab="dist-phistorial" onclick="conTab(this)">Historial</button>
+          <button class="sec-tab" data-stab="dist-pdatos" onclick="conTab(this)">Mis datos fiscales</button>
+        </div>
+
+        <div class="sec-panel on" id="stab-dist-pfacturar">
+          <div class="two-col" style="align-items:start">
+            <div class="card panel">
+              <h3 style="margin-bottom:6px">Datos Velpay para tu factura</h3>
+              <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Emite tu CFDI a Velpay con estos datos. Una vez cargado, liberamos el pago de tu comisión.</p>
+              <div class="field"><span class="k">Razón social</span><span class="v" style="display:flex;align-items:center;gap:8px">Velpay Payments S.A. de C.V.<button class="key-btn" title="Copiar" onclick="copyText(this,'Velpay Payments S.A. de C.V.')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button></span></div>
+              <div class="field"><span class="k">RFC</span><span class="v mono" style="display:flex;align-items:center;gap:8px">VPA220315LB3<button class="key-btn" title="Copiar" onclick="copyText(this,'VPA220315LB3')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button></span></div>
+              <div class="field"><span class="k">Uso de CFDI</span><span class="v">G03 · Gastos en general</span></div>
+              <div class="field"><span class="k">Forma de pago</span><span class="v">03 · Transferencia electrónica</span></div>
+              <div class="field"><span class="k">Dirección fiscal</span><span class="v" style="text-align:right">Av. Vasconcelos 300 Piso 8, San Pedro Garza García, N.L. 66260</span></div>
+            </div>
+            <div class="card panel">
+              <h3 style="margin-bottom:6px">Comisión pendiente de facturar</h3>
+              <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Sube tu CFDI para liberar el pago. El archivo debe corresponder exactamente al monto confirmado.</p>
+              <div style="padding:16px 18px;background:var(--bg-subtle);border-radius:12px;margin-bottom:16px">
+                <div style="font-size:13px;color:var(--text-muted);margin-bottom:4px">Monto a facturar</div>
+                <div style="font-size:26px;font-weight:500;color:var(--text-strong)">$42,186</div>
+                <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Comisión confirmada · septiembre 2026</div>
+              </div>
+              <div class="drop" role="button" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+                <div class="t">Arrastra tu CFDI o haz clic para subir</div>
+                <div class="s">.xml (obligatorio) y .pdf (opcional) · máx. 5 MB</div>
+              </div>
+              <button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:12px">Cargar y solicitar pago</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="sec-panel" id="stab-dist-phistorial">
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Periodo</th><th>Comisión neta</th><th>CFDI cargado</th><th>Fecha de carga</th><th>Estatus de pago</th><th>Fecha de pago</th><th>Referencia SPEI</th><th></th></tr></thead>
+            <tbody id="distPagosBody"></tbody>
+          </table></div></div>
+        </div>
+
+        <div class="sec-panel" id="stab-dist-pdatos">
+          <div class="card panel" style="max-width:680px">
+            <h3 style="margin-bottom:6px">Mis datos fiscales</h3>
+            <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Registrados en Velpay. Para actualizarlos contacta a tu ejecutivo de cuenta — no son editables desde el portal.</p>
+            <div class="field"><span class="k">Razón social</span><span class="v">Punto Red S.A. de C.V.</span></div>
+            <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
+            <div class="field"><span class="k">Régimen fiscal</span><span class="v">601 · General de Ley Personas Morales</span></div>
+            <div class="field"><span class="k">Código postal</span><span class="v mono">64650</span></div>
+            <div class="sec-title">Cuenta de dispersión</div>
+            <div class="field"><span class="k">Banco</span><span class="v">BBVA México</span></div>
+            <div class="field"><span class="k">CLABE</span><span class="v mono">•••• •••• •••• 4821</span></div>
+            <div style="margin-top:14px;padding:11px 14px;background:var(--info-bg);border-radius:10px;color:var(--info-text);font-size:12px;display:flex;align-items:flex-start;gap:8px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+              Para cambiar tu CLABE o domicilio fiscal, envía solicitud a <b>cuentas@velpay.mx</b> con tus documentos actualizados.
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== DIST · REPORTES ===== -->
+      <section class="view" id="view-dist-reportes">
+        <div class="report-grid">
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Evolución de comisiones</div><div class="rc-desc">Histórico mensual de comisión confirmada y pagada · Excel y PDF</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
+          </div>
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Volumen de cartera</div><div class="rc-desc">Por comercio y giro · rango de fechas configurable</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
+          </div>
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h12M4 18h8"/><circle cx="20" cy="18" r="3"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Ranking de comercios</div><div class="rc-desc">Posición por volumen y tendencia · periodo seleccionable</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
+          </div>
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.3l-8.2 14.2a2 2 0 001.7 3h16.4a2 2 0 001.7-3L13.7 3.3a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Comercios en riesgo</div><div class="rc-desc">Alta tasa de contracargos o devoluciones · umbral configurable</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
+          </div>
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Embudo de altas</div><div class="rc-desc">Tasa de conversión por etapa · tiempo promedio en proceso</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
+          </div>
+          <div class="report-card">
+            <div class="rc-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5M8 17h3"/></svg></div>
+            <div class="rc-body"><div class="rc-title">Estacionalidad</div><div class="rc-desc">Comparativa por día y semana · patrones de actividad</div></div>
+            <button class="btn btn-ghost btn-sm">Generar</button>
           </div>
         </div>
       </section>
@@ -1123,10 +1383,36 @@ const tx=[
   ["24/07/26 12:47","OP-7734820","Refaccionaria El Motor","$2,150.00","Crédito","Contracargo","b-err","Pending","b-neutral"],
 ];
 const com=[
-  ["Julio 2026","142","$392,000","1.00%","$31,240","Confirmada","b-info"],
-  ["Junio 2026","148","$1,240,600","1.00%","$12,406","Pagada","b-ok"],
-  ["Mayo 2026","151","$1,088,300","1.00%","$10,883","Pagada","b-ok"],
-  ["En curso (ago)","—","$248,000 (parcial)","1.00%","$2,480","Estimada","b-neutral"],
+  ["Septiembre 2026","138","$4,218,640","$42,186","−$540","$0","$41,646","Confirmada","b-info"],
+  ["Agosto 2026","141","$3,791,200","$37,912","−$320","$0","$37,592","Pagada","b-ok"],
+  ["Julio 2026","142","$3,620,400","$36,204","−$780","$0","$35,424","Pagada","b-ok"],
+  ["Junio 2026","143","$3,448,800","$34,488","−$210","$0","$34,278","Pagada","b-ok"],
+];
+/* Altas en proceso [nombre, RFC, giro, etapa, docs, tiempoEtapa, responsable] */
+const distAltas=[
+  ["Refaccionaria Pérez","RPE210603N44","Refaccionaria","Validación KYC","3 de 4","6 días","Operaciones Velpay"],
+  ["Ferretería Norteña","FNO200812K28","Ferretería","Revisión contrato","Completo","2 días","Área Legal"],
+  ["Lavandería Pronto","LPR220114P01","Lavandería","Carga de documentos","1 de 4","9 días","Comercio"],
+  ["Tortillería El Real","TRE180520C33","Alimentos","Pre-registro","Sin documentos","1 día","Comercio"],
+  ["Gimnasio FitZone","GFZ231102A55","Fitness","Firma de contrato","Completo","0 días","Ejecutivo de cuenta"],
+  ["Óptica Visión Clara","OVC190808B72","Óptica","Validación KYC","2 de 4","4 días","Operaciones Velpay"],
+  ["Panadería La Fe","PLF200310M41","Panadería","Pre-registro","Sin documentos","0 días","Comercio"],
+];
+/* Cartera activa [nombre, id, RFC, giro, fechaAsig, suc, volAnt, volMes, trx, cbk, dev, ultTrx, ingVelpay, comision] */
+const distCartera=[
+  ["Abarrotes La Esquina","CM-04821","AAE160305R22","Abarrotes","10/feb/24",3,"$968,400","$1,084,200",412,2,1,"15/09/26","$10,842","$10,842"],
+  ["Farmacia San José","CM-04822","FSJ180712K44","Farmacia","15/mar/24",2,"$815,200","$892,400",298,1,5,"15/09/26","$8,924","$8,924"],
+  ["Refaccionaria El Motor","CM-04823","REM160812H33","Refaccionaria","22/abr/24",3,"$643,100","$714,880",176,0,0,"15/09/26","$7,149","$7,149"],
+  ["Cafetería Aroma","CM-04824","CAR201120L85","Cafetería","01/jun/24",1,"$428,900","$524,400",544,3,8,"14/09/26","$5,244","$5,244"],
+  ["Papelería Lápiz Azul","CM-04825","PLA190405G60","Papelería","18/jul/24",1,"$118,200","$141,300",89,0,1,"13/09/26","$1,413","$1,413"],
+  ["Servicios TecnoRed","CM-04826","STE190322Q45","Servicios","03/ago/24",2,"$268,400","$318,750",233,7,3,"15/09/26","$3,188","$3,188"],
+];
+/* Historial de pagos [periodo, comNeta, cfdi, fechaCarga, estatusPago, fechaPago, refSPEI] */
+const distPagosHist=[
+  ["Agosto 2026","$37,592","cfdi_ago26.xml","04/sep/26","Pagada","05/sep/26","SPEI-2609050018"],
+  ["Julio 2026","$35,424","cfdi_jul26.xml","02/ago/26","Pagada","05/ago/26","SPEI-2608050022"],
+  ["Junio 2026","$34,278","cfdi_jun26.xml","03/jul/26","Pagada","05/jul/26","SPEI-2607050031"],
+  ["Mayo 2026","$33,912","cfdi_may26.xml","04/jun/26","Pagada","05/jun/26","SPEI-2606050015"],
 ];
 const led=[
   ["24/07/26","Liquidación de ventas","Sale","LIQ-0724","+ $184,320.00","c","$266,560.40"],
@@ -1200,8 +1486,9 @@ $("#txBody").innerHTML=tx.map(r=>{const d=destinoDe[r[2]]||"Comercio";return `<t
 
 $("#comBody").innerHTML=com.map(r=>`<tr>
   <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="num">${r[1]}</td><td class="num">${r[2]}</td>
-  <td>${r[3]}</td><td class="num">${r[4]}</td><td>${badge(r[5],r[6])}</td>
-  <td><button class="kebab">⋯</button></td></tr>`).join("");
+  <td class="num">${r[3]}</td><td class="num" style="color:${r[4]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[4]}</td>
+  <td class="num" style="color:var(--text-faint)">${r[5]}</td><td class="num" style="color:var(--text-strong)">${r[6]}</td>
+  <td>${badge(r[7],r[8])}</td><td><button class="kebab">⋯</button></td></tr>`).join("");
 
 $("#ledBody").innerHTML=led.map(r=>`<tr>
   <td class="mono">${r[0]}</td><td>${r[1]}</td><td>${badge(r[2],"b-neutral")}</td><td class="mono sub-2">${r[3]}</td>
@@ -1219,16 +1506,107 @@ function renderCon(){
 }
 renderCon();
 
-/* status bars */
-const bars=[["Lun",70,10],["Mar",82,14],["Mié",65,9],["Jue",90,18],["Vie",100,22],["Sáb",58,7],["Dom",44,6]];
-const max=Math.max(...bars.map(b=>b[1]+b[2]));
-$("#statusBars").innerHTML=bars.map(b=>`<div class="bar-wrap">
-  <div class="bar-val">${b[1]+b[2]}</div>
-  <div class="bar-track"><div class="bar-stack">
-    <div class="bar alt" style="height:${(b[2]/max)*140}px"></div>
-    <div class="bar pri" style="height:${(b[1]/max)*140}px"></div>
-  </div></div>
-  <div class="bar-lbl">${b[0]}</div></div>`).join("");
+/* ---------- Portal Distribuidor renders ---------- */
+function renderDistDash(){
+  const comMes=[["Abr",32480,true],["May",35200,true],["Jun",34278,true],["Jul",35424,true],["Ago",37592,true],["Sep",42186,false]];
+  const maxCom=Math.max(...comMes.map(m=>m[1]));
+  const dcb=document.getElementById("distComBars");
+  if(dcb)dcb.innerHTML=comMes.map(m=>`<div class="bar-wrap">
+    <div class="bar-val" style="font-size:10px">$${(m[1]/1000).toFixed(0)}k</div>
+    <div class="bar-track"><div class="bar-stack">
+      <div class="bar ${m[2]?"alt":"pri"}" style="height:${(m[1]/maxCom)*140}px"></div>
+    </div></div>
+    <div class="bar-lbl">${m[0]}</div></div>`).join("");
+
+  const volMes=[["Abr",3120000],["May",3380000],["Jun",3448800],["Jul",3620400],["Ago",3791200],["Sep",4218640]];
+  const maxVol=Math.max(...volMes.map(m=>m[1]));
+  const dvb=document.getElementById("distVolBars");
+  if(dvb)dvb.innerHTML=volMes.map(m=>`<div class="bar-wrap">
+    <div class="bar-val" style="font-size:10px">$${(m[1]/1000000).toFixed(1)}M</div>
+    <div class="bar-track"><div class="bar-stack">
+      <div class="bar pri" style="height:${(m[1]/maxVol)*140}px"></div>
+    </div></div>
+    <div class="bar-lbl">${m[0]}</div></div>`).join("");
+
+  const cbkData=[["Taller Mecánico Díaz",8.4],["Farmacia San José",3.8],["Abarrotes La Esquina",2.1],["Cafetería Aroma",1.6]];
+  const maxCbk=Math.max(...cbkData.map(d=>d[1]));
+  const dcbb=document.getElementById("distCbkBars");
+  if(dcbb)dcbb.innerHTML=cbkData.map(d=>`<div class="hbar">
+    <div class="hname">${d[0]}</div>
+    <div class="htrack"><div class="hfill" style="width:${(d[1]/maxCbk*100).toFixed(1)}%;background:linear-gradient(90deg,#f08080,#e05a4f)"></div></div>
+    <div class="hval" style="color:var(--err-text)">${d[1]}%</div></div>`).join("");
+
+  renderDistLocos();
+}
+function renderDistLocos(){
+  const loco=[["Abarrotes La Esquina","$1,084,200"],["Farmacia San José","$892,400"],["Refaccionaria El Motor","$714,880"]];
+  const ascenso=[["Cafetería Aroma","▲ 22.4%"],["Servicios TecnoRed","▲ 18.1%"],["Papelería Lápiz Azul","▲ 14.7%"]];
+  const ritmo=[["Refaccionaria Norteña","▼ 8.3%"],["Tlapalería El Clavo","▼ 6.1%"]];
+  const pausa=[["Taller Mecánico Díaz","32 días sin trx"],["Distribuidora ABC","18 días sin trx"]];
+  const foco=[["Taller Mecánico Díaz","8.4% contracargo"],["Farmacia San José","3.8% devoluciones"]];
+  const despegar=[["Refaccionaria Pérez","Alta lista · sin trx"],["Ferretería Norteña","1a trx · 12/sep"],["Lavandería Pronto","Alta en proceso"]];
+  const mkRows=(arr,col)=>arr.map(r=>`<div class="lc-row"><span class="lc-name">${r[0]}</span><span class="lc-val"${col?` style="color:${col}"`:""}>${r[1]}</span></div>`).join("");
+  const fill=(id,label,color,rows)=>{const el=document.getElementById(id);if(el)el.innerHTML=`<div class="lc-label"><span class="lc-dot" style="background:${color}"></span>${label}</div>${rows}`;};
+  fill("distLoco","Locomotoras","#754bf1",mkRows(loco));
+  fill("distAscenso","En ascenso","#22b06a",mkRows(ascenso,"var(--ok-text)"));
+  fill("distRitmo","Perdiendo ritmo","#e6a63c",mkRows(ritmo,"var(--warn-text)"));
+  fill("distPausa","En pausa","#9aa0ad",mkRows(pausa,"var(--text-muted)"));
+  fill("distFoco","Focos de atención","#e05a4f",mkRows(foco,"var(--err-text)"));
+  fill("distDespegar","Listos para despegar","#4636b8",mkRows(despegar,"var(--info-text)"));
+}
+function renderDistCartera(){
+  const etapaBadge=e=>{const m={"Validación KYC":"b-warn","Revisión contrato":"b-info","Carga de documentos":"b-err","Pre-registro":"b-neutral","Firma de contrato":"b-info"};return badge(e,m[e]||"b-neutral");};
+  const el=document.getElementById("distAltasBody");
+  if(el)el.innerHTML=distAltas.map(r=>`<tr>
+    <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[1]} · ${r[2]}</div></td>
+    <td>${etapaBadge(r[3])}</td>
+    <td style="color:${r[4]==="Sin documentos"?"var(--err-text)":r[4]==="Completo"?"var(--ok-text)":"var(--text-body)"}">${r[4]}</td>
+    <td class="sub-2">${r[5]}</td><td class="sub-2">${r[6]}</td>
+    <td><button class="btn btn-ghost btn-sm">Ver detalle</button></td></tr>`).join("");
+  const el2=document.getElementById("distCarteraBody");
+  if(el2)el2.innerHTML=distCartera.map(r=>`<tr>
+    <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[2]} · ${r[3]}</div></td>
+    <td>${badge("Activo","b-ok")}</td>
+    <td class="mono sub-2">${r[4]}</td>
+    <td class="num">${r[5]}</td>
+    <td class="num">${r[6]}</td>
+    <td class="num" style="color:var(--text-strong)">${r[7]}</td>
+    <td class="num" style="color:${r[9]>0?"var(--err-text)":"var(--text-faint)"}">${r[9]>0?"$"+r[9].toLocaleString()+" ("+r[9]+")":"—"}</td>
+    <td class="num" style="color:${r[10]>0?"var(--warn-text)":"var(--text-faint)"}">${r[10]>0?"$"+r[10].toLocaleString()+" ("+r[10]+")":"—"}</td>
+    <td class="mono sub-2">${r[11]}</td>
+    <td class="num">${r[12]}</td>
+    <td class="num" style="color:var(--ok-text)">${r[13]}</td>
+    <td><button class="kebab">⋯</button></td></tr>`).join("");
+}
+function renderDistPagos(){
+  const el=document.getElementById("distPagosBody");
+  const pagBadge=e=>badge(e,e==="Pagada"?"b-ok":"b-info");
+  if(el)el.innerHTML=distPagosHist.map(r=>`<tr>
+    <td><b style="color:var(--text-strong)">${r[0]}</b></td>
+    <td class="num" style="color:var(--ok-text)">${r[1]}</td>
+    <td class="mono sub-2">${r[2]}</td>
+    <td class="mono sub-2">${r[3]}</td>
+    <td>${pagBadge(r[4])}</td>
+    <td class="mono sub-2">${r[5]}</td>
+    <td class="mono sub-2">${r[6]}</td>
+    <td><button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>CFDI</button></td></tr>`).join("");
+}
+function renderDistEsquema(){
+  const data=[["Abr","$32,480"],["May","$35,200"],["Jun","$34,278"],["Jul","$35,424"],["Ago","$37,592"],["Sep","$42,186"]];
+  const vals=data.map(d=>parseInt(d[1].replace(/[$,]/g,"")));
+  const maxV=Math.max(...vals);
+  const el=document.getElementById("distEsquemaBars");
+  if(el)el.innerHTML=vals.map((v,i)=>`<div class="hbar">
+    <div class="hname">${data[i][0]}</div>
+    <div class="htrack"><div class="hfill" style="width:${(v/maxV*100).toFixed(1)}%"></div></div>
+    <div class="hval">${data[i][1]}</div></div>`).join("");
+}
+function copyText(btn,val){
+  navigator.clipboard&&navigator.clipboard.writeText(val);
+  const o=btn.innerHTML;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#188a4a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';
+  setTimeout(()=>btn.innerHTML=o,1200);
+}
+renderDistDash();renderDistCartera();renderDistPagos();renderDistEsquema();
 
 /* ---------- Portal PS render ---------- */
 const QR_ICON=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3M21 14v7h-7"/></svg>`;
@@ -1521,11 +1899,10 @@ const NAV={
   dist:{
     items:[
       ["dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
-      ["comercios","Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
-      ["transacciones","Transacciones",`<path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/>`],
+      ["dist-cartera","Mi Cartera",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
       ["comisiones","Comisiones",`<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1.1 1.1-1.8 2.5-1.8s2.5.7 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/><path d="M12 6v1.7M12 16.3V18"/>`],
-      ["estado","Estado de Cuenta",`<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5"/>`],
-      ["conciliacion","Conciliación",`<path d="M20 6L9 17l-5-5"/><path d="M4 20h16" opacity=".4"/>`],
+      ["dist-pagos","Pagos y Facturación",`<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M8 14h5M8 17h3"/>`],
+      ["dist-reportes","Reportes",`<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>`],
       ["perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
     ]},
   ps:{
@@ -1542,20 +1919,20 @@ const NAV={
     ]},
 };
 const titles={
-  dashboard:"Dashboard",comercios:"Comercios",transacciones:["Ventas /","Transacciones"],comisiones:"Comisiones",
-  estado:"Estado de Cuenta",conciliacion:"Conciliación",perfil:"Mi Perfil",
+  dashboard:"Dashboard","dist-cartera":"Mi Cartera",comisiones:"Comisiones",
+  "dist-pagos":["Pagos y","Facturación"],"dist-reportes":"Reportes",perfil:"Mi Perfil",
   "ps-dashboard":"Dashboard","ps-comercios":"Mis Comercios","ps-dispersiones":"Dispersiones",
   "ps-comisiones":"Comisiones","ps-llaves":["Llaves y","Aprovisionamiento"],
   "ps-usuarios":"Usuarios","ps-reportes":"Reportes","ps-perfil":"Mi Perfil",
-  "ps-transacciones":["Ventas /","Transacciones"],
+  conciliacion:"Conciliación",
 };
 const DL=t=>`<button class="btn btn-secondary"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>${t}</button>`;
 const actions={
-  dashboard:"",comercios:DL("Descargar"),transacciones:DL("Descargar"),comisiones:DL("Descargar"),
-  estado:DL("Descargar estado"),conciliacion:"",perfil:"",
+  dashboard:"","dist-cartera":DL("Exportar"),comisiones:DL("Descargar"),
+  "dist-pagos":"","dist-reportes":"",perfil:"",
   "ps-dashboard":"","ps-comercios":DL("Descargar"),"ps-dispersiones":DL("Descargar"),
   "ps-comisiones":DL("Descargar"),"ps-llaves":"","ps-usuarios":"",
-  "ps-reportes":"","ps-perfil":"","ps-transacciones":DL("Descargar"),
+  "ps-reportes":"","ps-perfil":"",conciliacion:"",
 };
 function go(view){
   document.querySelectorAll(".nav-item").forEach(n=>n.classList.toggle("active",n.dataset.view===view));
