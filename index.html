@@ -909,35 +909,40 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== DIST · MI CARTERA ===== -->
       <section class="view" id="view-dist-cartera">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
-          <h2 style="font-size:16px;color:var(--text-strong)">Altas en proceso <span class="badge b-info" style="vertical-align:middle"><span class="bd"></span>7</span></h2>
-          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Filtrar</button>
+        <div class="sec-tabs">
+          <button class="sec-tab on" data-stab="cartera-altas" onclick="conTab(this)">Altas en proceso <span class="badge b-info" style="vertical-align:middle;margin-left:6px"><span class="bd"></span>7</span></button>
+          <button class="sec-tab" data-stab="cartera-activos" onclick="conTab(this)">Comercios activos <span class="badge b-ok" style="vertical-align:middle;margin-left:6px"><span class="bd"></span>138</span></button>
         </div>
-        <div class="card tbl-card" style="margin-bottom:26px"><div class="tbl-scroll"><table>
-          <thead><tr><th>Comercio</th><th>Etapa</th><th>Documentos</th><th>Tiempo en etapa</th><th>Responsable</th><th>Acción</th></tr></thead>
-          <tbody id="distAltasBody"></tbody>
-        </table></div></div>
 
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;flex-wrap:wrap;gap:10px">
-          <h2 style="font-size:16px;color:var(--text-strong)">Comercios activos <span class="badge b-ok" style="vertical-align:middle"><span class="bd"></span>138</span></h2>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <div class="sec-panel on" id="stab-cartera-altas">
+          <div style="display:flex;justify-content:flex-end;margin-bottom:12px">
+            <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Filtrar</button>
+          </div>
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Comercio</th><th>Etapa</th><th>Documentos</th><th>Tiempo en etapa</th><th>Responsable</th><th>Acción</th></tr></thead>
+            <tbody id="distAltasBody"></tbody>
+          </table></div></div>
+        </div>
+
+        <div class="sec-panel" id="stab-cartera-activos">
+          <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px;flex-wrap:wrap">
             <div class="search" style="min-width:200px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID"></div>
             <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
           </div>
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Ingreso Velpay</th><th>Tu comisión</th><th></th></tr></thead>
+            <tbody id="distCarteraBody"></tbody>
+          </table></div>
+          <div class="tbl-foot">
+            <span>Mostrando 6 de 138 comercios</span>
+            <div class="pager">
+              <button class="pg-arrow" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
+              <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><span class="pg-dots">…</span><button class="pg-num">24</button>
+              <button class="pg-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+            </div>
+          </div></div>
+          <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. <b>Ingreso Velpay</b> = revenue de la plataforma sobre el volumen de ese comercio. <b>Tu comisión</b> = lo que te corresponde según tu esquema pactado. Tasas y márgenes no se muestran.</p>
         </div>
-        <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Ingreso Velpay</th><th>Tu comisión</th><th></th></tr></thead>
-          <tbody id="distCarteraBody"></tbody>
-        </table></div>
-        <div class="tbl-foot">
-          <span>Mostrando 6 de 138 comercios</span>
-          <div class="pager">
-            <button class="pg-arrow" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
-            <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><span class="pg-dots">…</span><button class="pg-num">24</button>
-            <button class="pg-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
-          </div>
-        </div></div>
-        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. <b>Ingreso Velpay</b> = revenue de la plataforma sobre el volumen de ese comercio. <b>Tu comisión</b> = lo que te corresponde según tu esquema pactado. Tasas y márgenes no se muestran.</p>
       </section>
 
       <!-- ===== DIST · PAGOS Y FACTURACIÓN ===== -->
