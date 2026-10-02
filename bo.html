@@ -524,15 +524,19 @@
     <div class="toolbar">
       <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg>
         <input placeholder="Busca por nombre de sucursal"><span class="count">Mostrando 2 resultados</span></div>
-      <span class="chip">📅 Hoy</span>
+      <span class="chip" style="cursor:pointer;position:relative" onclick="document.getElementById('sucDatePicker').showPicker?.() || document.getElementById('sucDatePicker').click()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 9h18M8 2v4M16 2v4"/></svg>
+        <span id="sucDateLabel">Hoy</span>
+        <input type="date" id="sucDatePicker" style="position:absolute;opacity:0;pointer-events:none;width:1px;height:1px" onchange="document.getElementById('sucDateLabel').textContent=this.value||'Hoy'">
+      </span>
     </div>
     <div class="br-grid">
-      <div class="br-card">
+      <div class="br-card" style="cursor:pointer" onclick="openSucursal('EDIT 38 COPAYMENT ECOMMERCE','BANORTE')">
         <div class="br-top"><b>EDIT 38 COPAYMENT ECOMMERCE</b><span class="link">Ver detalle</span></div>
         <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
         <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
       </div>
-      <div class="br-card">
+      <div class="br-card" style="cursor:pointer" onclick="openSucursal('EDIT 38 COPAYMENT','BANORTE,AMEX')">
         <div class="br-top"><b>EDIT 38 COPAYMENT</b><span class="link">Ver detalle</span></div>
         <div class="br-row"><span class="bank">BANORTE</span><span class="sale">Venta</span></div>
         <div class="rates">Agregadores <b>TDD</b> 3.00% <b>TDC</b> 3.00% <b>TIN</b> 3.00%</div>
