@@ -499,7 +499,7 @@
     <!-- sub-panel Proveedores de servicios -->
     <div class="dsub-panel" id="dsub-proveedores" style="display:none">
       <div class="tbl-card"><div class="tbl-scroll"><table class="lst">
-        <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Estatus</th><th></th></tr></thead>
+        <thead><tr><th>Nombre</th><th>Tipo de Persona</th><th>RFC</th><th>Razón Social</th><th>% Comisión margen bruto</th><th>Comisión Variable</th><th>Com. adicional</th><th>Estatus</th><th></th></tr></thead>
         <tbody id="provBody"></tbody>
       </table></div></div>
       <div class="pager">
@@ -1155,18 +1155,24 @@
     ["Grupo Industrial MX SA","Moral","GIM951010AB3","Grupo Industrial de Méxi…","25%","15% ($200K+)","Activo"],
   ];
   const proveedores=[
-    ["Servicios del Norte SA","Moral","SNO180412AB2","Servicios del Norte SA de CV","12%","4% ($0-$40K)","Activo"],
-    ["Pagos Bajío","Física","PAB900215XY7","Pagos Bajío","10%","3% ($0-$25K)","Activo"],
-    ["TecnoRed Servicios","Moral","TRS210330K19","TecnoRed Servicios SA","-","6% ($0-$60K)","Inactivo"],
-    ["Cobros del Centro","Moral","CDC170822J44","Cobros del Centro SA de CV","15%","5% ($0-$50K)","Activo"],
+    ["Servicios del Norte SA","Moral","SNO180412AB2","Servicios del Norte SA de CV","12%","4% ($0-$40K)","Activo",true],
+    ["Pagos Bajío","Física","PAB900215XY7","Pagos Bajío","10%","3% ($0-$25K)","Activo",false],
+    ["TecnoRed Servicios","Moral","TRS210330K19","TecnoRed Servicios SA","-","6% ($0-$60K)","Inactivo",true],
+    ["Cobros del Centro","Moral","CDC170822J44","Cobros del Centro SA de CV","15%","5% ($0-$50K)","Activo",false],
   ];
   const renderLst=(rows,tbody)=>{tbody.innerHTML=rows.map(r=>{
     const ok=r[6]==="Activo";
     return `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="rfc">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td>
       <td><span class="badge ${ok?'ok':'no'}"><span class="bd"></span>${r[6]}</span></td><td><button class="kebab">⋯</button></td></tr>`;
   }).join("");};
+  const renderProvLst=(rows,tbody)=>{tbody.innerHTML=rows.map(r=>{
+    const ok=r[6]==="Activo", comAd=r[7]===true;
+    return `<tr><td>${r[0]}</td><td>${r[1]}</td><td class="rfc">${r[2]}</td><td>${r[3]}</td><td>${r[4]}</td><td>${r[5]}</td>
+      <td style="text-align:center"><label class="sw" title="${comAd?'Activada':'Desactivada'}"><input type="checkbox" ${comAd?'checked':''} onchange="event.stopPropagation()"><span class="sw-track"><span class="sw-thumb"></span></span></label></td>
+      <td><span class="badge ${ok?'ok':'no'}"><span class="bd"></span>${r[6]}</span></td><td><button class="kebab">⋯</button></td></tr>`;
+  }).join("");};
   renderLst(distribuidores,$('#distBody'));
-  renderLst(proveedores,$('#provBody'));
+  renderProvLst(proveedores,$('#provBody'));
   initDocDist();
 
   moduleTab(document.querySelector('.tabs span[data-mtab="comercios"]')); // estado inicial
@@ -1230,11 +1236,20 @@
   function distTemplate(did){
     const isDist=altaMode==='dist';
     const label=isDist?'Distribuidor':'Proveedor de servicios';
-    // Un distribuidor puede tener sub-afiliados; un proveedor de servicios NO.
-    // El botón de sub-afiliado y sus cards viven FUERA de la card del distribuidor.
     const subSection=isDist?`
       <div class="sub-list"></div>
       <div class="sub-foot"><button class="btn-link" onclick="addSub('${did}')">＋ Agregar sub-afiliado</button></div>`:'';
+    const psPortalSection=isDist?'':(`
+      <div class="acc-sec">
+        <div class="acc-sec-h" onclick="accToggle(this)"><span>Configuración del portal</span><span class="chev">${CHEV}</span></div>
+        <div class="acc-sec-body" style="display:none">
+          <div class="com-toggle-row">
+            <span>Comisión adicional por transacción</span>
+            <label class="sw"><input type="checkbox"><span class="sw-track"><span class="sw-thumb"></span></span></label>
+          </div>
+          <p style="font-size:12px;color:var(--text-muted);margin-top:4px">Al activar, el proveedor verá el módulo <b>Comisiones</b> en su portal con el historial de cobro por transacción aprobada.</p>
+        </div>
+      </div>`);
     return `<div class="dist-block" id="${did}">
       <div class="dist-card aff">
         <div class="acc-h open" onclick="accToggle(this)">
@@ -1246,6 +1261,7 @@
         </div>
         <div class="acc-body">
           ${affiliateBody(did)}
+          ${psPortalSection}
         </div>
       </div>
       ${subSection}

@@ -791,7 +791,7 @@ tbody tr:hover{background:#fbfaff}
 
         <div class="sec-panel on" id="stab-com-historial">
           <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Periodo</th><th>Comercios</th><th>Volumen</th><th>Comisión bruta</th><th>Ajustes</th><th>Comisión neta</th><th>IVA (16%)</th><th>Total a facturar</th><th>Estatus</th><th>Acciones</th></tr></thead>
+            <thead><tr><th>Periodo</th><th>Comercios</th><th>Volumen</th><th>Ajustes</th><th>Comisión</th><th>Saldo pendiente</th><th>IVA (16%)</th><th>Total a facturar</th><th>Estatus</th><th>Acciones</th></tr></thead>
             <tbody id="comBody"></tbody>
           </table></div></div>
         </div>
@@ -826,7 +826,7 @@ tbody tr:hover{background:#fbfaff}
             <div style="text-align:right"><div style="color:var(--text-muted);font-size:13px">Corte al</div><div style="font-weight:500;color:var(--text-strong)">24 jul 2026</div></div>
           </div>
           <div class="tbl-scroll"><table>
-            <thead><tr><th>Fecha</th><th>Concepto</th><th>Tipo de movimiento</th><th>Referencia</th><th style="text-align:right">Monto</th><th style="text-align:right">Saldo</th></tr></thead>
+            <thead><tr><th>Fecha</th><th>Distribuidor</th><th>Concepto</th><th>Tipo de movimiento</th><th>Referencia</th><th style="text-align:right">Ajuste</th><th style="text-align:right">Monto</th><th style="text-align:right">Saldo</th></tr></thead>
             <tbody id="ledBody"></tbody>
           </table></div>
         </div>
@@ -836,12 +836,12 @@ tbody tr:hover{background:#fbfaff}
       <!-- ===== CONCILIACIÓN ===== -->
       <section class="view" id="view-conciliacion">
         <div class="sec-tabs">
-          <button class="sec-tab on" data-stab="historial" onclick="conTab(this)">Historial</button>
+          <button class="sec-tab on" data-stab="resultado" onclick="conTab(this)">Último resultado</button>
           <button class="sec-tab" data-stab="cargar" onclick="conTab(this)">Cargar archivo</button>
-          <button class="sec-tab" data-stab="resultado" onclick="conTab(this)">Último resultado</button>
+          <button class="sec-tab" data-stab="historial" onclick="conTab(this)">Historial</button>
         </div>
 
-        <div class="sec-panel on" id="stab-historial">
+        <div class="sec-panel" id="stab-historial">
           <div class="card tbl-card">
             <div class="tbl-scroll"><table>
               <thead><tr><th>Archivo</th><th>Periodo</th><th>Cargado por</th><th>Fecha de carga</th><th>Estado</th><th>Registros</th><th>Diferencias</th><th></th></tr></thead>
@@ -869,7 +869,7 @@ tbody tr:hover{background:#fbfaff}
           </div>
         </div>
 
-        <div class="sec-panel" id="stab-resultado">
+        <div class="sec-panel on" id="stab-resultado">
           <div class="two-col" style="margin-bottom:18px;align-items:start">
             <div class="card panel">
               <h3>Resumen ejecutivo · 08–14 sep 2026</h3>
@@ -924,15 +924,9 @@ tbody tr:hover{background:#fbfaff}
               <div class="field"><span class="k">Banco</span><span class="v">BBVA México</span></div>
               <div class="field"><span class="k">CLABE</span><span class="v mono">•••• •••• •••• 4821</span></div>
               <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · día 5</span></div>
-              <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
-                <div style="font-weight:500;color:var(--text-strong);font-size:14px;margin-bottom:6px">Solicitar cambio de cuenta</div>
-                <div style="color:var(--text-muted);font-size:12.5px;margin-bottom:12px">Adjunta tu estado de cuenta bancario reciente (PDF). Operaciones Velpay validará y actualizará tu CLABE en un plazo de 3 días hábiles.</div>
-                <div class="drop" style="padding:20px" id="perfilDropCuenta" role="button" tabindex="0">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:32px;height:32px"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
-                  <div class="t" style="font-size:13px">Subir estado de cuenta</div>
-                  <div class="s">.pdf · máx. 5 MB</div>
-                </div>
-                <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%;justify-content:center" onclick="this.textContent='Solicitud enviada ✓';this.disabled=true;this.style.color='var(--ok-text)'">Enviar solicitud de cambio</button>
+              <div style="margin-top:14px;padding:11px 14px;background:var(--info-bg);border-radius:10px;color:var(--info-text);font-size:12px;display:flex;align-items:flex-start;gap:8px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
+                Para cambiar tu cuenta de dispersión, ve a <b>Pagos y Facturación → Mis datos fiscales</b>.
               </div>
             </div>
             <div class="card panel">
@@ -956,7 +950,7 @@ tbody tr:hover{background:#fbfaff}
             <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
           </div>
           <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Tu comisión</th><th></th></tr></thead>
+            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Tu comisión</th></tr></thead>
             <tbody id="distCarteraBody"></tbody>
           </table></div>
           <div class="tbl-foot">
@@ -975,7 +969,7 @@ tbody tr:hover{background:#fbfaff}
             <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg>Filtrar</button>
           </div>
           <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Fecha de registro</th><th>Comercio</th><th>Etapa</th><th>Acción</th></tr></thead>
+            <thead><tr><th>Fecha de registro</th><th>Comercio</th><th>RFC</th><th>Giro</th><th>Etapa</th></tr></thead>
             <tbody id="distAltasBody"></tbody>
           </table></div></div>
         </div>
@@ -1021,7 +1015,7 @@ tbody tr:hover{background:#fbfaff}
 
         <div class="sec-panel" id="stab-dist-phistorial">
           <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Periodo</th><th>Comisión neta</th><th>CFDI cargado</th><th>Fecha de carga</th><th>Estatus de pago</th><th>Fecha de pago</th><th>Referencia SPEI</th><th></th></tr></thead>
+            <thead><tr><th>Periodo</th><th>Comisión</th><th>Total de factura</th><th>CFDI cargado</th><th>Fecha de carga</th><th>Estatus de pago</th><th></th></tr></thead>
             <tbody id="distPagosBody"></tbody>
           </table></div></div>
         </div>
@@ -1032,12 +1026,39 @@ tbody tr:hover{background:#fbfaff}
             <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Registrados en Velpay. Para actualizarlos contacta a tu ejecutivo de cuenta — no son editables desde el portal.</p>
             <div class="field"><span class="k">Razón social</span><span class="v">Punto Red S.A. de C.V.</span></div>
             <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
-            <div class="sec-title">Cuenta de dispersión</div>
+
+            <div class="sec-title" style="margin-top:20px">Cuenta de dispersión</div>
             <div class="field"><span class="k">Banco</span><span class="v">BBVA México</span></div>
             <div class="field"><span class="k">CLABE</span><span class="v mono">•••• •••• •••• 4821</span></div>
-            <div style="margin-top:14px;padding:11px 14px;background:var(--info-bg);border-radius:10px;color:var(--info-text);font-size:12px;display:flex;align-items:flex-start;gap:8px">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px;flex-shrink:0;margin-top:1px"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-              Para cambiar tu CLABE o domicilio fiscal, envía solicitud a <b>cuentas@velpay.mx</b> con tus documentos actualizados.
+            <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · día 5</span></div>
+            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
+              <div style="font-weight:500;color:var(--text-strong);font-size:14px;margin-bottom:6px">Solicitar cambio de cuenta</div>
+              <div style="color:var(--text-muted);font-size:12.5px;margin-bottom:12px">Adjunta tu estado de cuenta bancario reciente (PDF). Operaciones Velpay validará y actualizará tu CLABE en un plazo de 3 días hábiles.</div>
+              <div class="drop" style="padding:20px" id="datosDropCuenta" role="button" tabindex="0">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:32px;height:32px"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+                <div class="t" style="font-size:13px">Subir estado de cuenta</div>
+                <div class="s">.pdf · máx. 5 MB</div>
+              </div>
+              <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%;justify-content:center" onclick="this.textContent='Solicitud enviada ✓';this.disabled=true;this.style.color='var(--ok-text)'">Enviar solicitud de cambio</button>
+            </div>
+
+            <div class="sec-title" style="margin-top:24px">Constancia de situación fiscal</div>
+            <p style="color:var(--text-muted);font-size:13px;margin-bottom:12px">Sube tu constancia de situación fiscal vigente en formato PDF. Velpay la utilizará para validar tus datos ante el SAT.</p>
+            <div id="constanciaStatus" style="display:none;margin-bottom:12px">
+              <div style="display:flex;align-items:center;gap:10px;padding:10px 14px;background:var(--ok-bg);border-radius:10px">
+                <svg viewBox="0 0 24 24" fill="none" stroke="var(--ok-text)" stroke-width="2" style="width:18px;height:18px;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+                <div>
+                  <div id="constanciaFileName" style="font-size:13px;font-weight:500;color:var(--ok-text)">constancia.pdf</div>
+                  <div style="font-size:11px;color:var(--text-muted)" id="constanciaDate">Cargado hoy</div>
+                </div>
+                <button class="btn btn-ghost btn-sm" style="margin-left:auto" onclick="removeConstancia()">Eliminar</button>
+              </div>
+            </div>
+            <div class="drop" style="padding:20px" id="constanciaDrop" role="button" tabindex="0" onclick="document.getElementById('constanciaInput').click()">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:32px;height:32px"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+              <div class="t" style="font-size:13px">Subir constancia de situación fiscal</div>
+              <div class="s">.pdf · máx. 5 MB</div>
+              <input type="file" id="constanciaInput" accept=".pdf" style="display:none" onchange="uploadConstancia(this)">
             </div>
           </div>
         </div>
@@ -1079,7 +1100,7 @@ tbody tr:hover{background:#fbfaff}
           <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
         </div>
         <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Trx</th><th>Cancelaciones</th><th>Última trx</th><th></th></tr></thead>
+          <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Monto transaccionado</th><th>Trx</th><th>Cancelaciones</th><th>Saldo acumulado</th></tr></thead>
           <tbody id="psComerciosBody"></tbody>
         </table></div></div>
         <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. El PS se vincula con comercios que ya existen en Velpay; no puede darlos de alta. Las llaves de integración y QR están en <b>Llaves y Aprovisionamiento</b>.</p>
@@ -1109,7 +1130,7 @@ tbody tr:hover{background:#fbfaff}
         </div>
         <div class="card tbl-card">
           <div class="tbl-scroll"><table>
-            <thead><tr><th>Fecha de corte</th><th>Fecha dispersión</th><th>Saldo vendido</th><th>(−) Reversas</th><th>(−) Comisión Velpay</th><th>(±) Arrastrado</th><th>Monto dispersado</th><th>Estatus</th><th>Cuenta destino</th><th>Referencia</th><th></th></tr></thead>
+            <thead><tr><th>Fecha de corte</th><th>Fecha dispersión</th><th>Saldo vendido</th><th>Cancelaciones</th><th>(−) Reversas</th><th>Ajuste</th><th>Monto pendiente</th><th>IVA</th><th>Monto dispersado</th><th>Saldo</th><th>Estatus</th><th>Cuenta destino</th></tr></thead>
             <tbody id="psDispBody"></tbody>
           </table></div>
           <div class="tbl-foot">
@@ -1128,7 +1149,7 @@ tbody tr:hover{background:#fbfaff}
       <section class="view" id="view-ps-comisiones">
         <div style="margin-bottom:18px;padding:12px 16px;background:var(--info-bg);border-radius:12px;color:var(--info-text);font-size:13px;display:flex;align-items:center;gap:10px">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:18px;height:18px;flex-shrink:0"><circle cx="12" cy="12" r="9"/><path d="M12 8v4M12 16h.01"/></svg>
-          Este módulo es visible solo cuando la configuración del proveedor en el BackOffice tiene activa la <b>comisión adicional por transacción</b>. En este prototipo está habilitado como demo.
+          Este módulo solo aparece en el portal cuando el BackOffice tiene activa la <b>Comisión adicional por transacción</b> para este proveedor. Para Punto Red está desactivada; el módulo no es accesible desde el menú.
         </div>
         <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
           <div class="card kpi"><div class="lbl">Comisión estimada <span class="tip"><span class="q">?</span><span class="box">Proyección sobre transacciones aún pendientes. Puede cambiar hasta el cierre del periodo.</span></span></div><div class="val" style="color:var(--text-muted)">$420</div><div class="sub" style="color:var(--text-faint)">No disponible aún</div></div>
@@ -1239,7 +1260,6 @@ tbody tr:hover{background:#fbfaff}
       <section class="view" id="view-ps-perfil">
         <div class="tabs">
           <button class="tab on" data-ptab="datos" onclick="perfilTab(this)">Datos del proveedor</button>
-          <button class="tab" data-ptab="distribuidor" onclick="perfilTab(this)">Distribuidor relacionado</button>
           <button class="tab" data-ptab="seguridad" onclick="perfilTab(this)">Seguridad</button>
         </div>
         <div class="ptab-panel" id="ptab-datos">
@@ -1254,14 +1274,6 @@ tbody tr:hover{background:#fbfaff}
             <div class="field"><span class="k">Responsable</span><span class="v">Luis Herrera</span></div>
             <div class="field"><span class="k">Correo</span><span class="v">contacto@tecnored.mx</span></div>
             <div class="field"><span class="k">Teléfono</span><span class="v mono">+52 81 2233 4455</span></div>
-          </div>
-        </div>
-        <div class="ptab-panel" id="ptab-distribuidor" hidden>
-          <div class="card panel" style="max-width:680px">
-            <h3>Distribuidor relacionado</h3><div class="cap">Distribuidor al que pertenece tu figura dentro de la red Velpay.</div>
-            <div class="field"><span class="k">Distribuidor</span><span class="v">Punto Red S.A. de C.V.</span></div>
-            <div class="field"><span class="k">RFC</span><span class="v mono">PRE210548J21</span></div>
-            <div class="field"><span class="k">Relación</span><span class="v">PS externo asignado</span></div>
           </div>
         </div>
         <div class="ptab-panel" id="ptab-seguridad" hidden>
@@ -1490,20 +1502,21 @@ const distCartera=[
   ["Papelería Lápiz Azul","CM-04825","PLA190405G60","Papelería","18/jul/24",1,"$118,200","$141,300",89,0,1,"13/09/26","$1,413","$1,413"],
   ["Servicios TecnoRed","CM-04826","STE190322Q45","Servicios","03/ago/24",2,"$268,400","$318,750",233,7,3,"15/09/26","$3,188","$3,188"],
 ];
-/* Historial de pagos [periodo, comNeta, cfdi, fechaCarga, estatusPago, fechaPago, refSPEI] */
+/* Historial de pagos [periodo, comision, totalFactura, cfdi, fechaCarga, estatusPago] */
 const distPagosHist=[
-  ["Agosto 2026","$37,592","cfdi_ago26.xml","04/sep/26","Pagada","05/sep/26","SPEI-2609050018"],
-  ["Julio 2026","$35,424","cfdi_jul26.xml","02/ago/26","Pagada","05/ago/26","SPEI-2608050022"],
-  ["Junio 2026","$34,278","cfdi_jun26.xml","03/jul/26","Pagada","05/jul/26","SPEI-2607050031"],
-  ["Mayo 2026","$33,912","cfdi_may26.xml","04/jun/26","Pagada","05/jun/26","SPEI-2606050015"],
+  ["Agosto 2026","$37,592","$43,607","cfdi_ago26.xml","04/sep/26","Pagada"],
+  ["Julio 2026","$35,424","$41,092","cfdi_jul26.xml","02/ago/26","Pagada"],
+  ["Junio 2026","$34,278","$39,762","cfdi_jun26.xml","03/jul/26","Pagada"],
+  ["Mayo 2026","$33,912","$39,338","cfdi_may26.xml","04/jun/26","Pagada"],
 ];
+/* Estado de cuenta [fecha, distribuidor, concepto, tipo, referencia, ajuste, monto, c/d, saldo] */
 const led=[
-  ["24/07/26","Liquidación de ventas","Sale","LIQ-0724","+ $184,320.00","c","$266,560.40"],
-  ["24/07/26","Revenue Velpay","Revenue_Velpay","REV-0724","− $1,843.20","d","$82,240.40"],
-  ["24/07/26","IVA sobre revenue","IVA_Revenue","IVA-0724","− $294.91","d","$84,083.60"],
-  ["23/07/26","Devolución cliente","Devolución","DEV-0723","− $540.00","d","$84,378.51"],
-  ["23/07/26","Contracargo ganado","Contracargo_Ganado","CBK-0710","+ $2,150.00","c","$84,918.51"],
-  ["22/07/26","Cancelación de venta","Cancelación","CAN-0722","− $248.00","d","$82,768.51"],
+  ["24/07/26","Punto Red S.A. de C.V.","Liquidación de ventas","Sale","LIQ-0724","—","+ $184,320.00","c","$266,560.40"],
+  ["24/07/26","Punto Red S.A. de C.V.","Revenue Velpay","Revenue_Velpay","REV-0724","—","− $1,843.20","d","$82,240.40"],
+  ["24/07/26","Punto Red S.A. de C.V.","IVA sobre revenue","IVA_Revenue","IVA-0724","—","− $294.91","d","$84,083.60"],
+  ["23/07/26","Punto Red S.A. de C.V.","Devolución cliente","Devolución","DEV-0723","− $540.00","− $540.00","d","$84,378.51"],
+  ["23/07/26","Punto Red S.A. de C.V.","Contracargo ganado","Contracargo_Ganado","CBK-0710","+ $2,150.00","+ $2,150.00","c","$84,918.51"],
+  ["22/07/26","Punto Red S.A. de C.V.","Cancelación de venta","Cancelación","CAN-0722","— ","− $248.00","d","$82,768.51"],
 ];
 const con=[
   ["conciliacion_jul_s3.xlsx","15–21 jul","24/07/26 09:14","lista","0","ok"],
@@ -1512,21 +1525,44 @@ const con=[
 ];
 
 /* ---- Portal PS · datos ---- */
-// [nombre, RFC, giro, estatus, fechaVinc, sucursales, saldoMesAnt, saldoMes, trx, cancel, ultTrx]
+// [nombre, RFC, giro, estatus, fechaVinc, suc, saldoMesAnt, saldoMes, montoTrx, trx, cancel, saldoAcum]
 const psComercios=[
-  ["Refaccionaria El Motor","REM160812H33","Refaccionaria","Activo","12/03/2026",3,"$138,400","$142,880",176,4,"15/09/26 08:34"],
-  ["Servicios TecnoRed","STE190322Q45","Servicios","Activo","28/02/2026",2,"$311,200","$318,750",233,7,"15/09/26 09:12"],
-  ["Autopartes del Norte","APN200714K12","Autopartes","Activo","15/04/2026",4,"$94,800","$99,120",155,3,"14/09/26 18:20"],
-  ["Taller Mecánico Díaz","TMD180529R08","Taller mecánico","Sin actividad","03/05/2026",1,"$51,400","$48,200",0,2,"10/09/26 11:22"],
+  ["Refaccionaria El Motor","REM160812H33","Refaccionaria","Activo","12/03/2026",3,"$138,400","$142,880","$151,200",176,4,"$142,880"],
+  ["Servicios TecnoRed","STE190322Q45","Servicios","Activo","28/02/2026",2,"$311,200","$318,750","$328,540",233,7,"$318,750"],
+  ["Autopartes del Norte","APN200714K12","Autopartes","Activo","15/04/2026",4,"$94,800","$99,120","$103,400",155,3,"$99,120"],
+  ["Taller Mecánico Díaz","TMD180529R08","Taller mecánico","Sin actividad","03/05/2026",1,"$51,400","$48,200","$48,200",0,2,"$48,200"],
 ];
-// dispersiones [corte, dispersion, saldoVendido, reversas, comVelpay, arrastrado, montoDisp, estatus, cuenta, ref]
+// Transacciones diarias por comercio (demo)
+const psTxDiarias={
+  "Refaccionaria El Motor":[
+    ["15/09/26",18,"$11,240","$960","$10,280"],["14/09/26",22,"$13,800","$0","$13,800"],
+    ["13/09/26",15,"$9,420","$320","$9,100"],["12/09/26",19,"$11,900","$0","$11,900"],
+    ["11/09/26",21,"$13,200","$0","$13,200"],["10/09/26",17,"$10,620","$0","$10,620"],
+  ],
+  "Servicios TecnoRed":[
+    ["15/09/26",30,"$26,400","$1,840","$24,560"],["14/09/26",28,"$24,640","$0","$24,640"],
+    ["13/09/26",25,"$22,000","$960","$21,040"],["12/09/26",0,"$0","$0","$0"],
+    ["11/09/26",32,"$28,160","$0","$28,160"],["10/09/26",27,"$23,760","$720","$23,040"],
+  ],
+  "Autopartes del Norte":[
+    ["15/09/26",12,"$9,600","$0","$9,600"],["14/09/26",15,"$12,000","$480","$11,520"],
+    ["13/09/26",11,"$8,800","$0","$8,800"],["12/09/26",0,"$0","$0","$0"],
+    ["11/09/26",18,"$14,400","$320","$14,080"],["10/09/26",14,"$11,200","$0","$11,200"],
+  ],
+  "Taller Mecánico Díaz":[
+    ["15/09/26",0,"$0","$0","$0"],["14/09/26",0,"$0","$0","$0"],
+    ["13/09/26",0,"$0","$0","$0"],["12/09/26",0,"$0","$0","$0"],
+    ["11/09/26",0,"$0","$0","$0"],["10/09/26",0,"$0","$0","$0"],
+  ],
+};
+// dispersiones [corte, dispersion, saldoVendido, cancelaciones, reversas, ajuste, montoPendiente, iva, montoDisp, saldo, estatus, cuenta]
 const psDispersiones=[
-  ["15/09/26","16/09/26","$47,355","$0","−$947","$0","$46,408","En acumulación","••3421","—"],
-  ["14/09/26","15/09/26","$52,140","−$1,280","−$1,043","$0","$49,817","Dispersado","••3421","SPEI-2609150042"],
-  ["13/09/26","14/09/26","$38,900","$0","−$778","$0","$38,122","Dispersado","••3421","SPEI-2609140038"],
-  ["12/09/26","13/09/26","$0","−$4,200","$0","−$4,200","$0","Cerrado","••3421","—"],
-  ["11/09/26","12/09/26","$61,480","$0","−$1,230","$0","$60,250","Dispersado","••3421","SPEI-2609120061"],
-  ["10/09/26","11/09/26","$44,750","−$960","−$895","$0","$42,895","Dispersado","••3421","SPEI-2609110043"],
+  ["15/09/26","16/09/26","$47,355","$0","$0","$0","$0","$7,577","$47,355","$47,355","En acumulación","••3421"],
+  ["14/09/26","15/09/26","$52,140","$0","−$1,280","$0","$0","$7,974","$49,817","$49,817","Dispersado","••3421"],
+  ["13/09/26","14/09/26","$38,900","$0","$0","$0","$0","$6,099","$38,122","$38,122","Dispersado","••3421"],
+  ["12/09/26","13/09/26","$0","$0","−$4,200","$0","−$4,200","$0","$0","−$4,200","Cerrado","••3421"],
+  ["11/09/26","12/09/26","$61,480","$0","$0","$0","$0","$9,637","$60,250","$60,250","Dispersado","••3421"],
+  ["10/09/26","11/09/26","$44,750","−$960","$0","$0","$0","$6,878","$42,895","$42,895","Dispersado","••3421"],
 ];
 // llaves [nombre, id, sucursales, terminales, estatus, pubKey, privKey, ambiente, fechaGen, ultimoUso]
 const psLlaves=[
@@ -1575,16 +1611,18 @@ const comAcciones=(r,i)=>`<div style="display:flex;gap:6px;align-items:center">
 </div>`;
 $("#comBody").innerHTML=com.map((r,i)=>`<tr>
   <td><b style="color:var(--text-strong)">${r[0]}</b></td><td class="num">${r[1]}</td><td class="num">${r[2]}</td>
-  <td class="num">${r[3]}</td><td class="num" style="color:${r[4]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[4]}</td>
+  <td class="num" style="color:${r[4]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[4]}</td>
   <td class="num" style="color:var(--text-strong)">${r[6]}</td>
+  <td class="num" style="color:${r[7]==="Pagada"?"var(--text-faint)":"var(--action-secondary)"}">${r[7]==="Pagada"?"—":calcTotal(r[6])}</td>
   <td class="num" style="color:var(--text-muted)">${calcIVA(r[6])}</td>
   <td class="num" style="color:var(--text-strong);font-weight:500">${calcTotal(r[6])}</td>
   <td>${badge(r[7],r[8])}</td><td>${comAcciones(r,i)}</td></tr>`).join("");
 
 $("#ledBody").innerHTML=led.map(r=>`<tr>
-  <td class="mono">${r[0]}</td><td>${r[1]}</td><td>${badge(r[2],"b-neutral")}</td><td class="mono sub-2">${r[3]}</td>
-  <td style="text-align:right" class="${r[5]==='c'?'amt-c':'amt-d'}">${r[4]}</td>
-  <td style="text-align:right" class="num">${r[6]}</td></tr>`).join("");
+  <td class="mono">${r[0]}</td><td class="sub-2">${r[1]}</td><td>${r[2]}</td><td>${badge(r[3],"b-neutral")}</td><td class="mono sub-2">${r[4]}</td>
+  <td style="text-align:right" class="num" style="color:${r[5]!=="—"&&r[5]!=="— "?"var(--warn-text)":"var(--text-faint)"}">${r[5]}</td>
+  <td style="text-align:right" class="${r[7]==='c'?'amt-c':'amt-d'}">${r[6]}</td>
+  <td style="text-align:right" class="num">${r[8]}</td></tr>`).join("");
 
 const conMap={ok:["Lista","b-ok"],dif:["Con diferencias","b-warn"],proc:["En proceso","b-info"]};
 function renderCon(){
@@ -1642,9 +1680,10 @@ function renderDistCartera(){
   const el=document.getElementById("distAltasBody");
   if(el)el.innerHTML=distAltas.map(r=>`<tr>
     <td class="mono sub-2">${r[3]}</td>
-    <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[1]} · ${r[2]}</div></td>
-    <td>${etapaBadge(r[4])}</td>
-    <td><button class="btn btn-ghost btn-sm">Ver detalle</button></td></tr>`).join("");
+    <td><b style="color:var(--text-strong)">${r[0]}</b></td>
+    <td class="mono sub-2">${r[1]}</td>
+    <td>${r[2]}</td>
+    <td>${etapaBadge(r[4])}</td></tr>`).join("");
   const el2=document.getElementById("distCarteraBody");
   if(el2)el2.innerHTML=distCartera.map(r=>`<tr>
     <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[2]} · ${r[3]}</div></td>
@@ -1656,8 +1695,7 @@ function renderDistCartera(){
     <td class="num" style="color:${r[9]>0?"var(--err-text)":"var(--text-faint)"}">${r[9]>0?"$"+r[9].toLocaleString()+" ("+r[9]+")":"—"}</td>
     <td class="num" style="color:${r[10]>0?"var(--warn-text)":"var(--text-faint)"}">${r[10]>0?"$"+r[10].toLocaleString()+" ("+r[10]+")":"—"}</td>
     <td class="mono sub-2">${r[11]}</td>
-    <td class="num" style="color:var(--ok-text)">${r[13]}</td>
-    <td><button class="kebab">⋯</button></td></tr>`).join("");
+    <td class="num" style="color:var(--ok-text)">${r[13]}</td></tr>`).join("");
 }
 function renderDistPagos(){
   const el=document.getElementById("distPagosBody");
@@ -1665,11 +1703,10 @@ function renderDistPagos(){
   if(el)el.innerHTML=distPagosHist.map(r=>`<tr>
     <td><b style="color:var(--text-strong)">${r[0]}</b></td>
     <td class="num" style="color:var(--ok-text)">${r[1]}</td>
-    <td class="mono sub-2">${r[2]}</td>
+    <td class="num" style="color:var(--text-strong);font-weight:500">${r[2]}</td>
     <td class="mono sub-2">${r[3]}</td>
-    <td>${pagBadge(r[4])}</td>
-    <td class="mono sub-2">${r[5]}</td>
-    <td class="mono sub-2">${r[6]}</td>
+    <td class="mono sub-2">${r[4]}</td>
+    <td>${pagBadge(r[5])}</td>
     <td><button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>CFDI</button></td></tr>`).join("");
 }
 function renderDistEsquema(){
@@ -1697,17 +1734,17 @@ function maskPub(k){return k.slice(0,16)+"…";}
 
 /* Mis Comercios */
 const estBadge=e=>badge(e,e==="Activo"?"b-ok":e==="Sin actividad"?"b-neutral":e==="Invitado"?"b-warn":"b-err");
-$("#psComerciosBody").innerHTML=psComercios.map(r=>`<tr>
+$("#psComerciosBody").innerHTML=psComercios.map((r,i)=>`<tr style="cursor:pointer" onclick="openPsComercioDetalle(${i})">
   <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[1]} · ${r[2]}</div></td>
   <td>${estBadge(r[3])}</td>
   <td class="mono">${r[4]}</td>
   <td class="num">${r[5]}</td>
   <td class="num">${r[6]}</td>
   <td class="num" style="color:var(--text-strong)">${r[7]}</td>
-  <td class="num">${r[8].toLocaleString("en-US")}</td>
-  <td class="num" style="color:${r[9]>0?"var(--err-text)":"var(--text-faint)"}">${r[9]}</td>
-  <td class="mono sub-2">${r[10]}</td>
-  <td><button class="btn btn-ghost btn-sm">Ver detalle</button></td></tr>`).join("");
+  <td class="num">${r[8]}</td>
+  <td class="num">${r[9].toLocaleString("en-US")}</td>
+  <td class="num" style="color:${r[10]>0?"var(--err-text)":"var(--text-faint)"}">${r[10]}</td>
+  <td class="num" style="color:var(--action-secondary);font-weight:500">${r[11]}</td></tr>`).join("");
 
 /* Dispersiones */
 const dispEstBadge=e=>{const m={
@@ -1717,14 +1754,15 @@ document.getElementById("psDispBody").innerHTML=psDispersiones.map(r=>`<tr>
   <td class="mono">${r[0]}</td>
   <td class="mono">${r[1]}</td>
   <td class="num">${r[2]}</td>
-  <td class="num" style="color:${r[3]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[3]}</td>
-  <td class="num" style="color:var(--text-muted)">${r[4]}</td>
-  <td class="num" style="color:${r[5]!=="$0"?"var(--warn-text)":"var(--text-faint)"}">${r[5]}</td>
-  <td class="num" style="color:var(--text-strong)">${r[6]}</td>
-  <td>${dispEstBadge(r[7])}</td>
-  <td class="mono sub-2">${r[8]}</td>
-  <td class="mono sub-2">${r[9]}</td>
-  <td><button class="kebab">⋯</button></td></tr>`).join("");
+  <td class="num" style="color:${r[3]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[3]==="$0"?"—":r[3]}</td>
+  <td class="num" style="color:${r[4]!=="$0"?"var(--err-text)":"var(--text-faint)"}">${r[4]==="$0"?"—":r[4]}</td>
+  <td class="num" style="color:${r[5]!=="$0"?"var(--warn-text)":"var(--text-faint)"}">${r[5]==="$0"?"—":r[5]}</td>
+  <td class="num" style="color:${r[6]!=="$0"?"var(--warn-text)":"var(--text-faint)"}">${r[6]==="$0"?"—":r[6]}</td>
+  <td class="num" style="color:var(--text-muted)">${r[7]}</td>
+  <td class="num" style="color:var(--text-strong)">${r[8]}</td>
+  <td class="num" style="color:${r[9].startsWith("−")?"var(--err-text)":"var(--text-strong)"}">${r[9]}</td>
+  <td>${dispEstBadge(r[10])}</td>
+  <td class="mono sub-2">${r[11]}</td></tr>`).join("");
 
 /* Llaves y Aprovisionamiento */
 (function renderLlaves(){
@@ -1768,7 +1806,6 @@ document.getElementById("psDispBody").innerHTML=psDispersiones.map(r=>`<tr>
           ${qrChipFor(r[0],r[1])}
           <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>Regenerar llave</button>
           <button class="btn btn-ghost btn-sm" style="color:var(--err-text)">Revocar</button>
-          <button class="btn btn-ghost btn-sm">Descargar doc. integración</button>
         </div>
       </div>
     </div>`).join("");
@@ -2025,12 +2062,18 @@ function go(view){
   window.scrollTo({top:0,behavior:'smooth'});
 }
 let role="dist";
+/* Configuración del proveedor actual (viene del BackOffice).
+   Para Punto Red, comisionAdicional está desactivada → el módulo Comisiones no aplica. */
+const PS_CONFIG={comisionAdicional:false};
 function renderNav(){
   const cfg=NAV[role];
-  $("#nav").innerHTML=cfg.items.map((it,i)=>`<button class="nav-item${i===0?" active":""}" data-view="${it[0]}">
+  const items=role==='ps'&&!PS_CONFIG.comisionAdicional
+    ? cfg.items.filter(it=>it[0]!=='ps-comisiones')
+    : cfg.items;
+  $("#nav").innerHTML=items.map((it,i)=>`<button class="nav-item${i===0?" active":""}" data-view="${it[0]}">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">${it[2]}</svg> ${it[1]}</button>`).join("");
   document.querySelectorAll(".nav-item").forEach(n=>n.addEventListener("click",()=>go(n.dataset.view)));
-  go(cfg.items[0][0]);
+  go(items[0][0]);
 }
 document.querySelectorAll("#roleSeg button").forEach(b=>b.addEventListener("click",()=>{
   document.querySelectorAll("#roleSeg button").forEach(x=>x.classList.toggle("on",x===b));
@@ -2038,6 +2081,63 @@ document.querySelectorAll("#roleSeg button").forEach(b=>b.addEventListener("clic
 }));
 renderNav();
 $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
+
+/* Detalle de comercio PS (transacciones diarias) */
+function openPsComercioDetalle(idx){
+  const r=psComercios[idx];
+  const txs=psTxDiarias[r[0]]||[];
+  document.getElementById("drawerTitle").textContent=r[0];
+  document.getElementById("drawerSub").textContent=r[1]+" · "+r[2]+" · "+r[3];
+  document.getElementById("drawerContent").innerHTML=`
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px">
+      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
+        <div class="lbl" style="font-size:11px">Monto transaccionado</div>
+        <div class="val" style="font-size:18px;color:var(--text-strong)">${r[8]}</div>
+      </div>
+      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
+        <div class="lbl" style="font-size:11px">Trx aprobadas</div>
+        <div class="val" style="font-size:18px">${r[9].toLocaleString("en-US")}</div>
+      </div>
+      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
+        <div class="lbl" style="font-size:11px">Cancelaciones</div>
+        <div class="val" style="font-size:18px;color:var(--err-text)">${r[10]}</div>
+      </div>
+    </div>
+    <div class="det-lbl">Transacciones por día</div>
+    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
+      <thead><tr>
+        <th style="text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Fecha</th>
+        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Trx</th>
+        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Monto bruto</th>
+        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Cancelaciones</th>
+        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Neto</th>
+      </tr></thead>
+      <tbody>${txs.map(t=>`<tr>
+        <td style="padding:8px 6px;border-bottom:1px solid var(--border)" class="mono">${t[0]}</td>
+        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num">${t[1].toLocaleString("en-US")}</td>
+        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num">${t[2]}</td>
+        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num" style="color:${t[3]!=='$0'?'var(--err-text)':'var(--text-faint)'}">${t[3]==='$0'?'—':t[3]}</td>
+        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num" style="font-weight:500">${t[4]}</td>
+      </tr>`).join("")}</tbody>
+    </table></div>`;
+  document.getElementById("drawerOverlay").classList.add("on");
+  document.getElementById("mainDrawer").classList.add("on");
+}
+
+/* Constancia de situación fiscal */
+function uploadConstancia(input){
+  if(!input.files||!input.files[0])return;
+  const file=input.files[0];
+  document.getElementById("constanciaFileName").textContent=file.name;
+  document.getElementById("constanciaDate").textContent="Cargado "+new Date().toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"numeric"});
+  document.getElementById("constanciaStatus").style.display="block";
+  document.getElementById("constanciaDrop").style.display="none";
+}
+function removeConstancia(){
+  document.getElementById("constanciaStatus").style.display="none";
+  document.getElementById("constanciaDrop").style.display="";
+  document.getElementById("constanciaInput").value="";
+}
 
 /* conciliación async simulation */
 function startCon(){
@@ -2149,7 +2249,7 @@ const AJUSTES_DEMO=[
 ];
 function openDetalle(idx){
   const r=com[idx];
-  const periodo=r[0],volumen=r[2],comBruta=r[3],cbk=r[9],dev=r[10],saldoAnt=r[5],comNeta=r[6];
+  const periodo=r[0],volumen=r[2],cbk=r[9],dev=r[10],saldoAnt=r[5],comNeta=r[6];
   const iva=calcIVA(r[6]),total=calcTotal(r[6]);
   document.getElementById("drawerTitle").textContent="Detalle del corte";
   document.getElementById("drawerSub").textContent=periodo;
@@ -2158,11 +2258,10 @@ function openDetalle(idx){
   document.getElementById("drawerContent").innerHTML=`
     <div class="det-lbl">Resumen financiero</div>
     <div class="det-row"><span class="det-k">Volumen liquidado (informativo)</span><span class="det-v">${volumen}</span></div>
-    <div class="det-row"><span class="det-k">Comisión bruta (+)</span><span class="det-v pos">${comBruta}</span></div>
     <div class="det-row"><span class="det-k">Contracargos (−)</span><span class="det-v neg">−${cbk}</span></div>
     <div class="det-row"><span class="det-k">Devoluciones (−)</span><span class="det-v neg">−${dev}</span></div>
     <div class="det-row"><span class="det-k">Saldo de periodos anteriores (±)</span><span class="det-v ${saldoAnt==="$0"?"neu":"warn"}">${saldoAnt}</span></div>
-    <div class="det-row strong"><span class="det-k">Comisión neta (=)</span><span class="det-v">${comNeta}</span></div>
+    <div class="det-row strong"><span class="det-k">Comisión (=)</span><span class="det-v">${comNeta}</span></div>
     <div class="det-row"><span class="det-k">IVA 16% (+)</span><span class="det-v">${iva}</span></div>
     <div class="det-row strong"><span class="det-k">Total a pagar (=)</span><span class="det-v">${total}</span></div>
     <div class="det-lbl" style="margin-top:22px">Desglose por comercio</div>
