@@ -585,6 +585,23 @@ tbody tr:hover{background:#fbfaff}
 .cp-row .cp-v{font-weight:500;color:var(--text-strong);text-align:right;flex:1}
 .cp-row .cp-v.mono{font-family:ui-monospace,monospace;letter-spacing:.3px}
 .cp-row .cp-v.pending{color:var(--text-faint);font-weight:400;font-style:italic}
+/* tipo de empresa (radio visual, solo lectura) */
+.cp-radio-group{display:flex;gap:24px;flex-wrap:wrap;margin:14px 0 18px}
+.cp-radio-opt{display:flex;align-items:center;gap:8px;font-size:13.5px;color:var(--text-muted)}
+.cp-radio-opt.sel{color:var(--text-strong);font-weight:500}
+.cp-radio-dot{width:17px;height:17px;border-radius:50%;border:2px solid var(--border);flex-shrink:0;display:grid;place-items:center}
+.cp-radio-opt.sel .cp-radio-dot{border-color:var(--action-primary)}
+.cp-radio-dot::after{content:"";width:8px;height:8px;border-radius:50%;background:transparent}
+.cp-radio-opt.sel .cp-radio-dot::after{background:var(--action-primary)}
+/* doc item de representante */
+.cp-rep-doc{display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:center;padding:18px 0;border-bottom:1px solid var(--border)}
+.cp-rep-doc:last-child{border-bottom:none}
+.cp-rep-doc-name{font-size:14px;font-weight:600;color:var(--text-strong);margin-bottom:6px}
+.cp-rep-doc-file{background:var(--bg-subtle);border:1px solid var(--border);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:12px;font-size:13px}
+.cp-rep-doc-file-ic{width:36px;height:36px;border-radius:8px;background:#ede9ff;display:grid;place-items:center;flex-shrink:0}
+.cp-rep-doc-file-ic svg{width:18px;height:18px;color:var(--action-primary)}
+.cp-rep-doc-links{display:flex;gap:12px;margin-top:6px}
+.cp-rep-doc-links a{color:var(--action-primary);font-size:12.5px;font-weight:500;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 /* tarjeta bancaria */
 .cp-bank-topbar{display:flex;justify-content:flex-end;margin-bottom:14px}
 .cp-bank-add{background:none;border:none;color:var(--action-primary);font-size:13.5px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px}
@@ -3041,16 +3058,16 @@ $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 
 /* ── Datos de perfiles de comercio ── */
 const psComercioPerfiles=[
-  {estatus:"Activo",negocio:{nombre:"Ferretería Bermúdez",rfc:"FBE180312K74",giro:"Ferretería",tipo:"Persona moral",calle:"Av. Insurgentes Sur 1234",colonia:"Del Valle",municipio:"Benito Juárez",estado:"CDMX",cp:"03100",telefono:"55 1234 5678",email:"contacto@ferreteriabermudez.com",web:"ferreteriabermudez.com",sucursales:"3",fechaAlta:"12/mar/2024"},representante:{nombre:"Carlos Bermúdez Ríos",curp:"BERC800520HDFRSM01",rfc:"BERC800520AB1",cargo:"Representante Legal",email:"carlos@ferreteriabermudez.com",telefono:"55 9876 5432",docId:"INE · ****4821"},bancarios:{banco:"BBVA México",clabe:"012180001234567890",cuenta:"0123456789",titular:"Ferretería Bermúdez SA de CV",tipo:"Cuenta corriente",ultimaVerif:"15/sep/2026"},contacto:{nombre:"Laura Soto Mendez",cargo:"Encargada de operaciones",email:"laura.soto@ferreteriabermudez.com",telefono:"55 3333 4444",horario:"Lun–Vie 9:00–18:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Acta constitutiva",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}]},
-  {estatus:"Activo",negocio:{nombre:"Abarrotes La Paloma",rfc:"ALP210604N30",giro:"Abarrotes",tipo:"Persona física con actividad empresarial",calle:"Calle Morelos 45",colonia:"Centro",municipio:"Ecatepec",estado:"Estado de México",cp:"55000",telefono:"55 2222 8888",email:"lapaloma@gmail.com",web:"—",sucursales:"1",fechaAlta:"04/jun/2021"},representante:{nombre:"Rosa Domínguez Valle",curp:"DOVR750310MMCMLM09",rfc:"ALP210604N30",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",docId:"INE · ****3305"},bancarios:{banco:"Banamex",clabe:"002180009876543210",cuenta:"9876543210",titular:"Rosa Domínguez Valle",tipo:"Cuenta de ahorro",ultimaVerif:"02/oct/2026"},contacto:{nombre:"Rosa Domínguez Valle",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",horario:"Lun–Dom 7:00–22:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}]},
-  {estatus:"Activo",negocio:{nombre:"Taquería El Trompo",rfc:"TET190815JK2",giro:"Restaurante",tipo:"Persona física con actividad empresarial",calle:"Blvd. Manuel Ávila Camacho 890",colonia:"Polanco",municipio:"Miguel Hidalgo",estado:"CDMX",cp:"11560",telefono:"55 5555 0001",email:"trompo@tacos.mx",web:"—",sucursales:"2",fechaAlta:"15/ago/2019"},representante:{nombre:"Miguel Ángel Torres Peña",curp:"TOPM870922HDFRRG05",rfc:"TOPM870922QW5",cargo:"Titular",email:"trompo@tacos.mx",telefono:"55 5555 0001",docId:"INE · ****7740"},bancarios:{banco:"Banorte",clabe:"006180005544332211",cuenta:"5544332211",titular:"Miguel Torres Peña",tipo:"Cuenta corriente",ultimaVerif:"28/sep/2026"},contacto:{nombre:"Sandra Torres",cargo:"Administración",email:"admin@tacos.mx",telefono:"55 5555 0002",horario:"Mar–Dom 12:00–23:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}]},
-  {estatus:"Activo",negocio:{nombre:"Papelería Central",rfc:"PCE201122AB9",giro:"Papelería",tipo:"Persona moral",calle:"Calle 5 de Mayo 77",colonia:"Centro Histórico",municipio:"Cuauhtémoc",estado:"CDMX",cp:"06060",telefono:"55 6666 1234",email:"info@papeleriacentral.mx",web:"papeleriacentral.mx",sucursales:"1",fechaAlta:"22/nov/2020"},representante:{nombre:"Patricia Vega Lozano",curp:"VELP820614MDFGZM03",rfc:"VELP820614SX3",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",docId:"INE · ****9912"},bancarios:{banco:"HSBC México",clabe:"021180007788990011",cuenta:"7788990011",titular:"Papelería Central SA de CV",tipo:"Cuenta corriente",ultimaVerif:"10/oct/2026"},contacto:{nombre:"Patricia Vega Lozano",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",horario:"Lun–Sáb 9:00–19:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Acta constitutiva",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}]}
+  {estatus:"Activo",negocio:{nombre:"Ferretería Bermúdez",rfc:"FBE180312K74",giro:"Ferretería",tipo:"Persona moral",razonSocial:"FERRETERÍA BERMÚDEZ SA DE CV",actividad:"Comercio al por menor de ferretería",calle:"Av. Insurgentes Sur 1234",colonia:"Del Valle",municipio:"Benito Juárez",estado:"CDMX",cp:"03100",telefono:"55 1234 5678",email:"contacto@ferreteriabermudez.com",web:"ferreteriabermudez.com",sucursales:"3",fechaAlta:"12/mar/2024"},representante:{nombre:"Carlos",apPat:"Bermúdez",apMat:"Ríos",curp:"BERC800520HDFRSM01",rfc:"BERC800520AB1",cargo:"Representante Legal",email:"carlos@ferreteriabermudez.com",telefono:"55 9876 5432",fechaNac:"20/may/1980"},bancarios:{banco:"BBVA México",clabe:"012180001234567890",cuenta:"0123456789",titular:"Ferretería Bermúdez SA de CV",tipo:"Cuenta corriente",ultimaVerif:"15/sep/2026"},contacto:{nombre:"Laura Soto Mendez",cargo:"Encargada de operaciones",email:"laura.soto@ferreteriabermudez.com",telefono:"55 3333 4444",horario:"Lun–Vie 9:00–18:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Acta constitutiva",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}],repDocs:[{nombre:"Identificación",est:"Verificado"},{nombre:"Constancia de Situación Fiscal",est:"Verificado"}]},
+  {estatus:"Activo",negocio:{nombre:"Abarrotes La Paloma",rfc:"ALP210604N30",giro:"Abarrotes",tipo:"Persona física con actividad empresarial",razonSocial:"ROSA DOMÍNGUEZ VALLE",actividad:"Comercio al por menor en tiendas de abarrotes",calle:"Calle Morelos 45",colonia:"Centro",municipio:"Ecatepec",estado:"Estado de México",cp:"55000",telefono:"55 2222 8888",email:"lapaloma@gmail.com",web:"—",sucursales:"1",fechaAlta:"04/jun/2021"},representante:{nombre:"Rosa",apPat:"Domínguez",apMat:"Valle",curp:"DOVR750310MMCMLM09",rfc:"ALP210604N30",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",fechaNac:"10/mar/1975"},bancarios:{banco:"Banamex",clabe:"002180009876543210",cuenta:"9876543210",titular:"Rosa Domínguez Valle",tipo:"Cuenta de ahorro",ultimaVerif:"02/oct/2026"},contacto:{nombre:"Rosa Domínguez Valle",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",horario:"Lun–Dom 7:00–22:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}],repDocs:[{nombre:"Identificación",est:"Verificado"},{nombre:"Constancia de Situación Fiscal",est:"Verificado"}]},
+  {estatus:"Activo",negocio:{nombre:"Taquería El Trompo",rfc:"TET190815JK2",giro:"Restaurante",tipo:"Persona física con actividad empresarial",razonSocial:"MIGUEL ÁNGEL TORRES PEÑA",actividad:"Restaurantes y servicios de alimentos",calle:"Blvd. Manuel Ávila Camacho 890",colonia:"Polanco",municipio:"Miguel Hidalgo",estado:"CDMX",cp:"11560",telefono:"55 5555 0001",email:"trompo@tacos.mx",web:"—",sucursales:"2",fechaAlta:"15/ago/2019"},representante:{nombre:"Miguel Ángel",apPat:"Torres",apMat:"Peña",curp:"TOPM870922HDFRRG05",rfc:"TOPM870922QW5",cargo:"Titular",email:"trompo@tacos.mx",telefono:"55 5555 0001",fechaNac:"22/sep/1987"},bancarios:{banco:"Banorte",clabe:"006180005544332211",cuenta:"5544332211",titular:"Miguel Torres Peña",tipo:"Cuenta corriente",ultimaVerif:"28/sep/2026"},contacto:{nombre:"Sandra Torres",cargo:"Administración",email:"admin@tacos.mx",telefono:"55 5555 0002",horario:"Mar–Dom 12:00–23:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}],repDocs:[{nombre:"Identificación",est:"Verificado"},{nombre:"Constancia de Situación Fiscal",est:"Verificado"}]},
+  {estatus:"Activo",negocio:{nombre:"Papelería Central",rfc:"PCE201122AB9",giro:"Papelería",tipo:"Persona moral",razonSocial:"PAPELERÍA CENTRAL SA DE CV",actividad:"Comercio al por menor de artículos de papelería",calle:"Calle 5 de Mayo 77",colonia:"Centro Histórico",municipio:"Cuauhtémoc",estado:"CDMX",cp:"06060",telefono:"55 6666 1234",email:"info@papeleriacentral.mx",web:"papeleriacentral.mx",sucursales:"1",fechaAlta:"22/nov/2020"},representante:{nombre:"Patricia",apPat:"Vega",apMat:"Lozano",curp:"VELP820614MDFGZM03",rfc:"VELP820614SX3",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",fechaNac:"14/jun/1982"},bancarios:{banco:"HSBC México",clabe:"021180007788990011",cuenta:"7788990011",titular:"Papelería Central SA de CV",tipo:"Cuenta corriente",ultimaVerif:"10/oct/2026"},contacto:{nombre:"Patricia Vega Lozano",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",horario:"Lun–Sáb 9:00–19:00"},docs:[{nombre:"Comprobante de domicilio",est:"Verificado"},{nombre:"Fotos del negocio",est:"Verificado"},{nombre:"Acta constitutiva",est:"Verificado"},{nombre:"Identificación del representante",est:"Verificado"}],repDocs:[{nombre:"Identificación",est:"Verificado"},{nombre:"Constancia de Situación Fiscal",est:"Verificado"}]}
 ];
 
 const psAltasPerfiles=[
-  {estatus:"Pendiente de revisión",negocio:{nombre:"Farmacia El Roble",rfc:"FER220418T81",giro:"Farmacia",tipo:"Persona moral",calle:"Av. Hidalgo 302",colonia:"Jardines del Bosque",municipio:"Guadalajara",estado:"Jalisco",cp:"44520",telefono:"33 4444 5555",email:"contacto@farmaciaelroble.mx",web:"—",sucursales:"—",fechaAlta:"08/oct/2026"},representante:{nombre:"Jorge Roble Sandoval",curp:"ROSJ780910HJALRG06",rfc:"ROSJ780910MN4",cargo:"Representante Legal",email:"jorge@farmaciaelroble.mx",telefono:"33 4444 5556",docId:"INE · ****2210"},bancarios:{banco:"—",clabe:null,cuenta:null,titular:"—",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"Adriana Roble",cargo:"Administración",email:"adriana@farmaciaelroble.mx",telefono:"33 4444 5557",horario:"Lun–Sáb 8:00–21:00"},docs:[{nombre:"Comprobante de domicilio",est:"Pendiente"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"En revisión"}]},
-  {estatus:"En revisión",negocio:{nombre:"Papelería Colores",rfc:"PLC210930K55",giro:"Papelería",tipo:"Persona física con actividad empresarial",calle:"Calle Colón 88",colonia:"Centro",municipio:"Monterrey",estado:"Nuevo León",cp:"64000",telefono:"81 1111 2222",email:"papeleriacolores@gmail.com",web:"—",sucursales:"—",fechaAlta:"14/oct/2026"},representante:{nombre:"Mónica Salazar Reyes",curp:"SARM900215MNLLYN04",rfc:"SARM900215TK7",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",docId:"INE · ****8843"},bancarios:{banco:"Santander",clabe:"014680001122334455",cuenta:"1122334455",titular:"Mónica Salazar Reyes",tipo:"Cuenta corriente",ultimaVerif:"—"},contacto:{nombre:"Mónica Salazar Reyes",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",horario:"Lun–Vie 9:00–18:00"},docs:[{nombre:"Comprobante de domicilio",est:"En revisión"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"En revisión"}]},
-  {estatus:"Pre-registro",negocio:{nombre:"Ferretería Los Pinos",rfc:"FLP190603N20",giro:"Ferretería",tipo:"Persona moral",calle:"—",colonia:"—",municipio:"—",estado:"—",cp:"—",telefono:"—",email:"ferreteria.pinos@gmail.com",web:"—",sucursales:"—",fechaAlta:"20/oct/2026"},representante:{nombre:"—",curp:null,rfc:"FLP190603N20",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",docId:"—"},bancarios:{banco:"—",clabe:null,cuenta:null,titular:"—",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"—",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",horario:"—"},docs:[{nombre:"Comprobante de domicilio",est:"Pendiente"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"Pendiente"}]}
+  {estatus:"Pendiente de revisión",negocio:{nombre:"Farmacia El Roble",rfc:"FER220418T81",giro:"Farmacia",tipo:"Persona moral",razonSocial:"FARMACIA EL ROBLE SA DE CV",actividad:"Comercio al por menor de medicamentos",calle:"Av. Hidalgo 302",colonia:"Jardines del Bosque",municipio:"Guadalajara",estado:"Jalisco",cp:"44520",telefono:"33 4444 5555",email:"contacto@farmaciaelroble.mx",web:"—",sucursales:"—",fechaAlta:"08/oct/2026"},representante:{nombre:"Jorge",apPat:"Roble",apMat:"Sandoval",curp:"ROSJ780910HJALRG06",rfc:"ROSJ780910MN4",cargo:"Representante Legal",email:"jorge@farmaciaelroble.mx",telefono:"33 4444 5556",fechaNac:"10/sep/1978"},bancarios:{banco:"—",clabe:null,cuenta:null,titular:"—",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"Adriana Roble",cargo:"Administración",email:"adriana@farmaciaelroble.mx",telefono:"33 4444 5557",horario:"Lun–Sáb 8:00–21:00"},docs:[{nombre:"Comprobante de domicilio",est:"Pendiente"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"En revisión"}],repDocs:[{nombre:"Identificación",est:"En revisión"},{nombre:"Constancia de Situación Fiscal",est:"Pendiente"}]},
+  {estatus:"En revisión",negocio:{nombre:"Papelería Colores",rfc:"PLC210930K55",giro:"Papelería",tipo:"Persona física con actividad empresarial",razonSocial:"MÓNICA SALAZAR REYES",actividad:"Comercio al por menor de artículos de papelería",calle:"Calle Colón 88",colonia:"Centro",municipio:"Monterrey",estado:"Nuevo León",cp:"64000",telefono:"81 1111 2222",email:"papeleriacolores@gmail.com",web:"—",sucursales:"—",fechaAlta:"14/oct/2026"},representante:{nombre:"Mónica",apPat:"Salazar",apMat:"Reyes",curp:"SARM900215MNLLYN04",rfc:"SARM900215TK7",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",fechaNac:"15/feb/1990"},bancarios:{banco:"Santander",clabe:"014680001122334455",cuenta:"1122334455",titular:"Mónica Salazar Reyes",tipo:"Cuenta corriente",ultimaVerif:"—"},contacto:{nombre:"Mónica Salazar Reyes",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",horario:"Lun–Vie 9:00–18:00"},docs:[{nombre:"Comprobante de domicilio",est:"En revisión"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"En revisión"}],repDocs:[{nombre:"Identificación",est:"En revisión"},{nombre:"Constancia de Situación Fiscal",est:"En revisión"}]},
+  {estatus:"Pre-registro",negocio:{nombre:"Ferretería Los Pinos",rfc:"FLP190603N20",giro:"Ferretería",tipo:"Persona moral",razonSocial:"—",actividad:"—",calle:"—",colonia:"—",municipio:"—",estado:"—",cp:"—",telefono:"—",email:"ferreteria.pinos@gmail.com",web:"—",sucursales:"—",fechaAlta:"20/oct/2026"},representante:{nombre:"—",apPat:"—",apMat:"—",curp:null,rfc:"FLP190603N20",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",fechaNac:"—"},bancarios:{banco:"—",clabe:null,cuenta:null,titular:"—",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"—",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",horario:"—"},docs:[{nombre:"Comprobante de domicilio",est:"Pendiente"},{nombre:"Fotos del negocio",est:"Pendiente"},{nombre:"Identificación del representante",est:"Pendiente"}],repDocs:[{nombre:"Identificación",est:"Pendiente"},{nombre:"Constancia de Situación Fiscal",est:"Pendiente"}]}
 ];
 
 /* ── helpers de renderizado ── */
@@ -3124,17 +3141,54 @@ function openComercioProfile(idx, source){
     </div>`;
 
   /* ── Tab: Datos del representante ── */
+  const tipoOpts=["Persona física sin actividad empresarial","Persona física con actividad empresarial","Persona moral"];
+  const tipoSel=p.negocio.tipo||"";
+  const _icRepDoc=`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`;
   document.getElementById("cp-representante").innerHTML=`
     <div class="cp-sec">
-      ${_cpSecHeader(_icUser,"Datos personales")}
+      ${_cpSecHeader(_icUser,"Información general del representante")}
       <div class="cp-fields">
-        ${_cpField("Nombre completo",p.representante.nombre)}
-        ${_cpField("Cargo",p.representante.cargo)}
-        ${_cpField("Correo electrónico",p.representante.email)}
-        ${_cpField("Teléfono",p.representante.telefono)}
+        ${_cpField("Nombre del representante",p.representante.nombre)}
+        ${_cpField("Apellido Paterno",p.representante.apPat)}
+        ${_cpField("Apellido Materno",p.representante.apMat)}
+        ${_cpField("Correo del representante",p.representante.email)}
+        ${_cpField("Teléfono del representante",p.representante.telefono)}
+        ${_cpField("Fecha de nacimiento",p.representante.fechaNac)}
+        ${_cpField("Razón social",p.negocio.razonSocial||p.negocio.nombre)}
+        ${_cpField("Giro del negocio",p.negocio.giro)}
+        ${_cpField("Actividad del negocio",p.negocio.actividad||p.negocio.giro)}
+      </div>
+    </div>
+    <div class="cp-sec">
+      ${_cpSecHeader(_icUser,"Información fiscal del representante")}
+      <div style="font-size:13.5px;font-weight:600;color:var(--text-strong);margin-bottom:4px">Tipo de empresa</div>
+      <div class="cp-radio-group">
+        ${tipoOpts.map(t=>`<div class="cp-radio-opt${t===tipoSel?' sel':''}"><div class="cp-radio-dot"></div>${t}</div>`).join("")}
+      </div>
+      <div class="cp-fields cols1" style="max-width:320px">
         ${_cpField("RFC",p.representante.rfc,'mono')}
-        ${_cpField("CURP",p.representante.curp,'mono')}
-        ${_cpField("Documento de identificación",p.representante.docId)}
+      </div>
+    </div>
+    <div class="cp-sec">
+      ${_cpSecHeader(_icDoc,"Documentos")}
+      <div style="font-size:12px;color:var(--text-muted);margin-bottom:16px">Formatos aceptados: PDF, JPG, PNG · Tiempo de revisión: 2–3 días hábiles</div>
+      <div class="cp-doc-list">
+        ${(p.repDocs||[]).map(d=>{
+          const hasFile=d.est!=="Pendiente";
+          return `<div class="cp-rep-doc">
+            <div>
+              <div class="cp-rep-doc-name">${d.nombre}</div>
+              ${_docEstBadge(d.est)}
+            </div>
+            <div class="cp-rep-doc-file">
+              <div class="cp-rep-doc-file-ic">${_icRepDoc}</div>
+              <div>
+                <div style="font-size:13px;color:var(--text-muted)">${d.nombre}</div>
+                ${hasFile?`<div class="cp-rep-doc-links"><a>Reemplazar archivo</a><a>Descargar archivo</a></div>`:'<div style="font-size:12px;color:var(--text-faint);margin-top:4px">Sin archivo</div>'}
+              </div>
+            </div>
+          </div>`;
+        }).join("")}
       </div>
     </div>`;
 
