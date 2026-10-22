@@ -1227,7 +1227,7 @@ tbody tr:hover{background:#fbfaff}
             <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
           </div>
           <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Monto transaccionado</th><th>Trx</th><th>Cancelaciones</th><th>Saldo acumulado</th></tr></thead>
+            <thead><tr><th>Comercio · RFC · Giro</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Monto transaccionado</th><th>Trx</th><th>Cancelaciones</th><th>Saldo acumulado</th></tr></thead>
             <tbody id="psComerciosBody"></tbody>
           </table></div></div>
         </div>
@@ -1817,26 +1817,51 @@ tbody tr:hover{background:#fbfaff}
   </div>
 </div>
 
-<!-- ============ MODAL: Onboarding (iframe fullscreen) ============ -->
-<div id="onboardingOverlay" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(13,10,34,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center">
-  <div style="position:relative;width:100%;height:100%;max-width:1100px;max-height:92vh;margin:auto;display:flex;flex-direction:column;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4)">
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);flex-shrink:0">
-      <span style="font-weight:600;color:var(--text-strong);font-size:15px">Nuevo comercio</span>
-      <button onclick="cerrarOnboarding()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);display:grid;place-items:center;padding:4px;border-radius:6px" aria-label="Cerrar">
+<!-- ============ PANTALLA: Onboarding split-view ============ -->
+<div id="onboardingOverlay" style="display:none;position:fixed;inset:0;z-index:9100;flex-direction:row">
+
+  <!-- Panel izquierdo: onboarding -->
+  <div style="flex:1;display:flex;flex-direction:column;background:#fff;min-width:0">
+    <!-- Header -->
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 24px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <div style="display:flex;align-items:center;gap:10px">
+        <button onclick="pedirConfirmacionSalida()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);display:grid;place-items:center;padding:5px;border-radius:7px" aria-label="Volver">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:18px;height:18px"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg>
+        </button>
+        <span style="font-weight:600;color:var(--text-strong);font-size:15px">Nuevo comercio</span>
+      </div>
+      <button onclick="pedirConfirmacionSalida()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);display:grid;place-items:center;padding:6px;border-radius:8px" aria-label="Cerrar">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px"><path d="M6 6l12 12M18 6L6 18"/></svg>
       </button>
     </div>
-    <!-- iframe: src se asigna en iniciarOnboarding() — conectar ruta del repo de onboarding -->
+    <!-- iframe -->
     <iframe id="onboardingFrame" src="" style="flex:1;border:none;width:100%" title="Flujo de onboarding"></iframe>
-    <!-- Placeholder para entornos sin servidor local -->
+    <!-- Placeholder -->
     <div id="onboardingPlaceholder" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center">
       <div style="width:56px;height:56px;border-radius:16px;background:var(--bg-subtle);display:grid;place-items:center">
         <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" stroke-width="1.5" style="width:28px;height:28px"><path d="M9 12h6m-3-3v6M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
       </div>
       <div>
-        <div style="font-weight:600;color:var(--text-strong);font-size:15px;margin-bottom:6px">Onboarding disponible en local</div>
-        <div style="color:var(--text-muted);font-size:13px;max-width:340px;line-height:1.6">El flujo de vinculación de comercios corre en un servidor local.<br>Para probarlo, abre el portal desde tu equipo con el servidor de onboarding activo.</div>
+        <div style="font-weight:600;color:var(--text-strong);font-size:15px;margin-bottom:6px">Onboarding no disponible</div>
+        <div style="color:var(--text-muted);font-size:13px;max-width:320px;line-height:1.6">No se pudo conectar con el flujo de vinculación. Verifica tu conexión e intenta de nuevo.</div>
       </div>
+    </div>
+  </div>
+
+
+</div>
+
+<!-- ============ MODAL: Confirmar salida onboarding ============ -->
+<div id="onboardingExitOverlay" style="display:none;position:fixed;inset:0;z-index:9200;background:rgba(13,10,34,.5);backdrop-filter:blur(3px);align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:32px;max-width:420px;width:90%;box-shadow:0 24px 60px rgba(0,0,0,.25)">
+    <div style="width:44px;height:44px;border-radius:12px;background:var(--warn-bg);display:grid;place-items:center;margin-bottom:18px">
+      <svg viewBox="0 0 24 24" fill="none" stroke="var(--warn-text)" stroke-width="2" style="width:22px;height:22px"><path d="M10.3 3.3l-8.2 14.2a2 2 0 001.7 3h16.4a2 2 0 001.7-3L13.7 3.3a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    </div>
+    <div style="font-size:17px;font-weight:600;color:var(--text-strong);margin-bottom:8px">¿Salir del registro?</div>
+    <div style="font-size:13.5px;color:var(--text-muted);line-height:1.6;margin-bottom:24px">El registro quedará como <b style="color:var(--text-strong)">incompleto</b>. Podrás continuar desde la tabla de comercios en cualquier momento.</div>
+    <div style="display:flex;gap:10px;flex-direction:column">
+      <button onclick="confirmarSalidaOnboarding()" class="btn btn-primary" style="justify-content:center;width:100%;padding:12px">Sí, salir y guardar borrador</button>
+      <button onclick="cancelarSalidaOnboarding()" class="btn btn-ghost" style="justify-content:center;width:100%;padding:12px">Continuar registro</button>
     </div>
   </div>
 </div>
@@ -2076,12 +2101,42 @@ function iniciarOnboarding(){
   overlay.style.display = "flex";
   document.body.style.overflow = "hidden";
 }
-function cerrarOnboarding(){
+function pedirConfirmacionSalida(){
+  document.getElementById("onboardingExitOverlay").style.display = "flex";
+}
+function cancelarSalidaOnboarding(){
+  document.getElementById("onboardingExitOverlay").style.display = "none";
+}
+function confirmarSalidaOnboarding(){
+  document.getElementById("onboardingExitOverlay").style.display = "none";
+  cerrarOnboarding(true);
+}
+function cerrarOnboarding(incompleto=false){
   const overlay = document.getElementById("onboardingOverlay");
   const frame   = document.getElementById("onboardingFrame");
   overlay.style.display = "none";
   frame.src = "";
   document.body.style.overflow = "";
+  if(incompleto) agregarRegistroIncompleto();
+}
+function agregarRegistroIncompleto(){
+  const tbody = document.getElementById("psAltasBody");
+  if(!tbody) return;
+  // Evitar duplicados de "incompleto" consecutivos
+  const ya = tbody.querySelector(".registro-incompleto");
+  if(ya) return;
+  const hoy = new Date().toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"2-digit"});
+  const fila = document.createElement("tr");
+  fila.className = "registro-incompleto";
+  fila.innerHTML = `
+    <td><b style="color:var(--text-strong)">Registro incompleto</b><div class="sub-2" style="color:var(--text-faint)">Datos pendientes de captura</div></td>
+    <td class="mono sub-2">—</td>
+    <td>—</td>
+    <td class="mono sub-2">${hoy}</td>
+    <td>
+      <button class="btn btn-ghost btn-sm" onclick="iniciarOnboarding()" style="border-radius:7px;font-size:12px">Continuar registro</button>
+    </td>`;
+  tbody.prepend(fila);
 }
 window.addEventListener("message", e => {
   if(e.data === "onboarding-complete"){
@@ -2409,7 +2464,6 @@ function maskPub(k){return k.slice(0,16)+"…";}
 const estBadge=e=>badge(e,e==="Activo"?"b-ok":e==="Sin actividad"?"b-neutral":e==="Invitado"?"b-warn":"b-err");
 $("#psComerciosBody").innerHTML=psComercios.map((r,i)=>`<tr style="cursor:pointer" onclick="openPsComercioDetalle(${i})">
   <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[1]} · ${r[2]}</div></td>
-  <td>${estBadge(r[3])}</td>
   <td class="mono">${r[4]}</td>
   <td class="num">${r[5]}</td>
   <td class="num">${r[6]}</td>
@@ -2759,10 +2813,10 @@ const NAV={
     items:[
       ["ps-dashboard","Dashboard",`<path d="M3 3v18h18"/><rect x="7" y="10" width="3" height="7"/><rect x="12" y="6" width="3" height="11"/><rect x="17" y="13" width="3" height="4"/>`],
       ["ps-comercios","Mis Comercios",`<path d="M3 9l1-5h16l1 5"/><path d="M4 9v11h16V9"/><path d="M9 20v-6h6v6"/>`],
+      ["ps-llaves","Llaves y Aprov.",`<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>`],
       ["ps-dispersiones","Dispersiones",`<path d="M12 2v20M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>`],
       ["conciliacion","Conciliación",`<path d="M20 6L9 17l-5-5"/><path d="M4 20h16" opacity=".4"/>`],
       ["ps-comisiones","Comisiones",`<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1.1 1.1-1.8 2.5-1.8s2.5.7 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/><path d="M12 6v1.7M12 16.3V18"/>`],
-      ["ps-llaves","Llaves y Aprov.",`<path d="M21 2l-2 2m-7.61 7.61a5.5 5.5 0 1 1-7.778 7.778 5.5 5.5 0 0 1 7.777-7.777zm0 0L15.5 7.5m0 0l3 3L22 7l-3-3m-3.5 3.5L19 4"/>`],
       ["ps-usuarios","Usuarios",`<path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>`],
       ["ps-reportes","Reportes",`<path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/><line x1="10" y1="9" x2="8" y2="9"/>`],
       ["ps-perfil","Mi Perfil",`<circle cx="12" cy="8" r="4"/><path d="M4 21c0-4 3.6-7 8-7s8 3 8 7"/>`],
