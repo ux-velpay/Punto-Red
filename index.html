@@ -2940,46 +2940,92 @@ renderNav();
 document.querySelector(".logout").addEventListener("click",_showLogin);
 $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 
-/* Detalle de comercio PS (transacciones diarias) */
+/* Perfil de comercio PS — tabs */
+const psComercioPerfiles=[
+  {negocio:{nombre:"Ferretería Bermúdez",rfc:"FBE180312K74",giro:"Ferretería",tipo:"Persona moral",calle:"Av. Insurgentes Sur 1234",colonia:"Del Valle",municipio:"Benito Juárez",estado:"CDMX",cp:"03100",telefono:"55 1234 5678",email:"contacto@ferreteriabermudez.com",web:"ferreteriabermudez.com",sucursales:"3",fechaAlta:"12/mar/2024"},representante:{nombre:"Carlos Bermúdez Ríos",curp:"BERC800520HDFRSM01",rfc:"BERC800520AB1",cargo:"Representante Legal",email:"carlos@ferreteriabermudez.com",telefono:"55 9876 5432",docId:"INE · ****4821"},bancarios:{banco:"BBVA México",clabe:"012180001234567890",cuenta:"0123456789",titular:"Ferretería Bermúdez SA de CV",tipo:"Cuenta corriente",ultimaVerif:"15/sep/2026"},contacto:{nombre:"Laura Soto Mendez",cargo:"Encargada de operaciones",email:"laura.soto@ferreteriabermudez.com",telefono:"55 3333 4444",horario:"Lun–Vie 9:00–18:00"}},
+  {negocio:{nombre:"Abarrotes La Paloma",rfc:"ALP210604N30",giro:"Abarrotes",tipo:"Persona física con actividad empresarial",calle:"Calle Morelos 45",colonia:"Centro",municipio:"Ecatepec",estado:"Estado de México",cp:"55000",telefono:"55 2222 8888",email:"lapaloma@gmail.com",web:"—",sucursales:"1",fechaAlta:"04/jun/2021"},representante:{nombre:"Rosa Domínguez Valle",curp:"DOVR750310MMCMLM09",rfc:"ALP210604N30",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",docId:"INE · ****3305"},bancarios:{banco:"Banamex",clabe:"002180009876543210",cuenta:"9876543210",titular:"Rosa Domínguez Valle",tipo:"Cuenta de ahorro",ultimaVerif:"02/oct/2026"},contacto:{nombre:"Rosa Domínguez Valle",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",horario:"Lun–Dom 7:00–22:00"}},
+  {negocio:{nombre:"Taquería El Trompo",rfc:"TET190815JK2",giro:"Restaurante",tipo:"Persona física con actividad empresarial",calle:"Blvd. Manuel Ávila Camacho 890",colonia:"Polanco",municipio:"Miguel Hidalgo",estado:"CDMX",cp:"11560",telefono:"55 5555 0001",email:"trompo@tacos.mx",web:"—",sucursales:"2",fechaAlta:"15/ago/2019"},representante:{nombre:"Miguel Ángel Torres Peña",curp:"TOPM870922HDFRRG05",rfc:"TOPM870922QW5",cargo:"Titular",email:"trompo@tacos.mx",telefono:"55 5555 0001",docId:"INE · ****7740"},bancarios:{banco:"Banorte",clabe:"006180005544332211",cuenta:"5544332211",titular:"Miguel Torres Peña",tipo:"Cuenta corriente",ultimaVerif:"28/sep/2026"},contacto:{nombre:"Sandra Torres",cargo:"Administración",email:"admin@tacos.mx",telefono:"55 5555 0002",horario:"Mar–Dom 12:00–23:00"}},
+  {negocio:{nombre:"Papelería Central",rfc:"PCE201122AB9",giro:"Papelería",tipo:"Persona moral",calle:"Calle 5 de Mayo 77",colonia:"Centro Histórico",municipio:"Cuauhtémoc",estado:"CDMX",cp:"06060",telefono:"55 6666 1234",email:"info@papeleriacentral.mx",web:"papeleriacentral.mx",sucursales:"1",fechaAlta:"22/nov/2020"},representante:{nombre:"Patricia Vega Lozano",curp:"VELP820614MDFGZM03",rfc:"VELP820614SX3",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",docId:"INE · ****9912"},bancarios:{banco:"HSBC México",clabe:"021180007788990011",cuenta:"7788990011",titular:"Papelería Central SA de CV",tipo:"Cuenta corriente",ultimaVerif:"10/oct/2026"},contacto:{nombre:"Patricia Vega Lozano",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",horario:"Lun–Sáb 9:00–19:00"}}
+];
+
 function openPsComercioDetalle(idx){
   const r=psComercios[idx];
-  const txs=psTxDiarias[r[0]]||[];
+  const p=psComercioPerfiles[idx]||psComercioPerfiles[0];
   document.getElementById("drawerTitle").textContent=r[0];
-  document.getElementById("drawerSub").textContent=r[1]+" · "+r[2]+" · "+r[3];
+  document.getElementById("drawerSub").textContent=r[1]+" · "+r[2];
   document.getElementById("drawerContent").innerHTML=`
-    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:18px">
-      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
-        <div class="lbl" style="font-size:11px">Monto transaccionado</div>
-        <div class="val" style="font-size:18px;color:var(--text-strong)">${r[8]}</div>
-      </div>
-      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
-        <div class="lbl" style="font-size:11px">Trx aprobadas</div>
-        <div class="val" style="font-size:18px">${r[9].toLocaleString("en-US")}</div>
-      </div>
-      <div class="card kpi" style="flex:1;min-width:120px;padding:12px 14px">
-        <div class="lbl" style="font-size:11px">Cancelaciones</div>
-        <div class="val" style="font-size:18px;color:var(--err-text)">${r[10]}</div>
-      </div>
+    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin:-20px -24px 20px">
+      ${["negocio","representante","bancarios","contacto"].map((tab,i)=>`
+        <button onclick="switchPerfTab(this,'pdt-${tab}')" class="pdt-tab${i===0?' on':''}" style="flex:1;background:none;border:none;padding:11px 4px 10px;font-size:12px;font-weight:500;color:${i===0?'var(--action-primary)':'var(--text-muted)'};cursor:pointer;border-bottom:2px solid ${i===0?'var(--action-primary)':'transparent'};transition:all .15s;white-space:nowrap">${["Negocio","Representante","Bancarios","Contacto"][i]}</button>
+      `).join("")}
     </div>
-    <div class="det-lbl">Transacciones por día</div>
-    <div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:13px">
-      <thead><tr>
-        <th style="text-align:left;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Fecha</th>
-        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Trx</th>
-        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Monto bruto</th>
-        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Cancelaciones</th>
-        <th style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border);color:var(--text-muted);font-weight:500">Neto</th>
-      </tr></thead>
-      <tbody>${txs.map(t=>`<tr>
-        <td style="padding:8px 6px;border-bottom:1px solid var(--border)" class="mono">${t[0]}</td>
-        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num">${t[1].toLocaleString("en-US")}</td>
-        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num">${t[2]}</td>
-        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num" style="color:${t[3]!=='$0'?'var(--err-text)':'var(--text-faint)'}">${t[3]==='$0'?'—':t[3]}</td>
-        <td style="text-align:right;padding:8px 6px;border-bottom:1px solid var(--border)" class="num" style="font-weight:500">${t[4]}</td>
-      </tr>`).join("")}</tbody>
-    </table></div>`;
+
+    <div id="pdt-negocio">
+      <div class="det-lbl">Información general</div>
+      <div class="det-row"><span class="det-k">Nombre comercial</span><span class="det-v">${p.negocio.nombre}</span></div>
+      <div class="det-row"><span class="det-k">RFC</span><span class="det-v mono">${p.negocio.rfc}</span></div>
+      <div class="det-row"><span class="det-k">Giro</span><span class="det-v">${p.negocio.giro}</span></div>
+      <div class="det-row"><span class="det-k">Tipo de persona</span><span class="det-v">${p.negocio.tipo}</span></div>
+      <div class="det-row"><span class="det-k">Sucursales activas</span><span class="det-v">${p.negocio.sucursales}</span></div>
+      <div class="det-row"><span class="det-k">Alta en cartera</span><span class="det-v">${p.negocio.fechaAlta}</span></div>
+      <div class="det-lbl">Domicilio fiscal</div>
+      <div class="det-row"><span class="det-k">Calle y número</span><span class="det-v" style="text-align:right">${p.negocio.calle}</span></div>
+      <div class="det-row"><span class="det-k">Colonia</span><span class="det-v">${p.negocio.colonia}</span></div>
+      <div class="det-row"><span class="det-k">Municipio / Alcaldía</span><span class="det-v">${p.negocio.municipio}</span></div>
+      <div class="det-row"><span class="det-k">Estado</span><span class="det-v">${p.negocio.estado}</span></div>
+      <div class="det-row"><span class="det-k">C.P.</span><span class="det-v mono">${p.negocio.cp}</span></div>
+      <div class="det-lbl">Contacto del negocio</div>
+      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.negocio.telefono}</span></div>
+      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.negocio.email}</span></div>
+      <div class="det-row"><span class="det-k">Sitio web</span><span class="det-v">${p.negocio.web}</span></div>
+    </div>
+
+    <div id="pdt-representante" style="display:none">
+      <div class="det-lbl">Datos personales</div>
+      <div class="det-row"><span class="det-k">Nombre completo</span><span class="det-v">${p.representante.nombre}</span></div>
+      <div class="det-row"><span class="det-k">CURP</span><span class="det-v mono" style="font-size:12px">${p.representante.curp}</span></div>
+      <div class="det-row"><span class="det-k">RFC</span><span class="det-v mono">${p.representante.rfc}</span></div>
+      <div class="det-row"><span class="det-k">Cargo</span><span class="det-v">${p.representante.cargo}</span></div>
+      <div class="det-lbl">Contacto</div>
+      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.representante.email}</span></div>
+      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.representante.telefono}</span></div>
+      <div class="det-lbl">Identificación</div>
+      <div class="det-row"><span class="det-k">Documento presentado</span><span class="det-v">${p.representante.docId}</span></div>
+    </div>
+
+    <div id="pdt-bancarios" style="display:none">
+      <div class="det-lbl">Cuenta de dispersión</div>
+      <div class="det-row"><span class="det-k">Banco</span><span class="det-v">${p.bancarios.banco}</span></div>
+      <div class="det-row"><span class="det-k">CLABE</span><span class="det-v mono" style="font-size:12px;letter-spacing:.5px">${p.bancarios.clabe}</span></div>
+      <div class="det-row"><span class="det-k">Número de cuenta</span><span class="det-v mono">${p.bancarios.cuenta}</span></div>
+      <div class="det-row"><span class="det-k">Titular</span><span class="det-v">${p.bancarios.titular}</span></div>
+      <div class="det-row"><span class="det-k">Tipo de cuenta</span><span class="det-v">${p.bancarios.tipo}</span></div>
+      <div class="det-row"><span class="det-k">Última verificación</span><span class="det-v">${p.bancarios.ultimaVerif}</span></div>
+    </div>
+
+    <div id="pdt-contacto" style="display:none">
+      <div class="det-lbl">Contacto comercial</div>
+      <div class="det-row"><span class="det-k">Nombre</span><span class="det-v">${p.contacto.nombre}</span></div>
+      <div class="det-row"><span class="det-k">Cargo</span><span class="det-v">${p.contacto.cargo}</span></div>
+      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.contacto.email}</span></div>
+      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.contacto.telefono}</span></div>
+      <div class="det-row"><span class="det-k">Horario de atención</span><span class="det-v">${p.contacto.horario}</span></div>
+    </div>`;
   document.getElementById("drawerOverlay").classList.add("on");
   document.getElementById("mainDrawer").classList.add("on");
+}
+
+function switchPerfTab(btn,tabId){
+  const body=document.getElementById("drawerContent");
+  body.querySelectorAll(".pdt-tab").forEach(b=>{
+    const active=b===btn;
+    b.style.color=active?"var(--action-primary)":"var(--text-muted)";
+    b.style.borderBottomColor=active?"var(--action-primary)":"transparent";
+  });
+  ["pdt-negocio","pdt-representante","pdt-bancarios","pdt-contacto"].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display=id===tabId?"block":"none";
+  });
 }
 
 /* Constancia de situación fiscal */
