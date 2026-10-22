@@ -2059,12 +2059,12 @@ document.getElementById("psAltasBody").innerHTML=psAltas.map(r=>`<tr>
    TODO: reemplazar ONBOARDING_URL con la ruta real al repo de onboarding cuando esté disponible.
    El repo de onboarding debe emitir: window.parent.postMessage('onboarding-complete', '*')
    al finalizar el flujo, en lugar de (o antes de) hacer su redirect original. */
-const ONBOARDING_URL = "http://localhost:3000?portal=punto-red";
+const ONBOARDING_URL = "https://onboarding-4v0jx2unz-velpay.vercel.app?portal=punto-red";
 function iniciarOnboarding(){
   const overlay    = document.getElementById("onboardingOverlay");
   const frame      = document.getElementById("onboardingFrame");
   const placeholder= document.getElementById("onboardingPlaceholder");
-  const esLocal    = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
+  const esLocal    = true; // onboarding disponible vía Vercel para todos
   if(esLocal && ONBOARDING_URL){
     frame.style.display      = "block";
     placeholder.style.display= "none";
