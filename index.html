@@ -1828,6 +1828,16 @@ tbody tr:hover{background:#fbfaff}
     </div>
     <!-- iframe: src se asigna en iniciarOnboarding() — conectar ruta del repo de onboarding -->
     <iframe id="onboardingFrame" src="" style="flex:1;border:none;width:100%" title="Flujo de onboarding"></iframe>
+    <!-- Placeholder para entornos sin servidor local -->
+    <div id="onboardingPlaceholder" style="display:none;flex:1;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:40px;text-align:center">
+      <div style="width:56px;height:56px;border-radius:16px;background:var(--bg-subtle);display:grid;place-items:center">
+        <svg viewBox="0 0 24 24" fill="none" stroke="var(--text-faint)" stroke-width="1.5" style="width:28px;height:28px"><path d="M9 12h6m-3-3v6M3 12a9 9 0 1118 0 9 9 0 01-18 0z"/></svg>
+      </div>
+      <div>
+        <div style="font-weight:600;color:var(--text-strong);font-size:15px;margin-bottom:6px">Onboarding disponible en local</div>
+        <div style="color:var(--text-muted);font-size:13px;max-width:340px;line-height:1.6">El flujo de vinculación de comercios corre en un servidor local.<br>Para probarlo, abre el portal desde tu equipo con el servidor de onboarding activo.</div>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2051,10 +2061,18 @@ document.getElementById("psAltasBody").innerHTML=psAltas.map(r=>`<tr>
    al finalizar el flujo, en lugar de (o antes de) hacer su redirect original. */
 const ONBOARDING_URL = "http://localhost:3000?portal=punto-red";
 function iniciarOnboarding(){
-  const overlay = document.getElementById("onboardingOverlay");
-  const frame   = document.getElementById("onboardingFrame");
-  if(!ONBOARDING_URL){ alert("Conectar ONBOARDING_URL con la ruta al repo de onboarding."); return; }
-  frame.src = ONBOARDING_URL;
+  const overlay    = document.getElementById("onboardingOverlay");
+  const frame      = document.getElementById("onboardingFrame");
+  const placeholder= document.getElementById("onboardingPlaceholder");
+  const esLocal    = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
+  if(esLocal && ONBOARDING_URL){
+    frame.style.display      = "block";
+    placeholder.style.display= "none";
+    frame.src = ONBOARDING_URL;
+  } else {
+    frame.style.display      = "none";
+    placeholder.style.display= "flex";
+  }
   overlay.style.display = "flex";
   document.body.style.overflow = "hidden";
 }
