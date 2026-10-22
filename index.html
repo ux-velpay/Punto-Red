@@ -303,6 +303,9 @@ tbody tr:hover{background:#fbfaff}
 .fsel{display:inline-flex;align-items:center;gap:9px;background:#fff;border:1px solid #e8e8ee;border-radius:8px;padding:8px 14px;font-size:13.5px;color:var(--text-muted);box-shadow:0 1px 4px rgba(0,0,0,.06)}
 .fsel svg{width:16px;height:16px}
 .fsel select{border:none;background:transparent;font:inherit;font-size:13.5px;color:var(--text-strong);font-weight:500;outline:none;cursor:pointer}
+.ms-opt{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;cursor:pointer;font-size:13.5px;color:var(--text-strong);font-weight:500}
+.ms-opt:hover{background:var(--bg-subtle)}
+.ms-opt input[type=checkbox]{width:15px;height:15px;accent-color:var(--action-primary);cursor:pointer;flex-shrink:0}
 .scope-note{display:inline-flex;align-items:center;gap:7px;font-size:12.5px;color:var(--text-muted)}
 .seg-sm{display:inline-flex;background:var(--bg-subtle);border-radius:var(--radius-sm);padding:3px;border:1px solid var(--border);flex-shrink:0}
 .seg-sm button{border:none;background:transparent;padding:5px 12px;font:inherit;font-size:12.5px;font-weight:500;color:var(--text-muted);border-radius:7px;cursor:pointer}
@@ -462,9 +465,114 @@ tbody tr:hover{background:#fbfaff}
 .btn-danger:hover{background:#c93c41}
 .btn-success{background:#188a4a;color:#fff;border-color:transparent}
 .btn-success:hover{background:#147a40}
+
+/* ============ MODAL GENÉRICO ============ */
+.modal-overlay{position:fixed;inset:0;background:rgba(10,8,28,.55);backdrop-filter:blur(4px);z-index:800;display:none;align-items:center;justify-content:center;padding:20px;}
+.modal-overlay.on{display:flex;}
+.modal-box{background:#fff;border-radius:18px;width:100%;max-width:540px;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 80px rgba(0,0,0,.28);}
+.modal-head{display:flex;align-items:center;justify-content:space-between;padding:20px 24px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.modal-head h3{margin:0;font-size:16px;font-weight:600;color:var(--text-strong);}
+.modal-body{overflow-y:auto;padding:22px 24px;flex:1;}
+.modal-foot{display:flex;justify-content:flex-end;gap:10px;padding:14px 24px;border-top:1px solid var(--border);flex-shrink:0;}
+.form-lbl{display:block;font-size:12.5px;font-weight:500;color:var(--text-strong);margin-bottom:5px;}
+.form-inp{width:100%;padding:9px 12px;border:1.5px solid #e0dff0;border-radius:9px;font:inherit;font-size:13.5px;color:var(--text-strong);outline:none;transition:.15s;box-sizing:border-box;}
+.form-inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px rgba(91,79,207,.1);}
+.form-inp.err{border-color:#dc2626;box-shadow:0 0 0 3px rgba(220,38,38,.08);}
+.form-sel{width:100%;padding:9px 12px;border:1.5px solid #e0dff0;border-radius:9px;font:inherit;font-size:13.5px;color:var(--text-strong);outline:none;background:#fff;transition:.15s;cursor:pointer;}
+.form-sel:focus{border-color:var(--brand);}
+.form-row{margin-bottom:16px;}
+.form-hint{font-size:11.5px;color:var(--text-muted);margin-top:4px;}
+.form-hint.err{color:#dc2626;}
+.form-char-count{font-size:11px;color:var(--text-faint);text-align:right;margin-top:3px;}
+.form-char-count.ok{color:var(--ok-text);}
+.form-attach-list{display:flex;flex-direction:column;gap:6px;margin-top:8px;}
+.form-attach-item{display:flex;align-items:center;gap:8px;background:var(--bg-subtle);border-radius:8px;padding:7px 10px;font-size:12.5px;}
+.form-attach-item .fa-name{flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text-strong);}
+.form-attach-item button{border:none;background:none;cursor:pointer;color:var(--text-muted);padding:0;font-size:15px;line-height:1;}
+.form-attach-add{display:flex;align-items:center;gap:8px;border:1.5px dashed #d0cee8;border-radius:9px;padding:10px 14px;cursor:pointer;color:var(--text-muted);font-size:13px;background:none;width:100%;transition:.12s;}
+.form-attach-add:hover{background:var(--bg-subtle);}
+.modal-step{display:none;}.modal-step.on{display:block;}
+/* Folio / tracking */
+.folio-card{background:var(--bg-subtle);border-radius:12px;padding:16px 18px;}
+.folio-num{font-size:22px;font-weight:700;color:var(--brand);letter-spacing:.5px;font-family:monospace;}
+.track-steps{display:flex;gap:0;margin-top:14px;}
+.track-step{flex:1;text-align:center;position:relative;}
+.track-step::before{content:'';position:absolute;top:12px;left:50%;right:-50%;height:2px;background:#e0dff0;z-index:0;}
+.track-step:last-child::before{display:none;}
+.track-dot{width:24px;height:24px;border-radius:50%;border:2px solid #e0dff0;background:#fff;display:inline-flex;align-items:center;justify-content:center;position:relative;z-index:1;font-size:10px;}
+.track-dot.done{background:var(--ok-text);border-color:var(--ok-text);color:#fff;}
+.track-dot.active{background:var(--brand);border-color:var(--brand);color:#fff;}
+.track-label{font-size:10.5px;color:var(--text-muted);margin-top:4px;display:block;}
+/* Constancia estados */
+.constancia-estado{display:flex;align-items:center;gap:10px;padding:10px 14px;border-radius:10px;font-size:13px;margin-bottom:12px;}
+/* ============ LOGIN SCREEN ============ */
+#loginScreen{position:fixed;inset:0;background:linear-gradient(145deg,#0d0a22 0%,#1a1533 55%,#120e2b 100%);z-index:9000;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px;transition:opacity .3s;}
+.login-card{background:#fff;border-radius:22px;padding:42px 46px;width:100%;max-width:440px;box-shadow:0 32px 90px rgba(0,0,0,.5);}
+.login-wordmark{font-size:27px;font-weight:800;color:#1a1533;letter-spacing:-.5px;line-height:1;}
+.login-wordmark-sub{font-size:12.5px;color:#9090a8;font-weight:500;margin-top:3px;margin-bottom:28px;}
+.login-portal-seg{display:flex;background:#f0effe;border-radius:11px;padding:3px;margin-bottom:28px;gap:3px;}
+.lp-tab{flex:1;padding:9px 6px;border:none;background:none;border-radius:9px;font:inherit;font-size:12.5px;font-weight:500;color:#6b6b80;cursor:pointer;transition:.15s;white-space:nowrap;}
+.lp-tab.on{background:#fff;color:#1a1533;box-shadow:0 1px 4px rgba(0,0,0,.14);}
+.login-lbl{display:block;font-size:12.5px;font-weight:500;color:#26263a;margin-bottom:5px;}
+.login-inp-wrap{position:relative;margin-bottom:16px;}
+.login-inp{width:100%;padding:11px 14px;border:1.5px solid #e0dff0;border-radius:10px;font:inherit;font-size:14px;color:#26263a;outline:none;transition:.15s;box-sizing:border-box;background:#fff;}
+.login-inp:focus{border-color:#5b4fcf;box-shadow:0 0 0 3px rgba(91,79,207,.1);}
+.login-inp.err-inp{border-color:#dc2626 !important;box-shadow:0 0 0 3px rgba(220,38,38,.08) !important;}
+.login-eye{position:absolute;right:11px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:#9090a8;padding:4px;display:flex;align-items:center;}
+.login-alert{border-radius:9px;padding:10px 14px;font-size:13px;margin-bottom:14px;display:none;line-height:1.45;}
+.login-alert.err{background:#fef2f2;border:1px solid #fecaca;color:#dc2626;}
+.login-alert.warn{background:#fff7ed;border:1px solid #fed7aa;color:#c2410c;}
+.login-btn{width:100%;padding:13px;background:var(--brand);color:#fff;border:none;border-radius:10px;font:inherit;font-size:15px;font-weight:600;cursor:pointer;transition:.15s;margin-top:4px;}
+.login-btn:hover{background:#4d43b8;}
+.login-btn:active{transform:scale(.99);}
+.login-forgot-wrap{text-align:center;margin-top:14px;font-size:13px;color:#9090a8;position:relative;}
+.login-forgot-wrap a{color:#5b4fcf;cursor:pointer;text-decoration:underline;text-underline-offset:2px;}
+.login-tip-popup{position:absolute;bottom:calc(100% + 8px);left:50%;transform:translateX(-50%);background:#1a1533;color:#fff;font-size:12px;padding:9px 13px;border-radius:9px;white-space:nowrap;display:none;z-index:10;line-height:1.5;pointer-events:none;}
+.login-tip-popup::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1a1533;}
+.login-demo-hint{background:#f7f6ff;border-radius:9px;padding:9px 13px;font-size:12px;color:#9090a8;margin-top:16px;text-align:center;line-height:1.5;}
+.login-screen-foot{margin-top:24px;font-size:12px;color:rgba(255,255,255,.28);text-align:center;}
 </style>
 </head>
 <body>
+
+<!-- ============ LOGIN ============ -->
+<div id="loginScreen">
+  <div class="login-card">
+    <div class="login-wordmark">Velpay</div>
+    <div class="login-wordmark-sub">Portal Punto Red — Acceso restringido</div>
+
+    <div class="login-portal-seg">
+      <button class="lp-tab on" id="lpTabDist" onclick="loginSelectPortal('dist')">Distribuidor</button>
+      <button class="lp-tab" id="lpTabPs" onclick="loginSelectPortal('ps')">Proveedor de Servicios</button>
+    </div>
+
+    <label class="login-lbl" for="loginEmail">Correo electrónico</label>
+    <div class="login-inp-wrap">
+      <input class="login-inp" id="loginEmail" type="email" placeholder="correo@empresa.com" autocomplete="email" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+
+    <label class="login-lbl" for="loginPwd">Contraseña</label>
+    <div class="login-inp-wrap">
+      <input class="login-inp" id="loginPwd" type="password" placeholder="••••••••" style="padding-right:42px" autocomplete="current-password" onkeydown="if(event.key==='Enter')doLogin()">
+      <button class="login-eye" onclick="toggleLoginPwd(this)" tabindex="-1" aria-label="Mostrar u ocultar contraseña">
+        <svg id="loginEyeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+      </button>
+    </div>
+
+    <div class="login-alert err" id="loginErr">Correo o contraseña incorrectos</div>
+    <div class="login-alert warn" id="loginBlocked"><b>Acceso bloqueado.</b> Contacta a tu ejecutivo Velpay para desbloquear tu cuenta.</div>
+
+    <button class="login-btn" onclick="doLogin()">Iniciar sesión</button>
+
+    <div class="login-forgot-wrap">
+      ¿Olvidaste tu contraseña? <a onclick="toggleLoginTip()">Recuperar acceso</a>
+      <div class="login-tip-popup" id="loginForgotTip">Contacta a tu ejecutivo Velpay.<br>Este portal no tiene recuperación por autoservicio.</div>
+    </div>
+
+    <div class="login-demo-hint">Prototipo · ingresa cualquier correo y contraseña para explorar</div>
+  </div>
+  <div class="login-screen-foot">© 2026 Velpay Payments &nbsp;·&nbsp; Punto Red &nbsp;·&nbsp; Uso interno</div>
+</div>
 
 <div class="proto-tag">PROTOTIPO</div>
 
@@ -507,7 +615,7 @@ tbody tr:hover{background:#fbfaff}
         <!-- Filtros -->
         <div class="ps-filters" style="margin-bottom:20px">
           <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
-            <select aria-label="Período"><option>Septiembre 2026</option><option>Agosto 2026</option><option>Julio 2026</option><option>Últimos 7 días</option></select></span>
+            <select aria-label="Período"><option>Septiembre 2026</option><option>Agosto 2026</option><option>Julio 2026</option></select></span>
           <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h8M4 18h4"/></svg>
             <select aria-label="Comparar con"><option>vs. mes anterior</option><option>vs. mismo mes año ant.</option><option>Sin comparación</option></select></span>
           <span class="fsel">
@@ -538,9 +646,9 @@ tbody tr:hover{background:#fbfaff}
           </div>
           <div class="card kpi">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg></div>
-            <div class="lbl">Comercios activos</div>
-            <div class="val">138<span style="font-size:15px;color:var(--text-faint);font-weight:500"> / 156</span></div>
-            <div class="sub down">18 sin actividad este mes</div>
+            <div class="lbl">Comercios dados de alta</div>
+            <div class="val">156</div>
+            <div class="sub"></div>
           </div>
           <div class="card kpi">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/></svg></div>
@@ -554,6 +662,13 @@ tbody tr:hover{background:#fbfaff}
             <div class="val">$328</div>
             <div class="sub up">▲ $14 vs. agosto</div>
           </div>
+        </div>
+
+        <!-- Separador de sección -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <span style="font-size:13px;font-weight:500;color:var(--text-strong);white-space:nowrap">Vista general</span>
+          <span style="flex:1;height:1px;background:var(--border)"></span>
+          <span style="font-size:12px;color:var(--text-faint);white-space:nowrap">Datos independientes del período seleccionado</span>
         </div>
 
         <!-- Gráficas fila 1 -->
@@ -587,131 +702,83 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== PS · DASHBOARD ===== -->
       <section class="view" id="view-ps-dashboard">
-        <div class="ps-filters">
+        <!-- Filtros -->
+        <div class="ps-filters" style="margin-bottom:20px">
           <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 9h18M8 3v4M16 3v4"/></svg>
-            <select id="psPeriod" aria-label="Período"><option value="jul2026">Julio 2026</option><option value="jun2026">Junio 2026</option><option value="d7">Últimos 7 días</option></select></span>
+            <select id="ps2Period" aria-label="Período" onchange="renderPs2Kpis()">
+              <option value="hoy">Hoy</option>
+              <option value="sep">Septiembre 2026</option>
+              <option value="ago">Agosto 2026</option>
+              <option value="jul">Julio 2026</option>
+            </select></span>
+          <span class="fsel ms-wrap" id="ps2EntidadWrap" style="cursor:pointer;user-select:none;position:relative" onclick="toggleMs2()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/><path d="M9 20v-6h6v6"/></svg>
+            <span id="ps2EntidadLabel" style="font-size:13.5px;color:var(--text-strong);font-weight:500">Comercio y Punto Red</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;color:var(--text-faint)"><polyline points="6 9 12 15 18 9"/></svg>
+            <div id="ps2EntidadDrop" style="display:none;position:absolute;top:calc(100% + 6px);left:0;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow-pop);padding:6px;min-width:180px;z-index:200" onclick="event.stopPropagation()">
+              <label class="ms-opt" onclick="updateMs2()"><input type="checkbox" id="ms2Comercio" checked> Comercio</label>
+              <label class="ms-opt" onclick="updateMs2()"><input type="checkbox" id="ms2PuntoRed" checked> Punto Red</label>
+            </div>
+          </span>
           <span class="fsel">
-            <select id="psMerchant" aria-label="Comercio"><option value="all">Todos mis comercios</option><option value="CM-04831">Refaccionaria El Motor</option><option value="CM-04832">Servicios TecnoRed</option><option value="CM-04833">Autopartes del Norte</option><option value="CM-04834">Taller Mecánico Díaz</option></select></span>
-          <span class="fsel"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h10M4 18h6"/></svg>
-            <select aria-label="Tipo de servicio"><option value="all">Todos los servicios</option><option value="aire">Tiempo aire</option><option value="cfe">CFE</option><option value="agua">Agua</option><option value="otros">Otros</option></select></span>
+            <select aria-label="Comercio"><option>Todos los comercios</option><option>Refaccionaria El Motor</option><option>Servicios TecnoRed</option><option>Autopartes del Norte</option><option>Taller Mecánico Díaz</option></select></span>
           <span style="flex:1"></span>
-          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>PDF</button>
-          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Excel</button>
+          <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
         </div>
 
-        <!-- Bloque 1 · Mis números fila 1 -->
-        <div class="kpi-grid-2">
-          <div class="card kpi">
-            <div class="ic" style="background:#e7f6ec;color:#188a4a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></div>
-            <div class="lbl">Dispersión de mañana <span class="tip"><span class="q">?</span><span class="box">Estimado del corte del día de hoy. Puede cambiar hasta las 23:59.</span></span></div>
-            <div class="val" id="psKpiDispMañana" style="color:var(--ok-text)">$47,355</div>
-            <div class="sub"><span class="badge b-info"><span class="bd"></span>Corte 23:59 · est.</span></div>
-          </div>
-          <div class="card kpi">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></div>
-            <div class="lbl">Última dispersión</div>
-            <div class="val" id="psKpiUltimaDisp">$49,817</div>
-            <div class="sub"><span class="badge b-ok"><span class="bd"></span>Dispersado · 15/09/26</span></div>
-          </div>
+        <!-- KPIs fila 1 -->
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);margin-bottom:20px">
           <div class="card kpi">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg></div>
-            <div class="lbl">Saldo vendido (periodo)</div>
-            <div class="val" id="psKpiSaldoVendido">$416,500</div>
-            <div class="sub up" id="psKpiSaldoSub">▲ 8.6% vs. periodo anterior</div>
-          </div>
-          <div class="card kpi">
-            <div class="ic" style="background:var(--err-bg);color:var(--err-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12h4l3-9 4 18 3-9h4"/></svg></div>
-            <div class="lbl">Reversas del periodo</div>
-            <div class="val" id="psKpiReversas" style="color:var(--err-text)">$6,440</div>
-            <div class="sub down" id="psKpiReversasSub">16 cancelaciones aplicadas</div>
-          </div>
-        </div>
-
-        <!-- Bloque 1 · Mis números fila 2 -->
-        <div class="kpi-grid-2" style="margin-bottom:20px">
-          <div class="card kpi">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l1-5h16l1 5M4 9v11h16V9"/></svg></div>
-            <div class="lbl">Comercios activos</div>
-            <div class="val" id="psKpiAct">3 <span style="font-size:15px;color:var(--text-faint);font-weight:500">/ 4</span></div>
-            <div class="sub down" id="psKpiActSub">1 sin actividad · Taller Mecánico Díaz</div>
+            <div class="lbl" id="ps2VolLbl">Volumen en cartera (diario)</div>
+            <div class="val" id="ps2VolVal">$14,280</div>
+            <div class="sub up" id="ps2VolSub">▲ 6.2% vs. ayer</div>
           </div>
           <div class="card kpi">
             <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16M4 7l3-3M4 7l3 3"/><path d="M20 17H4m16 0l-3-3m3 3l-3 3"/></svg></div>
-            <div class="lbl">Transacciones (periodo)</div>
-            <div class="val" id="psKpiTx">1,330</div>
-            <div class="sub" id="psKpiTxSub" style="color:var(--text-muted)">Ticket prom. $313</div>
+            <div class="lbl" id="ps2TxLbl">Transacciones del periodo</div>
+            <div class="val" id="ps2TxVal">46</div>
+            <div class="sub up" id="ps2TxSub">▲ 4 vs. ayer</div>
           </div>
           <div class="card kpi">
-            <div class="ic" style="background:#e7f6ec;color:#188a4a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 6L9 17l-5-5"/></svg></div>
-            <div class="lbl">Estatus de conciliación</div>
-            <div class="val" style="font-size:15px;margin-top:10px" id="psKpiConc"><span class="badge b-ok"><span class="bd"></span>Conciliado</span></div>
-            <div class="sub" id="psKpiConcSub">Últ. periodo: 01–07 sep · 0 dif.</div>
-          </div>
-          <div class="card kpi" id="psKpiComCard">
-            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5c0-1 1.1-1.8 2.5-1.8s2.5.8 2.5 1.8-1.1 1.6-2.5 1.9-2.5.8-2.5 2 1.1 1.8 2.5 1.8 2.5-.7 2.5-1.8"/></svg></div>
-            <div class="lbl">Comisión generada</div>
-            <div class="val" id="psKpiCom">$1,248</div>
-            <div class="sub" id="psKpiComBadge"><span class="badge b-info"><span class="bd"></span>Pendiente de pago</span></div>
+            <div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></div>
+            <div class="lbl">Ticket promedio</div>
+            <div class="val" id="ps2TicketVal">$310</div>
+            <div class="sub" id="ps2TicketSub" style="color:var(--text-muted)">Hoy</div>
           </div>
         </div>
 
-        <!-- Bloque 2 · Gráficas -->
+        <!-- Separador de sección -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <span style="font-size:13px;font-weight:500;color:var(--text-strong);white-space:nowrap">Vista general</span>
+          <span style="flex:1;height:1px;background:var(--border)"></span>
+          <span style="font-size:12px;color:var(--text-faint);white-space:nowrap">Datos independientes del período seleccionado</span>
+        </div>
+
+        <!-- Gráficas fila 1 -->
         <div class="two-col" style="margin-bottom:18px">
           <div class="card panel">
-            <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px">
-              <div><h3>Saldo vendido por día</h3><div class="cap" id="psStatusCap">Julio 2026 · mis comercios asignados</div></div>
-              <div class="seg-sm" id="psMetric"><button class="on" data-metric="count">N° Trx</button><button data-metric="amount">Monto</button></div>
-            </div>
-            <div class="bars" id="psStatusBars"></div>
-            <div class="legend" id="psStatusLegend"></div>
-          </div>
-          <div class="card panel">
-            <h3>Dispersiones recientes</h3><div class="cap">Monto dispersado por corte · últimos 7 cortes</div>
-            <div class="bars" id="psDispBars"></div>
+            <h3>Dispersión por mes</h3><div class="cap">2026 · acumulado dispersado</div>
+            <div class="bars" id="ps2DispBars"></div>
             <div class="legend"><span><i class="dot" style="background:#754bf1"></i>Dispersado</span><span><i class="dot" style="background:#d5cbff"></i>Reversas</span></div>
           </div>
-        </div>
-
-        <div class="two-col" style="margin-bottom:18px">
           <div class="card panel">
-            <h3>Saldo vendido por comercio</h3><div class="cap">Top comercios · periodo seleccionado</div>
-            <div class="hbars" id="psTopBars"></div>
-          </div>
-          <div class="card panel">
-            <h3>Mezcla por tipo de servicio</h3><div class="cap">Distribución del saldo vendido</div>
-            <div class="donut-wrap">
-              <svg id="psDonut" width="128" height="128" viewBox="0 0 42 42" style="flex-shrink:0"></svg>
-              <div class="rows" id="psDonutRows"></div>
-            </div>
+            <h3>Saldo vendido por mes</h3><div class="cap">Últimos 6 meses</div>
+            <div class="bars" id="ps2SaldoBars"></div>
+            <div class="legend"><span><i class="dot" style="background:#754bf1"></i>Saldo mensual</span></div>
           </div>
         </div>
 
-        <!-- Bloque 3 · Listados -->
+        <!-- Mapa de la cartera -->
         <div class="card panel" style="margin-bottom:18px">
-          <h3 style="margin-bottom:14px">Comercios destacados</h3>
+          <h3 style="margin-bottom:14px">Mapa de la cartera</h3>
           <div class="loco-grid">
-            <div class="loco-card" id="locoLoco"></div>
-            <div class="loco-card" id="locoFoco"></div>
-            <div class="loco-card" id="locoPausa"></div>
-          </div>
-        </div>
-
-        <!-- Bloque 4 · Avisos -->
-        <div class="card panel">
-          <h3 style="margin-bottom:14px">Avisos</h3>
-          <div class="aviso-list">
-            <div class="aviso">
-              <div class="av-icon" style="background:#e7f6ec;color:#188a4a"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M9 12l2 2 4-4"/></svg></div>
-              <div class="av-body"><div class="av-title">Dispersión realizada · $49,817</div><div class="av-sub">15/09/26 · Ref. SPEI-2609150042 · Cuenta ••••3421</div></div>
-            </div>
-            <div class="aviso">
-              <div class="av-icon" style="background:var(--warn-bg);color:var(--warn-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.3 3.3l-8.2 14.2a2 2 0 001.7 3h16.4a2 2 0 001.7-3L13.7 3.3a2 2 0 00-3.4 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
-              <div class="av-body"><div class="av-title">Reversa aplicada en la dispersión del día</div><div class="av-sub">Taller Mecánico Díaz · $1,280 · Cancelación del 12/09/26</div></div>
-            </div>
-            <div class="aviso">
-              <div class="av-icon" style="background:var(--info-bg);color:var(--info-text)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>
-              <div class="av-body"><div class="av-title">Archivo de conciliación pendiente · 08–14 sep</div><div class="av-sub">Último archivo cargado cubre hasta el 07 sep. Sube el siguiente periodo.</div></div>
-            </div>
+            <div class="loco-card" id="ps2Loco"></div>
+            <div class="loco-card" id="ps2Ascenso"></div>
+            <div class="loco-card" id="ps2Ritmo"></div>
+            <div class="loco-card" id="ps2Pausa"></div>
+            <div class="loco-card" id="ps2Foco"></div>
+            <div class="loco-card" id="ps2Despegar"></div>
           </div>
         </div>
       </section>
@@ -797,8 +864,13 @@ tbody tr:hover{background:#fbfaff}
         </div>
 
         <div class="sec-panel" id="stab-com-esquema">
-          <div class="two-col" style="align-items:start">
-            <div class="card panel">
+          <div class="two-col" style="align-items:stretch">
+            <div class="card panel" style="display:flex;flex-direction:column">
+              <h3 style="margin-bottom:14px">Evolución de comisión</h3>
+              <div id="distEsquemaBars" style="flex:1;display:flex;align-items:flex-end;gap:10px;padding-bottom:4px"></div>
+              <p style="color:var(--text-faint);font-size:12px;margin-top:14px">La tasa exacta es gestionada por Operaciones Velpay y no se muestra en el portal.</p>
+            </div>
+            <div class="card panel" style="display:flex;flex-direction:column">
               <h3 style="margin-bottom:6px">Frase de tu negocio</h3>
               <p style="color:var(--text-muted);font-size:13px;margin-bottom:16px">Así está configurado tu esquema en Velpay. Para cambios contacta a tu ejecutivo de cuenta.</p>
               <div style="background:var(--bg-subtle);border-radius:12px;padding:16px 18px;margin-bottom:16px">
@@ -808,11 +880,6 @@ tbody tr:hover{background:#fbfaff}
               <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · corte último día del mes</span></div>
               <div class="field"><span class="k">Condición de pago</span><span class="v">CFDI previo a la dispersión</span></div>
               <div class="field"><span class="k">Ajustes</span><span class="v">Contracargos y devoluciones se descuentan</span></div>
-            </div>
-            <div class="card panel">
-              <h3 style="margin-bottom:14px">Evolución de comisión</h3>
-              <div class="hbars" id="distEsquemaBars"></div>
-              <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La tasa exacta es gestionada por Operaciones Velpay y no se muestra en el portal.</p>
             </div>
           </div>
         </div>
@@ -945,23 +1012,61 @@ tbody tr:hover{background:#fbfaff}
         </div>
 
         <div class="sec-panel on" id="stab-cartera-activos">
-          <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px;flex-wrap:wrap">
-            <div class="search" style="min-width:200px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID"></div>
-            <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
-          </div>
-          <div class="card tbl-card"><div class="tbl-scroll"><table>
-            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Asignado</th><th>Sucursales</th><th>Vol. mes ant.</th><th>Vol. mes actual</th><th>Contracargos</th><th>Devoluciones</th><th>Última trx</th><th>Tu comisión</th></tr></thead>
-            <tbody id="distCarteraBody"></tbody>
-          </table></div>
-          <div class="tbl-foot">
-            <span>Mostrando 6 de 138 comercios</span>
-            <div class="pager">
-              <button class="pg-arrow" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
-              <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><span class="pg-dots">…</span><button class="pg-num">24</button>
-              <button class="pg-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+
+          <!-- ── L1 Lista ── -->
+          <div id="dist-cartera-l1">
+            <div style="display:flex;justify-content:flex-end;gap:10px;margin-bottom:12px;flex-wrap:wrap">
+              <div class="search" style="min-width:200px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID"></div>
+              <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
             </div>
-          </div></div>
-          <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. <b>Tu comisión</b> = lo que te corresponde según tu esquema pactado. Tasas y márgenes no se muestran.</p>
+            <div class="card tbl-card"><div class="tbl-scroll"><table>
+              <thead><tr><th>Comercio</th><th>Estatus</th><th>Fecha de alta</th><th>Sucursales</th><th style="text-align:right">Saldo anterior</th><th style="text-align:right">Saldo acumulado</th></tr></thead>
+              <tbody id="distCarteraBody"></tbody>
+            </table></div>
+            <div class="tbl-foot">
+              <span>Mostrando 6 de 138 comercios</span>
+              <div class="pager">
+                <button class="pg-arrow" disabled><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg></button>
+                <button class="pg-num on">1</button><button class="pg-num">2</button><button class="pg-num">3</button><span class="pg-dots">…</span><button class="pg-num">24</button>
+                <button class="pg-arrow"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 12h14m0 0l-6-6m6 6l-6 6"/></svg></button>
+              </div>
+            </div></div>
+            <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Haz clic en un comercio para ver el historial diario y el detalle de transacciones.</p>
+          </div>
+
+          <!-- ── L2 Historial diario ── -->
+          <div id="dist-cartera-l2" style="display:none">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+              <button class="btn btn-ghost btn-sm" onclick="backDistL1()" style="padding:6px 10px;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg>Comercios activos</button>
+              <span style="color:var(--text-faint)">/</span>
+              <span id="dl2-name" style="font-weight:500;color:var(--text-strong)"></span>
+            </div>
+            <div class="card panel" id="dl2-summary" style="margin-bottom:16px"></div>
+            <div class="card tbl-card"><div class="tbl-scroll"><table>
+              <thead><tr>
+                <th>Fecha</th>
+                <th style="text-align:right">Enviado a saldo</th>
+                <th style="text-align:right">Enviado a cuenta propia</th>
+                <th style="text-align:right">Cancelaciones</th>
+                <th style="text-align:right">Total del día</th>
+                <th></th>
+              </tr></thead>
+              <tbody id="dl2-body"></tbody>
+            </table></div></div>
+          </div>
+
+          <!-- ── L3 Transacciones del día ── -->
+          <div id="dist-cartera-l3" style="display:none">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:20px">
+              <button class="btn btn-ghost btn-sm" onclick="backDistL2()" style="padding:6px 10px;display:flex;align-items:center;gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M19 12H5m0 0l6-6m-6 6l6 6"/></svg><span id="dl3-cm-name"></span></button>
+              <span style="color:var(--text-faint)">/</span>
+              <span id="dl3-fecha" style="font-weight:500;color:var(--text-strong)"></span>
+            </div>
+            <div id="dl3-summary" style="display:flex;gap:12px;margin-bottom:16px;flex-wrap:wrap"></div>
+            <div id="dl3-table"></div>
+            <p style="color:var(--text-faint);font-size:12px;margin-top:10px">Datos de insumo para la generación del ticket. No incluye formato de comprobante.</p>
+          </div>
+
         </div>
 
         <div class="sec-panel" id="stab-cartera-altas">
@@ -1031,15 +1136,12 @@ tbody tr:hover{background:#fbfaff}
             <div class="field"><span class="k">Banco</span><span class="v">BBVA México</span></div>
             <div class="field"><span class="k">CLABE</span><span class="v mono">•••• •••• •••• 4821</span></div>
             <div class="field"><span class="k">Periodicidad</span><span class="v">Mensual · día 5</span></div>
-            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px">
-              <div style="font-weight:500;color:var(--text-strong);font-size:14px;margin-bottom:6px">Solicitar cambio de cuenta</div>
-              <div style="color:var(--text-muted);font-size:12.5px;margin-bottom:12px">Adjunta tu estado de cuenta bancario reciente (PDF). Operaciones Velpay validará y actualizará tu CLABE en un plazo de 3 días hábiles.</div>
-              <div class="drop" style="padding:20px" id="datosDropCuenta" role="button" tabindex="0">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:32px;height:32px"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
-                <div class="t" style="font-size:13px">Subir estado de cuenta</div>
-                <div class="s">.pdf · máx. 5 MB</div>
+            <div style="margin-top:16px;border-top:1px solid var(--border);padding-top:16px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap">
+              <div>
+                <div style="font-weight:500;color:var(--text-strong);font-size:14px;margin-bottom:2px">Cuenta de dispersión</div>
+                <div style="font-size:12.5px;color:var(--text-muted)">Para cambiar la CLABE debes enviar una solicitud a Velpay.</div>
               </div>
-              <button class="btn btn-ghost btn-sm" style="margin-top:10px;width:100%;justify-content:center" onclick="this.textContent='Solicitud enviada ✓';this.disabled=true;this.style.color='var(--ok-text)'">Enviar solicitud de cambio</button>
+              <button class="btn btn-ghost btn-sm" onclick="openBancoCambio()" style="white-space:nowrap">Solicitar cambio</button>
             </div>
 
             <div class="sec-title" style="margin-top:24px">Constancia de situación fiscal</div>
@@ -1093,17 +1195,42 @@ tbody tr:hover{background:#fbfaff}
 
       <!-- ===== PS · COMERCIOS ===== -->
       <section class="view" id="view-ps-comercios">
-        <div class="toolbar">
-          <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID de comercio"></div>
-          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><path d="M3 10h18M8 2v4M16 2v4"/></svg> 01/07/26 – 31/07/26</span>
-          <span class="pill"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18l-7 8v6l-4 2v-8z"/></svg> Filtros</span>
-          <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
+
+        <div class="sec-tabs" style="margin-bottom:18px">
+          <button class="sec-tab on" data-stab="ps-com-proceso" onclick="conTab(this)">En proceso de vinculación <span class="badge b-info" style="vertical-align:middle;margin-left:6px"><span class="bd"></span>3</span></button>
+          <button class="sec-tab" data-stab="ps-com-activos" onclick="conTab(this)">Comercios activos <span class="badge b-ok" style="vertical-align:middle;margin-left:6px"><span class="bd"></span>4</span></button>
         </div>
-        <div class="card tbl-card"><div class="tbl-scroll"><table>
-          <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Monto transaccionado</th><th>Trx</th><th>Cancelaciones</th><th>Saldo acumulado</th></tr></thead>
-          <tbody id="psComerciosBody"></tbody>
-        </table></div></div>
-        <p style="color:var(--text-faint);font-size:12px;margin-top:12px">Vista de solo consulta. El PS se vincula con comercios que ya existen en Velpay; no puede darlos de alta. Las llaves de integración y QR están en <b>Llaves y Aprovisionamiento</b>.</p>
+
+        <!-- Pestaña: En proceso de vinculación -->
+        <div class="sec-panel on" id="stab-ps-com-proceso">
+          <div class="toolbar" style="margin-bottom:14px">
+            <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre o RFC"></div>
+            <span style="flex:1"></span>
+            <!-- Punto de entrada al flujo de onboarding (repositorio externo).
+                 Conectar aquí la URL o función de navegación cuando esté disponible. -->
+            <button class="btn btn-primary btn-sm" onclick="iniciarOnboarding()" style="display:flex;align-items:center;gap:7px;border-radius:8px">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="width:15px;height:15px"><path d="M12 5v14M5 12h14"/></svg>
+              Nuevo comercio
+            </button>
+          </div>
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Comercio · Razón social</th><th>RFC</th><th>Giro</th><th>Fecha de registro</th><th>Estatus de vinculación</th></tr></thead>
+            <tbody id="psAltasBody"></tbody>
+          </table></div></div>
+        </div>
+
+        <!-- Pestaña: Comercios activos -->
+        <div class="sec-panel" id="stab-ps-com-activos">
+          <div class="toolbar" style="margin-bottom:14px">
+            <div class="search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4-4"/></svg><input placeholder="Busca por nombre, RFC o ID de comercio"></div>
+            <button class="btn btn-ghost btn-sm" style="border-radius:8px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>Exportar</button>
+          </div>
+          <div class="card tbl-card"><div class="tbl-scroll"><table>
+            <thead><tr><th>Comercio · RFC · Giro</th><th>Estatus</th><th>Vinculado</th><th>Sucursales</th><th>Saldo mes ant.</th><th>Saldo del mes</th><th>Monto transaccionado</th><th>Trx</th><th>Cancelaciones</th><th>Saldo acumulado</th></tr></thead>
+            <tbody id="psComerciosBody"></tbody>
+          </table></div></div>
+        </div>
+
       </section>
 
       <!-- ===== PS · DISPERSIONES ===== -->
@@ -1350,8 +1477,256 @@ tbody tr:hover{background:#fbfaff}
     </div>
     <div class="edo-footer">
       <button class="btn btn-ghost" onclick="closeEdoCta()">Cancelar</button>
-      <button class="btn btn-danger" onclick="doEdoAccion('rechazar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg>Rechazar</button>
+      <button class="btn btn-danger" onclick="openRechazo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><circle cx="12" cy="12" r="9"/><path d="M4.93 4.93l14.14 14.14"/></svg>Rechazar</button>
       <button class="btn btn-success" onclick="doEdoAccion('aprobar')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M20 6L9 17l-5-5"/></svg>Aprobar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Rechazo estado de cuenta ============ -->
+<div class="modal-overlay" id="rechazoOverlay" onclick="if(event.target===this)closeRechazo()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3>Rechazar estado de cuenta</h3>
+      <button class="drawer-close" onclick="closeRechazo()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px">Indica el motivo de tu rechazo. Una vez enviado, Velpay revisará tu caso y te responderá con un ajuste o una explicación.</p>
+      <div class="form-row">
+        <label class="form-lbl" for="recMotivoSel">Motivo <span style="color:#dc2626">*</span></label>
+        <select class="form-sel" id="recMotivoSel">
+          <option value="">— Selecciona un motivo —</option>
+          <option>No coincide el monto total</option>
+          <option>Falta un comercio de mi cartera</option>
+          <option>Un comercio no me corresponde</option>
+          <option>No reconozco un ajuste o descuento</option>
+          <option>El porcentaje aplicado no es el pactado</option>
+          <option>Diferencia en el periodo considerado</option>
+          <option>Otro</option>
+        </select>
+        <div class="form-hint err" id="recMotivoErr" style="display:none">Selecciona un motivo</div>
+      </div>
+      <div class="form-row">
+        <label class="form-lbl" for="recComercio">Comercio relacionado <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label>
+        <select class="form-sel" id="recComercio">
+          <option value="">— Todos / no aplica —</option>
+          <option>Abarrotes La Esquina</option>
+          <option>Farmacia San José</option>
+          <option>Refaccionaria El Motor</option>
+          <option>Cafetería Aroma</option>
+          <option>Papelería Lápiz Azul</option>
+          <option>Servicios TecnoRed</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-lbl" for="recMonto">Monto en disputa <span style="font-weight:400;color:var(--text-muted)">(opcional)</span></label>
+        <input class="form-inp" id="recMonto" type="text" placeholder="Ej. $1,200.00">
+      </div>
+      <div class="form-row">
+        <label class="form-lbl" for="recDesc">Descripción <span style="color:#dc2626">*</span></label>
+        <textarea class="form-inp" id="recDesc" rows="4" placeholder="Describe con detalle la diferencia o inconsistencia que encontraste…" style="resize:vertical" oninput="updRecCounter()"></textarea>
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:3px">
+          <div class="form-hint err" id="recDescErr" style="display:none">Mínimo 20 caracteres</div>
+          <div class="form-char-count" id="recCounter" style="margin-left:auto">0 / 20 mín.</div>
+        </div>
+      </div>
+      <div class="form-row">
+        <label class="form-lbl">Adjuntos <span style="font-weight:400;color:var(--text-muted)">(máx. 3, opcional)</span></label>
+        <div class="form-attach-list" id="recAttachList"></div>
+        <button class="form-attach-add" id="recAttachBtn" onclick="document.getElementById('recFileInput').click()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+          Adjuntar archivo
+        </button>
+        <input type="file" id="recFileInput" style="display:none" accept=".pdf,.png,.jpg,.jpeg" onchange="addRecAttach(this)">
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-ghost" onclick="closeRechazo()">Cancelar</button>
+      <button class="btn btn-danger" onclick="submitRechazo()">Enviar rechazo</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Cambio de cuenta bancaria ============ -->
+<div class="modal-overlay" id="bancoCambioOverlay" onclick="if(event.target===this)closeBancoCambio()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h3 id="bancoModalTitle">Solicitar cambio de cuenta bancaria</h3>
+      <button class="drawer-close" onclick="closeBancoCambio()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <!-- Paso 1: Verificar contraseña -->
+      <div class="modal-step on" id="bancoStep1">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:20px">Por seguridad, confirma tu contraseña antes de continuar. El cambio de cuenta bancaria requiere verificación adicional por parte de Velpay.</p>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoPwd">Contraseña actual <span style="color:#dc2626">*</span></label>
+          <div style="position:relative">
+            <input class="form-inp" id="bancoPwd" type="password" placeholder="••••••••" onkeydown="if(event.key==='Enter')bancoStep1Next()">
+            <button onclick="togglePwdVis('bancoPwd')" style="position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text-muted)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          </div>
+          <div class="form-hint err" id="bancoPwdErr" style="display:none">Contraseña incorrecta</div>
+        </div>
+      </div>
+      <!-- Paso 2: Formulario -->
+      <div class="modal-step" id="bancoStep2">
+        <p style="font-size:13px;color:var(--text-muted);margin-bottom:18px">Completa todos los campos. El cambio no aplica hasta ser revisado y aprobado por Velpay (hasta 3 días hábiles).</p>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoNombre">Banco <span style="color:#dc2626">*</span></label>
+          <select class="form-sel" id="bancoNombre">
+            <option value="">— Selecciona banco —</option>
+            <option>BBVA México</option><option>Banorte</option><option>Santander</option>
+            <option>HSBC</option><option>Banamex (Citibanamex)</option><option>Scotiabank</option>
+            <option>Inbursa</option><option>BANBAJIO</option><option>Afirme</option><option>Otro</option>
+          </select>
+          <div class="form-hint err" id="bancoNombreErr" style="display:none">Selecciona el banco</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoCLABE">CLABE interbancaria (18 dígitos) <span style="color:#dc2626">*</span></label>
+          <input class="form-inp" id="bancoCLABE" type="text" maxlength="18" placeholder="000000000000000000" oninput="this.value=this.value.replace(/\D/g,'');validateCLABE()">
+          <div class="form-hint" id="clabeHint" style="margin-top:4px">18 dígitos · sin espacios ni guiones</div>
+          <div class="form-hint err" id="bancoCLABEErr" style="display:none">CLABE inválida</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoCLABEConf">Confirmar CLABE <span style="color:#dc2626">*</span></label>
+          <input class="form-inp" id="bancoCLABEConf" type="text" maxlength="18" placeholder="000000000000000000" oninput="this.value=this.value.replace(/\D/g,'')">
+          <div class="form-hint err" id="bancoCLABEConfErr" style="display:none">Las CLABEs no coinciden</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoTitular">Titular de la cuenta <span style="color:#dc2626">*</span></label>
+          <input class="form-inp" id="bancoTitular" type="text" placeholder="Nombre completo o razón social">
+          <div class="form-hint err" id="bancoTitularErr" style="display:none">Campo obligatorio</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl" for="bancoMotivo">Motivo del cambio <span style="color:#dc2626">*</span></label>
+          <select class="form-sel" id="bancoMotivo">
+            <option value="">— Selecciona motivo —</option>
+            <option>Cambio de banco</option>
+            <option>Cuenta cancelada</option>
+            <option>Error en CLABE registrada</option>
+            <option>Cambio de razón social</option>
+            <option>Otro</option>
+          </select>
+          <div class="form-hint err" id="bancoMotivoErr" style="display:none">Selecciona el motivo</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl">Estado de cuenta bancario <span style="color:#dc2626">*</span></label>
+          <p class="form-hint" style="margin-bottom:8px">PDF o imagen. No mayor a 3 meses. Debe mostrar CLABE y titular visibles.</p>
+          <div id="bancoDocStatus" style="display:none;margin-bottom:8px">
+            <div class="constancia-estado" style="background:var(--ok-bg)">
+              <svg viewBox="0 0 24 24" fill="none" stroke="var(--ok-text)" stroke-width="2" style="width:16px;height:16px;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              <span id="bancoDocName" style="flex:1;color:var(--ok-text);font-weight:500"></span>
+              <button onclick="removeBancoDoc()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);font-size:16px">×</button>
+            </div>
+          </div>
+          <div class="drop" id="bancoDocDrop" style="padding:18px" onclick="document.getElementById('bancoDocInput').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" style="width:28px;height:28px"><path d="M12 16V4m0 0L7 9m5-5l5 5"/><path d="M4 17v2a1 1 0 001 1h14a1 1 0 001-1v-2"/></svg>
+            <div class="t" style="font-size:12.5px">Subir estado de cuenta</div>
+            <div class="s">.pdf, .png, .jpg · máx. 5 MB</div>
+            <input type="file" id="bancoDocInput" accept=".pdf,.png,.jpg,.jpeg" style="display:none" onchange="uploadBancoDoc(this)">
+          </div>
+          <div class="form-hint err" id="bancoDocErr" style="display:none">Adjunta el estado de cuenta bancario</div>
+        </div>
+      </div>
+      <!-- Paso 3: Confirmación / Seguimiento -->
+      <div class="modal-step" id="bancoStep3">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--ok-bg);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--ok-text)" stroke-width="2.5" style="width:24px;height:24px"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div style="font-size:16px;font-weight:600;color:var(--text-strong);margin-bottom:6px">Solicitud enviada</div>
+          <div style="font-size:13px;color:var(--text-muted)">Velpay revisará tu solicitud en los próximos 3 días hábiles.</div>
+        </div>
+        <div class="folio-card" style="margin-bottom:18px">
+          <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:4px">Folio de solicitud</div>
+          <div class="folio-num" id="bancoFolio">SOL-00000</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:8px">CLABE nueva registrada: <b id="bancoCLABEMask"></b></div>
+        </div>
+        <div style="margin-bottom:6px;font-size:12.5px;font-weight:500;color:var(--text-strong)">Estado de la solicitud</div>
+        <div class="track-steps">
+          <div class="track-step"><div class="track-dot done">✓</div><span class="track-label">Enviada</span></div>
+          <div class="track-step"><div class="track-dot active">…</div><span class="track-label">En revisión</span></div>
+          <div class="track-step"><div class="track-dot"></div><span class="track-label">Resuelta</span></div>
+        </div>
+        <p style="font-size:12px;color:var(--text-muted);margin-top:16px">Recibirás un aviso en tu correo registrado cuando Velpay resuelva la solicitud. La CLABE vigente no cambia hasta ser aprobada.</p>
+      </div>
+    </div>
+    <div class="modal-foot" id="bancoModalFoot">
+      <button class="btn btn-ghost" onclick="closeBancoCambio()">Cancelar</button>
+      <button class="btn btn-primary" id="bancoNextBtn" onclick="bancoStep1Next()">Verificar y continuar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ============ MODAL: Aclaración ============ -->
+<div class="modal-overlay" id="aclaracionOverlay" onclick="if(event.target===this)closeAclaracion()">
+  <div class="modal-box">
+    <div class="modal-head">
+      <div>
+        <h3>Tengo una aclaración</h3>
+        <div style="font-size:12px;color:var(--text-muted);margin-top:2px" id="aclContextLabel"></div>
+      </div>
+      <button class="drawer-close" onclick="closeAclaracion()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body">
+      <!-- Paso 1: Formulario -->
+      <div class="modal-step on" id="aclStep1">
+        <div class="form-row">
+          <label class="form-lbl" for="aclCat">Categoría <span style="color:#dc2626">*</span></label>
+          <select class="form-sel" id="aclCat">
+            <option value="">— Selecciona categoría —</option>
+            <option>Diferencia en el monto de comisión</option>
+            <option>Comercio no reflejado en mi cartera</option>
+            <option>Ajuste o descuento no identificado</option>
+            <option>Pago no recibido</option>
+            <option>Problema con la factura</option>
+            <option>Otro</option>
+          </select>
+          <div class="form-hint err" id="aclCatErr" style="display:none">Selecciona una categoría</div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl" for="aclDesc">Descripción <span style="color:#dc2626">*</span></label>
+          <textarea class="form-inp" id="aclDesc" rows="4" placeholder="Describe la situación con el mayor detalle posible…" style="resize:vertical" oninput="updAclCounter()"></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-top:3px">
+            <div class="form-hint err" id="aclDescErr" style="display:none">Mínimo 20 caracteres</div>
+            <div class="form-char-count" id="aclCounter" style="margin-left:auto">0 / 20 mín.</div>
+          </div>
+        </div>
+        <div class="form-row">
+          <label class="form-lbl">Adjuntos <span style="font-weight:400;color:var(--text-muted)">(máx. 3, opcional)</span></label>
+          <div class="form-attach-list" id="aclAttachList"></div>
+          <button class="form-attach-add" id="aclAttachBtn" onclick="document.getElementById('aclFileInput').click()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:16px;height:16px"><path d="M21.44 11.05l-9.19 9.19a6 6 0 01-8.49-8.49l9.19-9.19a4 4 0 015.66 5.66l-9.2 9.19a2 2 0 01-2.83-2.83l8.49-8.48"/></svg>
+            Adjuntar archivo
+          </button>
+          <input type="file" id="aclFileInput" style="display:none" accept=".pdf,.png,.jpg,.jpeg" onchange="addAclAttach(this)">
+        </div>
+      </div>
+      <!-- Paso 2: Folio generado -->
+      <div class="modal-step" id="aclStep2">
+        <div style="text-align:center;padding:10px 0 18px">
+          <div style="width:52px;height:52px;border-radius:50%;background:var(--ok-bg);display:inline-flex;align-items:center;justify-content:center;margin-bottom:14px">
+            <svg viewBox="0 0 24 24" fill="none" stroke="var(--ok-text)" stroke-width="2.5" style="width:24px;height:24px"><path d="M20 6L9 17l-5-5"/></svg>
+          </div>
+          <div style="font-size:16px;font-weight:600;color:var(--text-strong);margin-bottom:6px">Aclaración registrada</div>
+          <div style="font-size:13px;color:var(--text-muted)">Velpay te responderá en el portal y por correo.</div>
+        </div>
+        <div class="folio-card">
+          <div style="font-size:11.5px;color:var(--text-muted);margin-bottom:4px">Número de folio</div>
+          <div class="folio-num" id="aclFolio">ACL-00000</div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:10px">Objeto relacionado: <b id="aclFolioCtx"></b></div>
+          <div style="font-size:12px;color:var(--text-muted);margin-top:4px">Categoría: <b id="aclFolioCat"></b></div>
+        </div>
+        <div class="track-steps" style="margin-top:18px">
+          <div class="track-step"><div class="track-dot done">✓</div><span class="track-label">Abierta</span></div>
+          <div class="track-step"><div class="track-dot active">…</div><span class="track-label">En proceso</span></div>
+          <div class="track-step"><div class="track-dot"></div><span class="track-label">Respondida</span></div>
+          <div class="track-step"><div class="track-dot"></div><span class="track-label">Cerrada</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot" id="aclModalFoot">
+      <button class="btn btn-ghost" onclick="closeAclaracion()">Cancelar</button>
+      <button class="btn btn-primary" onclick="submitAclaracion()">Enviar aclaración</button>
     </div>
   </div>
 </div>
@@ -1441,6 +1816,20 @@ tbody tr:hover{background:#fbfaff}
   </div>
 </div>
 
+<!-- ============ MODAL: Onboarding (iframe fullscreen) ============ -->
+<div id="onboardingOverlay" style="display:none;position:fixed;inset:0;z-index:9100;background:rgba(13,10,34,.6);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center">
+  <div style="position:relative;width:100%;height:100%;max-width:1100px;max-height:92vh;margin:auto;display:flex;flex-direction:column;background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.4)">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 20px;border-bottom:1px solid var(--border);flex-shrink:0">
+      <span style="font-weight:600;color:var(--text-strong);font-size:15px">Nuevo comercio</span>
+      <button onclick="cerrarOnboarding()" style="background:none;border:none;cursor:pointer;color:var(--text-muted);display:grid;place-items:center;padding:4px;border-radius:6px" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" style="width:20px;height:20px"><path d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
+    </div>
+    <!-- iframe: src se asigna en iniciarOnboarding() — conectar ruta del repo de onboarding -->
+    <iframe id="onboardingFrame" src="" style="flex:1;border:none;width:100%" title="Flujo de onboarding"></iframe>
+  </div>
+</div>
+
 <!-- ============ MODAL: Retenido / en revisión ============ -->
 <div class="qr-overlay" id="retOverlay" onclick="if(event.target===this)closeRet()">
   <div class="card qr-modal" style="max-width:560px" role="dialog" aria-modal="true" aria-labelledby="retTitle">
@@ -1502,6 +1891,118 @@ const distCartera=[
   ["Papelería Lápiz Azul","CM-04825","PLA190405G60","Papelería","18/jul/24",1,"$118,200","$141,300",89,0,1,"13/09/26","$1,413","$1,413"],
   ["Servicios TecnoRed","CM-04826","STE190322Q45","Servicios","03/ago/24",2,"$268,400","$318,750",233,7,3,"15/09/26","$3,188","$3,188"],
 ];
+/* Historial diario por comercio [fecha, aSaldo, aCuentaPropia, cancelCount, cancelMonto, totalDia] */
+const distDiario={
+  "CM-04821":[
+    ["05/sep/26","$38,200","$5,600",1,"$480","$43,800"],
+    ["04/sep/26","$31,400","$3,200",2,"$620","$34,600"],
+    ["03/sep/26","$36,800","$4,100",0,"$0","$40,900"],
+    ["02/sep/26","$28,900","$2,800",1,"$310","$31,700"],
+    ["01/sep/26","$33,600","$3,900",0,"$0","$37,500"],
+    ["31/ago/26","$29,800","$4,200",3,"$890","$34,000"],
+  ],
+  "CM-04822":[
+    ["05/sep/26","$29,400","$3,800",0,"$0","$33,200"],
+    ["04/sep/26","$26,100","$2,900",1,"$540","$29,000"],
+    ["03/sep/26","$31,200","$3,100",2,"$720","$34,300"],
+    ["02/sep/26","$24,800","$2,600",0,"$0","$27,400"],
+    ["01/sep/26","$27,600","$3,400",1,"$280","$31,000"],
+    ["31/ago/26","$22,900","$2,100",0,"$0","$25,000"],
+  ],
+  "CM-04823":[
+    ["05/sep/26","$22,800","$1,400",0,"$0","$24,200"],
+    ["04/sep/26","$19,600","$2,100",1,"$380","$21,700"],
+    ["03/sep/26","$24,100","$1,800",0,"$0","$25,900"],
+    ["02/sep/26","$18,400","$1,200",0,"$0","$19,600"],
+    ["01/sep/26","$21,300","$1,600",1,"$420","$22,900"],
+    ["31/ago/26","$20,100","$1,900",0,"$0","$22,000"],
+  ],
+  "CM-04824":[
+    ["05/sep/26","$16,800","$2,400",2,"$560","$19,200"],
+    ["04/sep/26","$14,200","$1,800",1,"$240","$16,000"],
+    ["03/sep/26","$18,400","$2,600",0,"$0","$21,000"],
+    ["02/sep/26","$13,100","$1,400",3,"$680","$14,500"],
+    ["01/sep/26","$15,600","$2,200",1,"$320","$17,800"],
+    ["31/ago/26","$12,800","$1,600",0,"$0","$14,400"],
+  ],
+  "CM-04825":[
+    ["05/sep/26","$4,800","$600",0,"$0","$5,400"],
+    ["04/sep/26","$3,900","$400",1,"$180","$4,300"],
+    ["03/sep/26","$5,200","$700",0,"$0","$5,900"],
+    ["02/sep/26","$3,600","$500",0,"$0","$4,100"],
+    ["01/sep/26","$4,400","$600",1,"$240","$5,000"],
+    ["31/ago/26","$3,800","$400",0,"$0","$4,200"],
+  ],
+  "CM-04826":[
+    ["05/sep/26","$10,800","$1,600",1,"$360","$12,400"],
+    ["04/sep/26","$9,200","$1,200",2,"$480","$10,400"],
+    ["03/sep/26","$11,400","$1,800",0,"$0","$13,200"],
+    ["02/sep/26","$8,100","$1,100",1,"$280","$9,200"],
+    ["01/sep/26","$9,800","$1,400",0,"$0","$11,200"],
+    ["31/ago/26","$8,600","$1,200",1,"$320","$9,800"],
+  ],
+};
+/* Transacciones por día [id, hora, monto, destino, estatus, esCancelacion, trxOriginal, fechaCancel] */
+const distTrxDia={
+  "CM-04821|05/sep/26":[
+    ["TRX-58401","08:12","$1,240.00","saldo","Liquidada",false,null,null],
+    ["TRX-58402","08:34","$890.00","cuenta","Liquidada",false,null,null],
+    ["TRX-58403","09:01","$480.00","saldo","Liquidada",false,null,null],
+    ["TRX-58404","09:45","$2,100.00","saldo","Liquidada",false,null,null],
+    ["TRX-58405","10:22","$560.00","cuenta","Liquidada",false,null,null],
+    ["TRX-58406","11:15","$1,680.00","saldo","Liquidada",false,null,null],
+    ["TRX-58407","11:48","$320.00","saldo","Liquidada",false,null,null],
+    ["CAN-58402","12:30","$890.00","cuenta","Cancelada",true,"TRX-58402","05/sep/26"],
+    ["TRX-58408","13:10","$2,400.00","saldo","Liquidada",false,null,null],
+    ["TRX-58409","14:22","$1,180.00","cuenta","Liquidada",false,null,null],
+    ["TRX-58410","15:05","$3,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-58411","15:42","$960.00","saldo","Liquidada",false,null,null],
+    ["TRX-58412","16:18","$1,440.00","saldo","Liquidada",false,null,null],
+    ["TRX-58413","16:55","$2,080.00","cuenta","Liquidada",false,null,null],
+  ],
+  "CM-04821|04/sep/26":[
+    ["TRX-58201","08:05","$1,100.00","saldo","Liquidada",false,null,null],
+    ["TRX-58202","08:40","$310.00","cuenta","Liquidada",false,null,null],
+    ["TRX-58203","09:15","$2,400.00","saldo","Liquidada",false,null,null],
+    ["TRX-58204","10:02","$840.00","saldo","Liquidada",false,null,null],
+    ["TRX-58205","10:45","$480.00","cuenta","Liquidada",false,null,null],
+    ["CAN-58202","11:30","$310.00","cuenta","Cancelada",true,"TRX-58202","04/sep/26"],
+    ["TRX-58206","12:15","$1,960.00","saldo","Liquidada",false,null,null],
+    ["TRX-58207","13:00","$720.00","saldo","Liquidada",false,null,null],
+    ["CAN-58205","13:45","$480.00","cuenta","Cancelada",true,"TRX-58205","04/sep/26"],
+    ["TRX-58208","14:30","$2,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-58209","15:10","$1,380.00","saldo","Liquidada",false,null,null],
+    ["TRX-58210","16:00","$1,840.00","saldo","Liquidada",false,null,null],
+  ],
+  "CM-04822|05/sep/26":[
+    ["TRX-61201","08:20","$1,800.00","saldo","Liquidada",false,null,null],
+    ["TRX-61202","09:05","$2,400.00","saldo","Liquidada",false,null,null],
+    ["TRX-61203","09:45","$540.00","cuenta","Liquidada",false,null,null],
+    ["TRX-61204","10:30","$3,100.00","saldo","Liquidada",false,null,null],
+    ["TRX-61205","11:15","$1,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-61206","12:00","$1,680.00","cuenta","Liquidada",false,null,null],
+    ["TRX-61207","13:20","$2,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-61208","14:10","$1,920.00","saldo","Liquidada",false,null,null],
+    ["TRX-61209","14:55","$2,800.00","saldo","Liquidada",false,null,null],
+    ["TRX-61210","15:40","$1,560.00","cuenta","Liquidada",false,null,null],
+    ["TRX-61211","16:25","$3,600.00","saldo","Liquidada",false,null,null],
+    ["TRX-61212","17:00","$2,400.00","saldo","Liquidada",false,null,null],
+  ],
+  "CM-04822|04/sep/26":[
+    ["TRX-61001","08:30","$2,100.00","saldo","Liquidada",false,null,null],
+    ["TRX-61002","09:10","$1,400.00","saldo","Liquidada",false,null,null],
+    ["TRX-61003","09:55","$540.00","cuenta","Liquidada",false,null,null],
+    ["TRX-61004","11:00","$2,800.00","saldo","Liquidada",false,null,null],
+    ["TRX-61005","11:40","$1,900.00","saldo","Liquidada",false,null,null],
+    ["TRX-61006","12:20","$1,160.00","cuenta","Liquidada",false,null,null],
+    ["CAN-61003","13:00","$540.00","cuenta","Cancelada",true,"TRX-61003","04/sep/26"],
+    ["TRX-61007","13:45","$3,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-61008","14:30","$1,800.00","saldo","Liquidada",false,null,null],
+    ["TRX-61009","15:15","$2,400.00","saldo","Liquidada",false,null,null],
+    ["TRX-61010","16:00","$1,200.00","saldo","Liquidada",false,null,null],
+    ["TRX-61011","16:45","$1,600.00","saldo","Liquidada",false,null,null],
+  ],
+};
 /* Historial de pagos [periodo, comision, totalFactura, cfdi, fechaCarga, estatusPago] */
 const distPagosHist=[
   ["Agosto 2026","$37,592","$43,607","cfdi_ago26.xml","04/sep/26","Pagada"],
@@ -1526,6 +2027,61 @@ const con=[
 
 /* ---- Portal PS · datos ---- */
 // [nombre, RFC, giro, estatus, fechaVinc, suc, saldoMesAnt, saldoMes, montoTrx, trx, cancel, saldoAcum]
+/* Comercios PS en proceso de vinculación [nombre, RFC, giro, fechaRegistro, estatus] */
+const psAltas=[
+  ["Farmacia El Roble",    "FER220418T81","Farmacia",       "08/oct/26","Pendiente de revisión"],
+  ["Papelería Colores",    "PLC210930K55","Papelería",      "14/oct/26","En revisión"],
+  ["Ferretería Los Pinos", "FLP190603N20","Ferretería",     "20/oct/26","Pre-registro"],
+];
+const psVincBadge=e=>{
+  const m={"Pre-registro":"b-neutral","Pendiente de revisión":"b-warn","En revisión":"b-info","Requiere correcciones":"b-err","Aprobado":"b-ok"};
+  return badge(e,m[e]||"b-neutral");
+};
+document.getElementById("psAltasBody").innerHTML=psAltas.map(r=>`<tr>
+  <td><b style="color:var(--text-strong)">${r[0]}</b></td>
+  <td class="mono sub-2">${r[1]}</td>
+  <td>${r[2]}</td>
+  <td class="mono sub-2">${r[3]}</td>
+  <td>${psVincBadge(r[4])}</td></tr>`).join("");
+
+/* Punto de entrada al flujo de onboarding externo.
+   TODO: reemplazar ONBOARDING_URL con la ruta real al repo de onboarding cuando esté disponible.
+   El repo de onboarding debe emitir: window.parent.postMessage('onboarding-complete', '*')
+   al finalizar el flujo, en lugar de (o antes de) hacer su redirect original. */
+const ONBOARDING_URL = "http://localhost:3000?portal=punto-red";
+function iniciarOnboarding(){
+  const overlay = document.getElementById("onboardingOverlay");
+  const frame   = document.getElementById("onboardingFrame");
+  if(!ONBOARDING_URL){ alert("Conectar ONBOARDING_URL con la ruta al repo de onboarding."); return; }
+  frame.src = ONBOARDING_URL;
+  overlay.style.display = "flex";
+  document.body.style.overflow = "hidden";
+}
+function cerrarOnboarding(){
+  const overlay = document.getElementById("onboardingOverlay");
+  const frame   = document.getElementById("onboardingFrame");
+  overlay.style.display = "none";
+  frame.src = "";
+  document.body.style.overflow = "";
+}
+window.addEventListener("message", e => {
+  if(e.data === "onboarding-complete"){
+    cerrarOnboarding();
+    // Agregar comercio a la tabla "En proceso" con estatus Pre-registro
+    // (pendiente: recibir nombre/RFC via postMessage con objeto en vez de string)
+    const tbody = document.getElementById("psAltasBody");
+    if(tbody){
+      const hoy = new Date().toLocaleDateString("es-MX",{day:"2-digit",month:"short",year:"2-digit"});
+      const fila = `<tr>
+        <td><b style="color:var(--text-strong)">Nuevo comercio</b></td>
+        <td class="mono sub-2">—</td><td>—</td>
+        <td class="mono sub-2">${hoy}</td>
+        <td>${badge("Pre-registro","b-neutral")}</td></tr>`;
+      tbody.insertAdjacentHTML("beforeend", fila);
+    }
+  }
+});
+
 const psComercios=[
   ["Refaccionaria El Motor","REM160812H33","Refaccionaria","Activo","12/03/2026",3,"$138,400","$142,880","$151,200",176,4,"$142,880"],
   ["Servicios TecnoRed","STE190322Q45","Servicios","Activo","28/02/2026",2,"$311,200","$318,750","$328,540",233,7,"$318,750"],
@@ -1685,17 +2241,13 @@ function renderDistCartera(){
     <td>${r[2]}</td>
     <td>${etapaBadge(r[4])}</td></tr>`).join("");
   const el2=document.getElementById("distCarteraBody");
-  if(el2)el2.innerHTML=distCartera.map(r=>`<tr>
+  if(el2)el2.innerHTML=distCartera.map((r,i)=>`<tr style="cursor:pointer" onclick="openDistComercio(${i})">
     <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[2]} · ${r[3]}</div></td>
     <td>${badge("Activo","b-ok")}</td>
     <td class="mono sub-2">${r[4]}</td>
     <td class="num">${r[5]}</td>
     <td class="num">${r[6]}</td>
-    <td class="num" style="color:var(--text-strong)">${r[7]}</td>
-    <td class="num" style="color:${r[9]>0?"var(--err-text)":"var(--text-faint)"}">${r[9]>0?"$"+r[9].toLocaleString()+" ("+r[9]+")":"—"}</td>
-    <td class="num" style="color:${r[10]>0?"var(--warn-text)":"var(--text-faint)"}">${r[10]>0?"$"+r[10].toLocaleString()+" ("+r[10]+")":"—"}</td>
-    <td class="mono sub-2">${r[11]}</td>
-    <td class="num" style="color:var(--ok-text)">${r[13]}</td></tr>`).join("");
+    <td class="num" style="color:var(--text-strong);font-weight:500">${r[7]}</td></tr>`).join("");
 }
 function renderDistPagos(){
   const el=document.getElementById("distPagosBody");
@@ -1707,22 +2259,124 @@ function renderDistPagos(){
     <td class="mono sub-2">${r[3]}</td>
     <td class="mono sub-2">${r[4]}</td>
     <td>${pagBadge(r[5])}</td>
-    <td><button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>CFDI</button></td></tr>`).join("");
+    <td style="display:flex;gap:6px;align-items:center">
+      <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>CFDI</button>
+      <button class="btn btn-ghost btn-sm" onclick="openAclaracion('Pago: ${r[0]}')" title="Aclaración"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:13px;height:13px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg></button>
+    </td></tr>`).join("");
 }
 function renderDistEsquema(){
   const data=[["Abr","$32,480"],["May","$35,200"],["Jun","$34,278"],["Jul","$35,424"],["Ago","$37,592"],["Sep","$42,186"]];
   const vals=data.map(d=>parseInt(d[1].replace(/[$,]/g,"")));
   const maxV=Math.max(...vals);
   const el=document.getElementById("distEsquemaBars");
-  if(el)el.innerHTML=vals.map((v,i)=>`<div class="hbar">
-    <div class="hname">${data[i][0]}</div>
-    <div class="htrack"><div class="hfill" style="width:${(v/maxV*100).toFixed(1)}%"></div></div>
-    <div class="hval">${data[i][1]}</div></div>`).join("");
+  if(!el)return;
+  el.innerHTML=vals.map((v,i)=>`<div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:4px">
+    <div style="font-size:11px;color:var(--text-muted);font-weight:500">${data[i][1]}</div>
+    <div style="flex:1;width:100%;display:flex;align-items:flex-end">
+      <div style="width:100%;height:${(v/maxV*100).toFixed(1)}%;background:var(--brand);border-radius:4px 4px 0 0;min-height:6px"></div>
+    </div>
+    <div style="font-size:12px;color:var(--text-faint)">${data[i][0]}</div>
+  </div>`).join("");
 }
 function copyText(btn,val){
   navigator.clipboard&&navigator.clipboard.writeText(val);
   const o=btn.innerHTML;btn.innerHTML='<svg viewBox="0 0 24 24" fill="none" stroke="#188a4a" stroke-width="2.5"><path d="M20 6L9 17l-5-5"/></svg>';
   setTimeout(()=>btn.innerHTML=o,1200);
+}
+/* ---- Cartera drill-down ---- */
+let _distCmIdx=null,_distDiaIdx=null;
+function openDistComercio(idx){
+  _distCmIdx=idx;
+  const r=distCartera[idx];
+  document.getElementById("dl2-name").textContent=r[0];
+  document.getElementById("dl2-summary").innerHTML=`<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:16px">
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Estatus</div><div>${badge("Activo","b-ok")}</div></div>
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Fecha de alta</div><div style="font-weight:500;color:var(--text-strong)">${r[4]}</div></div>
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Sucursales</div><div style="font-weight:500;color:var(--text-strong)">${r[5]}</div></div>
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">RFC</div><div class="mono" style="font-size:13px">${r[2]}</div></div>
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Saldo anterior</div><div style="font-weight:500;color:var(--text-strong)">${r[6]}</div></div>
+    <div><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Saldo acumulado</div><div style="font-weight:500;color:var(--ok-text)">${r[7]}</div></div>
+  </div>`;
+  const rows=distDiario[r[1]]||[];
+  document.getElementById("dl2-body").innerHTML=rows.length?rows.map((d,di)=>`<tr>
+    <td style="font-weight:500">${d[0]}</td>
+    <td class="num">${d[1]}</td>
+    <td class="num">${d[2]}</td>
+    <td class="num" style="color:${d[3]>0?"var(--err-text)":"var(--text-faint)"}">${d[3]>0?`${d[3]} trx · ${d[4]}`:"—"}</td>
+    <td class="num" style="color:var(--text-strong);font-weight:500">${d[5]}</td>
+    <td><button class="btn btn-ghost btn-sm" onclick="event.stopPropagation();openDistDia(${di})">Ver →</button></td>
+  </tr>`).join(""):`<tr><td colspan="6" style="text-align:center;color:var(--text-faint);padding:28px">Sin movimientos registrados</td></tr>`;
+  document.getElementById("dist-cartera-l1").style.display="none";
+  document.getElementById("dist-cartera-l2").style.display="";
+  document.getElementById("dist-cartera-l3").style.display="none";
+  /* Botón aclaración */
+  let aclBtn=document.getElementById("dl2-aclBtn");
+  if(!aclBtn){aclBtn=document.createElement("div");aclBtn.id="dl2-aclBtn";aclBtn.style.cssText="margin-top:14px";document.getElementById("dist-cartera-l2").appendChild(aclBtn);}
+  aclBtn.innerHTML=`<button class="btn btn-ghost btn-sm" onclick="openAclaracion('Comercio: ${r[0].replace(/'/g,"\\'")}')" style="gap:6px"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>Tengo una aclaración</button>`;
+}
+function openDistDia(diaIdx){
+  _distDiaIdx=diaIdx;
+  const r=distCartera[_distCmIdx];
+  const dia=(distDiario[r[1]]||[])[diaIdx];
+  if(!dia)return;
+  document.getElementById("dl3-cm-name").textContent=r[0];
+  document.getElementById("dl3-fecha").textContent=dia[0];
+  document.getElementById("dl3-summary").innerHTML=`
+    <div class="card panel" style="flex:1;min-width:140px;padding:14px 16px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Enviado a saldo</div><div style="font-size:20px;font-weight:500;color:var(--ok-text)">${dia[1]}</div></div>
+    <div class="card panel" style="flex:1;min-width:140px;padding:14px 16px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Enviado a cuenta propia</div><div style="font-size:20px;font-weight:500;color:var(--text-strong)">${dia[2]}</div></div>
+    <div class="card panel" style="flex:1;min-width:140px;padding:14px 16px"><div style="font-size:12px;color:var(--text-muted);margin-bottom:4px">Cancelaciones</div><div style="font-size:20px;font-weight:500;color:${dia[3]>0?"var(--err-text)":"var(--text-faint)"}">${dia[3]>0?`${dia[3]} · ${dia[4]}`:"—"}</div></div>`;
+  const key=r[1]+"|"+dia[0];
+  const trxs=distTrxDia[key]||_distFallbackTrx(dia);
+  const rows=trxs.map(t=>{
+    if(t[5])return`<tr style="background:rgba(220,53,69,0.035)">
+      <td><span class="badge b-err" style="font-size:11px">Cancelación</span></td>
+      <td class="mono" style="font-size:12px">${t[0]}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${t[1]}</td>
+      <td class="num" style="color:var(--err-text)">−${t[2]}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${t[3]==="saldo"?"Saldo / Punto Red":"Cuenta propia del comercio"}</td>
+      <td>${badge("Cancelada","b-err")}</td>
+      <td class="mono" style="font-size:11px;color:var(--text-muted)">${t[6]||"—"}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${t[7]||"—"}</td>
+    </tr>`;
+    return`<tr>
+      <td><span class="badge b-neutral" style="font-size:11px">Transacción</span></td>
+      <td class="mono" style="font-size:12px">${t[0]}</td>
+      <td style="font-size:12px;color:var(--text-muted)">${t[1]}</td>
+      <td class="num">${t[2]}</td>
+      <td style="font-size:12px">${t[3]==="saldo"?`<span style="color:var(--ok-text);font-weight:500">Saldo / Punto Red</span>`:`<span style="color:var(--text-muted)">Cuenta propia del comercio</span>`}</td>
+      <td>${badge("Liquidada","b-ok")}</td>
+      <td style="color:var(--text-faint);font-size:12px">—</td>
+      <td style="color:var(--text-faint);font-size:12px">—</td>
+    </tr>`;
+  }).join("");
+  document.getElementById("dl3-table").innerHTML=`<div class="card tbl-card"><div class="tbl-scroll"><table>
+    <thead><tr><th>Tipo</th><th>ID transacción</th><th>Hora</th><th style="text-align:right">Monto</th><th>Destino</th><th>Estatus</th><th>Trx. original</th><th>Fecha cancelación</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table></div></div>`;
+  document.getElementById("dist-cartera-l1").style.display="none";
+  document.getElementById("dist-cartera-l2").style.display="none";
+  document.getElementById("dist-cartera-l3").style.display="";
+}
+function backDistL1(){
+  document.getElementById("dist-cartera-l1").style.display="";
+  document.getElementById("dist-cartera-l2").style.display="none";
+  document.getElementById("dist-cartera-l3").style.display="none";
+}
+function backDistL2(){
+  document.getElementById("dist-cartera-l1").style.display="none";
+  document.getElementById("dist-cartera-l2").style.display="";
+  document.getElementById("dist-cartera-l3").style.display="none";
+}
+function _distFallbackTrx(dia){
+  const sV=parseInt(dia[1].replace(/[$,]/g,"")),cV=parseInt(dia[2].replace(/[$,]/g,""));
+  const trxs=[],chunk=n=>Math.floor(n/Math.ceil(n/1600)||1);
+  let s=sV,c=cV,id=90001;
+  while((s>0||c>0)&&trxs.length<16){
+    if(s>0){const m=Math.min(s,chunk(sV));trxs.push([`TRX-${id++}`,`${8+Math.floor(trxs.length/2)}:${String(Math.floor(trxs.length%2*30)).padStart(2,"0")}`,`$${m.toLocaleString()}.00`,"saldo","Liquidada",false,null,null]);s-=m;}
+    if(c>0&&trxs.length<16){const m=Math.min(c,chunk(cV));trxs.push([`TRX-${id++}`,`${12+Math.floor(trxs.length/2)}:00`,`$${m.toLocaleString()}.00`,"cuenta","Liquidada",false,null,null]);c-=m;}
+  }
+  for(let i=0;i<dia[3];i++){const o=trxs[i]||trxs[0];if(o)trxs.push([`CAN-${id++}`,"16:00",o[2],o[3],"Cancelada",true,o[0],dia[0]]);}
+  return trxs;
 }
 renderDistDash();renderDistCartera();renderDistPagos();renderDistEsquema();
 
@@ -1985,32 +2639,91 @@ function renderPsLocos(){
   if(lEl("locoFoco"))lEl("locoFoco").innerHTML=`<div class="lc-label"><span class="lc-dot" style="background:#e05a4f"></span>Focos de atención</div>`+focos.map(f=>`<div class="lc-row"><span class="lc-name">${f.name}</span><span class="lc-val" style="color:var(--err-text)">${f.val}</span></div>`).join("");
   if(lEl("locoPausa"))lEl("locoPausa").innerHTML=`<div class="lc-label"><span class="lc-dot" style="background:#9aa0ad"></span>En pausa</div>`+pausa.map(p=>`<div class="lc-row"><span class="lc-name">${p.name}</span><span class="lc-val" style="color:var(--text-muted)">${p.val}</span></div>`).join("");
 }
-function psRender(){renderPsKpis();renderPsStatus();renderPsDonut();renderPsTop();renderPsDispBars();renderPsLocos();}
+const PS2_PERIODOS={
+  hoy: {volLbl:"Volumen en cartera (diario)", vol:"$14,280", volSub:"▲ 6.2% vs. ayer", volCls:"up",  txLbl:"Transacciones del día",     tx:"46",    txSub:"▲ 4 vs. ayer",           txCls:"up",  ticket:"$310",  ticketSub:"Hoy"},
+  sep: {volLbl:"Volumen en cartera",          vol:"$416,500",volSub:"▲ 8.6% vs. agosto",volCls:"up",  txLbl:"Transacciones del periodo", tx:"1,330", txSub:"▲ 7.4% vs. agosto",     txCls:"up",  ticket:"$313",  ticketSub:"Septiembre 2026"},
+  ago: {volLbl:"Volumen en cartera",          vol:"$383,600",volSub:"▲ 4.1% vs. julio", volCls:"up",  txLbl:"Transacciones del periodo", tx:"1,239", txSub:"▲ 3.8% vs. julio",      txCls:"up",  ticket:"$309",  ticketSub:"Agosto 2026"},
+  jul: {volLbl:"Volumen en cartera",          vol:"$368,000",volSub:"▼ 2.4% vs. junio", volCls:"down",txLbl:"Transacciones del periodo", tx:"1,194", txSub:"▼ 1.9% vs. junio",      txCls:"down",ticket:"$308",  ticketSub:"Julio 2026"},
+};
+function toggleMs2(){
+  const drop=document.getElementById("ps2EntidadDrop");
+  const open=drop.style.display==="block";
+  drop.style.display=open?"none":"block";
+  if(!open){
+    const close=e=>{if(!document.getElementById("ps2EntidadWrap").contains(e.target)){drop.style.display="none";document.removeEventListener("click",close);}};
+    setTimeout(()=>document.addEventListener("click",close),0);
+  }
+}
+function updateMs2(){
+  setTimeout(()=>{
+    const c=document.getElementById("ms2Comercio").checked;
+    const p=document.getElementById("ms2PuntoRed").checked;
+    if(!c&&!p){document.getElementById("ms2Comercio").checked=true;} // mínimo 1
+    const lbl=document.getElementById("ps2EntidadLabel");
+    const c2=document.getElementById("ms2Comercio").checked;
+    const p2=document.getElementById("ms2PuntoRed").checked;
+    lbl.textContent=c2&&p2?"Comercio y Punto Red":c2?"Solo Comercio":"Solo Punto Red";
+  },0);
+}
+function renderPs2Kpis(){
+  const key=document.getElementById("ps2Period")?.value||"hoy";
+  const d=PS2_PERIODOS[key];
+  const s=(id,v)=>{const el=document.getElementById(id);if(el)el.textContent=v;};
+  const sc=(id,v)=>{const el=document.getElementById(id);if(el)el.className="sub "+(v||"");};
+  s("ps2VolLbl",d.volLbl); s("ps2VolVal",d.vol); s("ps2VolSub",d.volSub); sc("ps2VolSub",d.volCls);
+  s("ps2TxLbl",d.txLbl);   s("ps2TxVal",d.tx);   s("ps2TxSub",d.txSub);  sc("ps2TxSub",d.txCls);
+  s("ps2TicketVal",d.ticket); s("ps2TicketSub",d.ticketSub);
+}
+const PS_VOL_SEG={
+  total:{val:"$416,500",sub:"▲ 8.6% vs. agosto",cls:"up"},
+  aire: {val:"$168,200",sub:"▲ 5.1% vs. agosto",cls:"up"},
+  cfe:  {val:"$112,400",sub:"▲ 12.3% vs. agosto",cls:"up"},
+  agua: {val:"$83,600", sub:"▼ 2.4% vs. agosto",cls:"down"},
+};
+function setPsVolSeg(btn,key){
+  btn.closest("#ps2VolSeg").querySelectorAll("button").forEach(b=>b.classList.remove("on"));
+  btn.classList.add("on");
+  const d=PS_VOL_SEG[key];
+  const v=document.getElementById("ps2VolVal");
+  const s=document.getElementById("ps2VolSub");
+  if(v)v.textContent=d.val;
+  if(s){s.textContent=d.sub;s.className="sub "+(d.cls||"");}
+}
+function renderPsDash(){
+  const dispMes=[["Abr",28400,800,true],["May",31200,0,true],["Jun",29800,1200,true],["Jul",34100,960,true],["Ago",38500,0,true],["Sep",49817,1280,false]];
+  const maxDisp=Math.max(...dispMes.map(m=>m[1]+m[2]));
+  const db=document.getElementById("ps2DispBars");
+  if(db)db.innerHTML=dispMes.map(m=>`<div class="bar-wrap">
+    <div class="bar-val" style="font-size:10px">$${(m[1]/1000).toFixed(0)}k</div>
+    <div class="bar-track"><div class="bar-stack">
+      <div class="seg-part" style="height:${(m[2]/maxDisp)*140}px;background:#d5cbff"></div>
+      <div class="seg-part" style="height:${(m[1]/maxDisp)*140}px;background:linear-gradient(180deg,#8a67f4,#754bf1)"></div>
+    </div></div>
+    <div class="bar-lbl">${m[0]}</div></div>`).join("");
+
+  const saldoMes=[["Abr",298000],["May",321000],["Jun",344000],["Jul",368000],["Ago",383600],["Sep",416500]];
+  const maxS=Math.max(...saldoMes.map(m=>m[1]));
+  const sb=document.getElementById("ps2SaldoBars");
+  if(sb)sb.innerHTML=saldoMes.map(m=>`<div class="bar-wrap">
+    <div class="bar-val" style="font-size:10px">$${(m[1]/1000).toFixed(0)}k</div>
+    <div class="bar-track"><div class="bar-stack">
+      <div class="bar pri" style="height:${(m[1]/maxS)*140}px"></div>
+    </div></div>
+    <div class="bar-lbl">${m[0]}</div></div>`).join("");
+
+  const mkRows=(arr,col)=>arr.map(r=>`<div class="lc-row"><span class="lc-name">${r[0]}</span><span class="lc-val"${col?` style="color:${col}"`:""}>${r[1]}</span></div>`).join("");
+  const fill=(id,label,color,rows)=>{const el=document.getElementById(id);if(el)el.innerHTML=`<div class="lc-label"><span class="lc-dot" style="background:${color}"></span>${label}</div>${rows}`;};
+  fill("ps2Loco","Locomotoras","#754bf1",mkRows([["Refaccionaria El Motor","$168,400"],["Servicios TecnoRed","$142,800"],["Autopartes del Norte","$88,200"]]));
+  fill("ps2Ascenso","En ascenso","#22b06a",mkRows([["Servicios TecnoRed","▲ 18.4%"],["Autopartes del Norte","▲ 11.2%"]],"var(--ok-text)"));
+  fill("ps2Ritmo","Perdiendo ritmo","#e6a63c",mkRows([["Refaccionaria El Motor","▼ 5.8%"]],"var(--warn-text)"));
+  fill("ps2Pausa","En pausa","#9aa0ad",mkRows([["Taller Mecánico Díaz","32 días sin trx"]],"var(--text-muted)"));
+  fill("ps2Foco","Focos de atención","#e05a4f",mkRows([["Taller Mecánico Díaz","8.4% cancel."],["Refaccionaria El Motor","3.1% cancel."]],"var(--err-text)"));
+  fill("ps2Despegar","Listos para despegar","#4636b8",mkRows([["Taller Mecánico Díaz","1a trx pendiente"]],"var(--info-text)"));
+}
+renderPsDash();
 function openRet(){$("#retOverlay").classList.add("on");document.addEventListener("keydown",retEsc);}
 function closeRet(){$("#retOverlay").classList.remove("on");document.removeEventListener("keydown",retEsc);}
 function retEsc(e){if(e.key==="Escape")closeRet();}
-(function initPsDash(){
-  const tip=document.createElement("div");tip.className="ps-tip";document.body.appendChild(tip);
-  const bars=$("#psStatusBars");
-  bars.addEventListener("mouseover",e=>{const w=e.target.closest(".bar-wrap");if(!w)return;
-    const d=psBucketData[+w.dataset.idx];if(!d)return;
-    tip.innerHTML=`<div class="tip-h">${d.label}</div>`
-      +d.segs.map(s=>`<div class="tip-row"><span><i style="background:${s.color}"></i>${s.label}</span><b>${s.count.toLocaleString("en-US")} · ${psMoney(s.amount)}</b></div>`).join("")
-      +`<div class="tip-total"><span>Total</span><b>${d.totalCount.toLocaleString("en-US")} · ${psMoney(d.totalAmount)}</b></div>`;
-    tip.classList.add("on");});
-  bars.addEventListener("mousemove",e=>{
-    tip.style.left=Math.min(e.clientX+14,window.innerWidth-232)+"px";
-    tip.style.top=Math.min(e.clientY+14,window.innerHeight-190)+"px";});
-  bars.addEventListener("mouseleave",()=>tip.classList.remove("on"));
-  $("#psPeriod").addEventListener("change",e=>{psState.period=e.target.value;renderPsStatus();});
-  $("#psMerchant").addEventListener("change",e=>{psState.merchant=e.target.value;psRender();});
-  document.querySelectorAll("#psMetric button").forEach(b=>b.addEventListener("click",()=>{
-    psState.metric=b.dataset.metric;
-    document.querySelectorAll("#psMetric button").forEach(x=>x.classList.toggle("on",x===b));
-    renderPsStatus();
-  }));
-  psRender();
-})();
 
 /* ---------- Navigation ---------- */
 const NAV={
@@ -2079,7 +2792,79 @@ document.querySelectorAll("#roleSeg button").forEach(b=>b.addEventListener("clic
   document.querySelectorAll("#roleSeg button").forEach(x=>x.classList.toggle("on",x===b));
   role=b.dataset.role;renderNav();
 }));
+/* ---- Login ---- */
+let _loginPortal='dist',_loginAttempts=0;
+function loginSelectPortal(p){
+  _loginPortal=p;
+  document.getElementById("lpTabDist").classList.toggle("on",p==="dist");
+  document.getElementById("lpTabPs").classList.toggle("on",p==="ps");
+  _clearLoginState();
+}
+function _clearLoginState(){
+  ["loginErr","loginBlocked"].forEach(id=>document.getElementById(id).style.display="none");
+  ["loginEmail","loginPwd"].forEach(id=>document.getElementById(id).classList.remove("err-inp"));
+}
+function toggleLoginPwd(){
+  const inp=document.getElementById("loginPwd");
+  const icon=document.getElementById("loginEyeIcon");
+  const show=inp.type==="password";
+  inp.type=show?"text":"password";
+  icon.innerHTML=show
+    ?`<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
+    :`<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+}
+function toggleLoginTip(){
+  const t=document.getElementById("loginForgotTip");
+  const visible=t.style.display==="block";
+  t.style.display=visible?"none":"block";
+  if(!visible)document.addEventListener("click",()=>{t.style.display="none";},{once:true});
+}
+function doLogin(){
+  if(_loginAttempts>=3){
+    document.getElementById("loginBlocked").style.display="block";
+    return;
+  }
+  const email=document.getElementById("loginEmail").value.trim();
+  const pwd=document.getElementById("loginPwd").value;
+  if(!email||!pwd){
+    _loginAttempts++;
+    document.getElementById("loginErr").style.display="block";
+    document.getElementById("loginEmail").classList.toggle("err-inp",!email);
+    document.getElementById("loginPwd").classList.toggle("err-inp",!pwd);
+    if(_loginAttempts>=3){
+      document.getElementById("loginBlocked").style.display="block";
+      document.getElementById("loginErr").style.display="none";
+    }
+    return;
+  }
+  _clearLoginState();
+  localStorage.setItem("protoRole",_loginPortal);
+  const scr=document.getElementById("loginScreen");
+  scr.style.opacity="0";
+  setTimeout(()=>{
+    scr.style.display="none";
+    role=_loginPortal;
+    renderNav();
+  },300);
+}
+function _showLogin(){
+  _loginAttempts=0;
+  localStorage.removeItem("protoRole");
+  const scr=document.getElementById("loginScreen");
+  scr.style.display="flex";
+  scr.style.opacity="0";
+  document.getElementById("loginEmail").value="";
+  document.getElementById("loginPwd").value="";
+  _clearLoginState();
+  setTimeout(()=>{scr.style.opacity="1";},10);
+}
+const _savedRole=localStorage.getItem("protoRole");
+if(_savedRole){
+  role=_savedRole;
+  document.getElementById("loginScreen").style.display="none";
+}
 renderNav();
+document.querySelector(".logout").addEventListener("click",_showLogin);
 $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 
 /* Detalle de comercio PS (transacciones diarias) */
@@ -2265,6 +3050,13 @@ function openDetalle(idx){
     <div class="det-row"><span class="det-k">IVA 16% (+)</span><span class="det-v">${iva}</span></div>
     <div class="det-row strong"><span class="det-k">Total a pagar (=)</span><span class="det-v">${total}</span></div>
     <div class="det-lbl" style="margin-top:22px">Desglose por comercio</div>
+    <div style="margin:18px 0 4px;padding-top:16px;border-top:1px solid var(--border)">
+      <button class="btn btn-ghost btn-sm" onclick="openAclaracion('Corte: '+periodo)" style="width:100%;justify-content:center;gap:6px">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><circle cx="12" cy="12" r="10"/><path d="M12 8v4M12 16h.01"/></svg>
+        Tengo una aclaración
+      </button>
+    </div>
+    <div class="det-lbl" style="margin-top:18px">Desglose por comercio</div>
     ${distCartera.map((dc,ci)=>{const ajs=AJUSTES_DEMO[ci]||[];
       return `<div class="det-com">
         <div class="det-com-head" onclick="toggleDetCom(this,'dcb${idx}_${ci}')">
@@ -2378,18 +3170,196 @@ function closeEdoCta(){
 }
 
 function doEdoAccion(accion){
-  const label=accion==="aprobar"?"Aprobado":"Rechazado";
+  const label=accion==="aprobar"?"aprobado":"rechazado";
   const color=accion==="aprobar"?"#188a4a":"#e5484d";
-  const overlay=document.getElementById("edoOverlay");
-  /* Flash toast then close */
-  const toast=document.createElement("div");
-  toast.textContent=`Estado de cuenta ${label}`;
-  toast.style.cssText=`position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
+  const t=document.createElement("div");
+  t.textContent=`Estado de cuenta ${label}`;
+  t.style.cssText=`position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
     background:${color};color:#fff;padding:12px 28px;border-radius:10px;
-    font-size:14px;font-weight:600;z-index:999;box-shadow:0 4px 18px rgba(0,0,0,.18);
-    animation:fade .2s ease`;
-  document.body.appendChild(toast);
-  setTimeout(()=>{document.body.removeChild(toast);closeEdoCta();},1800);
+    font-size:14px;font-weight:600;z-index:9999;box-shadow:0 4px 18px rgba(0,0,0,.18)`;
+  document.body.appendChild(t);
+  setTimeout(()=>{document.body.removeChild(t);closeEdoCta();},1800);
+}
+
+/* ---- Rechazo estado de cuenta ---- */
+let _recFiles=[];
+function openRechazo(){
+  _recFiles=[];
+  document.getElementById("recMotivoSel").value="";
+  document.getElementById("recComercio").value="";
+  document.getElementById("recMonto").value="";
+  document.getElementById("recDesc").value="";
+  document.getElementById("recAttachList").innerHTML="";
+  document.getElementById("recAttachBtn").style.display="flex";
+  ["recMotivoErr","recDescErr"].forEach(id=>document.getElementById(id).style.display="none");
+  ["recMotivoSel","recDesc"].forEach(id=>document.getElementById(id).classList.remove("err"));
+  updRecCounter();
+  document.getElementById("rechazoOverlay").classList.add("on");
+}
+function closeRechazo(){document.getElementById("rechazoOverlay").classList.remove("on");}
+function updRecCounter(){
+  const n=document.getElementById("recDesc").value.length;
+  const el=document.getElementById("recCounter");
+  el.textContent=n<20?`${n} / 20 mín.`:`${n} caracteres`;
+  el.className="form-char-count"+(n>=20?" ok":"");
+}
+function addRecAttach(input){
+  if(!input.files.length||_recFiles.length>=3)return;
+  const f=input.files[0];_recFiles.push(f);input.value="";
+  _renderRecAttach();
+}
+function _renderRecAttach(){
+  document.getElementById("recAttachList").innerHTML=_recFiles.map((f,i)=>`<div class="form-attach-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span class="fa-name">${f.name}</span>
+    <button onclick="_removeRecFile(${i})">×</button>
+  </div>`).join("");
+  document.getElementById("recAttachBtn").style.display=_recFiles.length>=3?"none":"flex";
+}
+function _removeRecFile(i){_recFiles.splice(i,1);_renderRecAttach();}
+function submitRechazo(){
+  let ok=true;
+  const motivo=document.getElementById("recMotivoSel").value;
+  const desc=document.getElementById("recDesc").value.trim();
+  if(!motivo){document.getElementById("recMotivoErr").style.display="block";document.getElementById("recMotivoSel").classList.add("err");ok=false;}
+  else{document.getElementById("recMotivoErr").style.display="none";document.getElementById("recMotivoSel").classList.remove("err");}
+  if(desc.length<20){document.getElementById("recDescErr").style.display="block";document.getElementById("recDesc").classList.add("err");ok=false;}
+  else{document.getElementById("recDescErr").style.display="none";document.getElementById("recDesc").classList.remove("err");}
+  if(!ok)return;
+  closeRechazo();
+  doEdoAccion("rechazar");
+}
+
+/* ---- Cambio de cuenta bancaria ---- */
+let _bancoStep=1,_bancoDocFile=null;
+function openBancoCambio(){
+  _bancoStep=1;_bancoDocFile=null;
+  ["bancoPwd","bancoCLABE","bancoCLABEConf","bancoTitular"].forEach(id=>document.getElementById(id).value="");
+  ["bancoNombre","bancoMotivo"].forEach(id=>document.getElementById(id).value="");
+  ["bancoPwdErr","bancoNombreErr","bancoCLABEErr","bancoCLABEConfErr","bancoTitularErr","bancoMotivoErr","bancoDocErr"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById("bancoDocStatus").style.display="none";
+  document.getElementById("bancoDocDrop").style.display="flex";
+  ["bancoStep1","bancoStep2","bancoStep3"].forEach((id,i)=>document.getElementById(id).classList.toggle("on",i===0));
+  document.getElementById("bancoModalTitle").textContent="Solicitar cambio de cuenta bancaria";
+  document.getElementById("bancoNextBtn").textContent="Verificar y continuar";
+  document.getElementById("bancoNextBtn").onclick=bancoStep1Next;
+  document.getElementById("bancoNextBtn").style.display="";
+  document.getElementById("bancoCambioOverlay").classList.add("on");
+}
+function closeBancoCambio(){document.getElementById("bancoCambioOverlay").classList.remove("on");}
+function bancoStep1Next(){
+  const pwd=document.getElementById("bancoPwd").value;
+  if(!pwd){document.getElementById("bancoPwdErr").style.display="block";return;}
+  document.getElementById("bancoPwdErr").style.display="none";
+  document.getElementById("bancoStep1").classList.remove("on");
+  document.getElementById("bancoStep2").classList.add("on");
+  document.getElementById("bancoModalTitle").textContent="Nueva cuenta bancaria";
+  document.getElementById("bancoNextBtn").textContent="Enviar solicitud";
+  document.getElementById("bancoNextBtn").onclick=bancoStep2Submit;
+  _bancoStep=2;
+}
+function validateCLABE(){
+  const v=document.getElementById("bancoCLABE").value;
+  const hint=document.getElementById("clabeHint");
+  if(v.length===18)hint.textContent="✓ 18 dígitos";
+  else hint.textContent="18 dígitos · sin espacios ni guiones";
+}
+function uploadBancoDoc(input){
+  if(!input.files.length)return;
+  _bancoDocFile=input.files[0];
+  document.getElementById("bancoDocName").textContent=_bancoDocFile.name;
+  document.getElementById("bancoDocStatus").style.display="block";
+  document.getElementById("bancoDocDrop").style.display="none";
+}
+function removeBancoDoc(){
+  _bancoDocFile=null;
+  document.getElementById("bancoDocStatus").style.display="none";
+  document.getElementById("bancoDocDrop").style.display="flex";
+  document.getElementById("bancoDocInput").value="";
+}
+function bancoStep2Submit(){
+  let ok=true;
+  const banco=document.getElementById("bancoNombre").value;
+  const clabe=document.getElementById("bancoCLABE").value;
+  const clabeConf=document.getElementById("bancoCLABEConf").value;
+  const titular=document.getElementById("bancoTitular").value.trim();
+  const motivo=document.getElementById("bancoMotivo").value;
+  if(!banco){document.getElementById("bancoNombreErr").style.display="block";ok=false;}
+  else document.getElementById("bancoNombreErr").style.display="none";
+  if(clabe.length!==18){document.getElementById("bancoCLABEErr").textContent="La CLABE debe tener exactamente 18 dígitos";document.getElementById("bancoCLABEErr").style.display="block";ok=false;}
+  else document.getElementById("bancoCLABEErr").style.display="none";
+  if(clabe!==clabeConf){document.getElementById("bancoCLABEConfErr").style.display="block";ok=false;}
+  else document.getElementById("bancoCLABEConfErr").style.display="none";
+  if(!titular){document.getElementById("bancoTitularErr").style.display="block";ok=false;}
+  else document.getElementById("bancoTitularErr").style.display="none";
+  if(!motivo){document.getElementById("bancoMotivoErr").style.display="block";ok=false;}
+  else document.getElementById("bancoMotivoErr").style.display="none";
+  if(!_bancoDocFile){document.getElementById("bancoDocErr").style.display="block";ok=false;}
+  else document.getElementById("bancoDocErr").style.display="none";
+  if(!ok)return;
+  const masked="••••••••••••••"+clabe.slice(-4);
+  document.getElementById("bancoCLABEMask").textContent=masked;
+  document.getElementById("bancoFolio").textContent="SOL-"+String(Math.floor(10000+Math.random()*90000));
+  document.getElementById("bancoStep2").classList.remove("on");
+  document.getElementById("bancoStep3").classList.add("on");
+  document.getElementById("bancoModalTitle").textContent="Solicitud enviada";
+  document.getElementById("bancoNextBtn").style.display="none";
+  document.querySelector("#bancoModalFoot .btn-ghost").textContent="Cerrar";
+}
+function togglePwdVis(id){const i=document.getElementById(id);i.type=i.type==="password"?"text":"password";}
+
+/* ---- Aclaraciones ---- */
+let _aclFiles=[],_aclContext="";
+function openAclaracion(ctx){
+  _aclContext=ctx;_aclFiles=[];
+  document.getElementById("aclCat").value="";
+  document.getElementById("aclDesc").value="";
+  document.getElementById("aclAttachList").innerHTML="";
+  document.getElementById("aclAttachBtn").style.display="flex";
+  ["aclCatErr","aclDescErr"].forEach(id=>document.getElementById(id).style.display="none");
+  ["aclCat","aclDesc"].forEach(id=>document.getElementById(id).classList.remove("err"));
+  document.getElementById("aclContextLabel").textContent=ctx?"Relacionado con: "+ctx:"";
+  document.getElementById("aclStep1").classList.add("on");
+  document.getElementById("aclStep2").classList.remove("on");
+  document.getElementById("aclModalFoot").style.display="flex";
+  updAclCounter();
+  document.getElementById("aclaracionOverlay").classList.add("on");
+}
+function closeAclaracion(){document.getElementById("aclaracionOverlay").classList.remove("on");}
+function updAclCounter(){
+  const n=document.getElementById("aclDesc").value.length;
+  const el=document.getElementById("aclCounter");
+  el.textContent=n<20?`${n} / 20 mín.`:`${n} caracteres`;
+  el.className="form-char-count"+(n>=20?" ok":"");
+}
+function addAclAttach(input){
+  if(!input.files.length||_aclFiles.length>=3)return;
+  const f=input.files[0];_aclFiles.push(f);input.value="";_renderAclAttach();
+}
+function _renderAclAttach(){
+  document.getElementById("aclAttachList").innerHTML=_aclFiles.map((f,i)=>`<div class="form-attach-item">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px;flex-shrink:0"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    <span class="fa-name">${f.name}</span>
+    <button onclick="_removeAclFile(${i})">×</button>
+  </div>`).join("");
+  document.getElementById("aclAttachBtn").style.display=_aclFiles.length>=3?"none":"flex";
+}
+function _removeAclFile(i){_aclFiles.splice(i,1);_renderAclAttach();}
+function submitAclaracion(){
+  let ok=true;
+  const cat=document.getElementById("aclCat").value;
+  const desc=document.getElementById("aclDesc").value.trim();
+  if(!cat){document.getElementById("aclCatErr").style.display="block";document.getElementById("aclCat").classList.add("err");ok=false;}
+  else{document.getElementById("aclCatErr").style.display="none";document.getElementById("aclCat").classList.remove("err");}
+  if(desc.length<20){document.getElementById("aclDescErr").style.display="block";document.getElementById("aclDesc").classList.add("err");ok=false;}
+  else{document.getElementById("aclDescErr").style.display="none";document.getElementById("aclDesc").classList.remove("err");}
+  if(!ok)return;
+  document.getElementById("aclFolio").textContent="ACL-"+String(Math.floor(10000+Math.random()*90000));
+  document.getElementById("aclFolioCtx").textContent=_aclContext||"General";
+  document.getElementById("aclFolioCat").textContent=cat;
+  document.getElementById("aclStep1").classList.remove("on");
+  document.getElementById("aclStep2").classList.add("on");
+  document.getElementById("aclModalFoot").style.display="none";
 }
 </script>
 </body>
