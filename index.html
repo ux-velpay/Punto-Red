@@ -3073,10 +3073,6 @@ function openComercioProfile(idx, source){
   document.getElementById("cp-negocio").innerHTML=`
     <div class="cp-sec">
       ${_cpSecHeader(_icStore,"Información general del negocio")}
-      <div class="cp-logo-row">
-        <div class="cp-logo-avatar">${_initials(p.negocio.nombre)}</div>
-        <div class="cp-logo-info">Logotipo del negocio<br><span style="color:var(--text-faint);font-size:11.5px">PNG, JPG o JPEG · máx. 2 MB</span></div>
-      </div>
       <div class="cp-fields">
         ${_cpField("Nombre del negocio",p.negocio.nombre)}
         ${_cpField("Teléfono del negocio",p.negocio.telefono)}
