@@ -532,6 +532,33 @@ tbody tr:hover{background:#fbfaff}
 .login-tip-popup::after{content:'';position:absolute;top:100%;left:50%;transform:translateX(-50%);border:5px solid transparent;border-top-color:#1a1533;}
 .login-demo-hint{background:#f7f6ff;border-radius:9px;padding:9px 13px;font-size:12px;color:#9090a8;margin-top:16px;text-align:center;line-height:1.5;}
 .login-screen-foot{margin-top:24px;font-size:12px;color:rgba(255,255,255,.28);text-align:center;}
+
+/* ── Perfil de comercio (pantalla completa) ── */
+.cp-overlay{position:fixed;inset:0;z-index:90;background:#f4f5f7;display:none;flex-direction:column;animation:slideInRight .22s ease}
+.cp-overlay.on{display:flex}
+@keyframes slideInRight{from{transform:translateX(40px);opacity:0}to{transform:translateX(0);opacity:1}}
+.cp-topbar{display:flex;align-items:center;gap:16px;padding:14px 28px;background:#fff;border-bottom:1px solid var(--border);flex-shrink:0}
+.cp-back{display:flex;align-items:center;gap:7px;background:none;border:1px solid var(--border);border-radius:8px;padding:7px 14px;font-size:13px;font-weight:500;color:var(--text-muted);cursor:pointer}
+.cp-back:hover{background:var(--bg-subtle)}
+.cp-back svg{width:16px;height:16px}
+.cp-topbar-info{flex:1;min-width:0}
+.cp-topbar-name{font-size:17px;font-weight:600;color:var(--text-strong);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cp-topbar-meta{font-size:12.5px;color:var(--text-muted);margin-top:2px}
+.cp-tabs-bar{background:#fff;border-bottom:1px solid var(--border);display:flex;padding:0 28px;flex-shrink:0}
+.cp-tab{background:none;border:none;border-bottom:2px solid transparent;padding:13px 20px 12px;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .15s;white-space:nowrap}
+.cp-tab.on{color:var(--action-primary);border-bottom-color:var(--action-primary)}
+.cp-body{flex:1;overflow-y:auto;padding:28px}
+.cp-panel{display:none}.cp-panel.on{display:block}
+.cp-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.cp-card{background:#fff;border-radius:12px;border:1px solid var(--border);padding:20px 24px}
+.cp-card-title{font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.6px;color:var(--text-faint);margin-bottom:12px}
+.cp-row{display:flex;justify-content:space-between;align-items:flex-start;padding:9px 0;border-bottom:1px solid var(--border);font-size:13.5px;gap:16px}
+.cp-row:last-child{border-bottom:none}
+.cp-row .cp-k{color:var(--text-muted);flex-shrink:0;width:160px}
+.cp-row .cp-v{font-weight:500;color:var(--text-strong);text-align:right;flex:1}
+.cp-row .cp-v.mono{font-family:ui-monospace,monospace;letter-spacing:.3px}
+.cp-row .cp-v.pending{color:var(--text-faint);font-weight:400;font-style:italic}
+@media(max-width:780px){.cp-grid{grid-template-columns:1fr}.cp-topbar{padding:12px 16px}.cp-tabs-bar{padding:0 16px}.cp-body{padding:16px}}
 </style>
 </head>
 <body>
@@ -1754,6 +1781,33 @@ tbody tr:hover{background:#fbfaff}
   </div>
 </div>
 
+<!-- ============ PERFIL DE COMERCIO (pantalla completa) ============ -->
+<div class="cp-overlay" id="comercioProfileOverlay">
+  <div class="cp-topbar">
+    <button class="cp-back" onclick="closeComercioProfile()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5m0 0l7-7m-7 7l7 7"/></svg>
+      Mis Comercios
+    </button>
+    <div class="cp-topbar-info">
+      <div class="cp-topbar-name" id="cpName">—</div>
+      <div class="cp-topbar-meta" id="cpMeta"></div>
+    </div>
+    <div id="cpStatusBadge"></div>
+  </div>
+  <div class="cp-tabs-bar">
+    <button class="cp-tab on" onclick="switchCpTab(this,'cp-negocio')">Datos del negocio</button>
+    <button class="cp-tab" onclick="switchCpTab(this,'cp-representante')">Datos del representante</button>
+    <button class="cp-tab" onclick="switchCpTab(this,'cp-bancarios')">Datos bancarios</button>
+    <button class="cp-tab" onclick="switchCpTab(this,'cp-contacto')">Contacto comercial</button>
+  </div>
+  <div class="cp-body">
+    <div id="cp-negocio" class="cp-panel on"></div>
+    <div id="cp-representante" class="cp-panel"></div>
+    <div id="cp-bancarios" class="cp-panel"></div>
+    <div id="cp-contacto" class="cp-panel"></div>
+  </div>
+</div>
+
 <!-- ============ MODAL: Ver QR del comercio ============ -->
 <div class="qr-overlay" id="qrOverlay" onclick="if(event.target===this)closeQR()">
   <div class="card qr-modal" role="dialog" aria-modal="true" aria-labelledby="qrTitle">
@@ -2073,7 +2127,7 @@ const psVincBadge=e=>{
   const m={"Pre-registro":"b-neutral","Pendiente de revisión":"b-warn","En revisión":"b-info","Requiere correcciones":"b-err","Aprobado":"b-ok"};
   return badge(e,m[e]||"b-neutral");
 };
-document.getElementById("psAltasBody").innerHTML=psAltas.map(r=>`<tr>
+document.getElementById("psAltasBody").innerHTML=psAltas.map((r,i)=>`<tr style="cursor:pointer" onclick="openComercioProfile(${i},'proceso')">
   <td><b style="color:var(--text-strong)">${r[0]}</b></td>
   <td class="mono sub-2">${r[1]}</td>
   <td>${r[2]}</td>
@@ -2940,93 +2994,119 @@ renderNav();
 document.querySelector(".logout").addEventListener("click",_showLogin);
 $("#hamb").addEventListener("click",()=>$("#sidebar").classList.toggle("open"));
 
-/* Perfil de comercio PS — tabs */
+/* ── Datos de perfiles de comercio ── */
 const psComercioPerfiles=[
-  {negocio:{nombre:"Ferretería Bermúdez",rfc:"FBE180312K74",giro:"Ferretería",tipo:"Persona moral",calle:"Av. Insurgentes Sur 1234",colonia:"Del Valle",municipio:"Benito Juárez",estado:"CDMX",cp:"03100",telefono:"55 1234 5678",email:"contacto@ferreteriabermudez.com",web:"ferreteriabermudez.com",sucursales:"3",fechaAlta:"12/mar/2024"},representante:{nombre:"Carlos Bermúdez Ríos",curp:"BERC800520HDFRSM01",rfc:"BERC800520AB1",cargo:"Representante Legal",email:"carlos@ferreteriabermudez.com",telefono:"55 9876 5432",docId:"INE · ****4821"},bancarios:{banco:"BBVA México",clabe:"012180001234567890",cuenta:"0123456789",titular:"Ferretería Bermúdez SA de CV",tipo:"Cuenta corriente",ultimaVerif:"15/sep/2026"},contacto:{nombre:"Laura Soto Mendez",cargo:"Encargada de operaciones",email:"laura.soto@ferreteriabermudez.com",telefono:"55 3333 4444",horario:"Lun–Vie 9:00–18:00"}},
-  {negocio:{nombre:"Abarrotes La Paloma",rfc:"ALP210604N30",giro:"Abarrotes",tipo:"Persona física con actividad empresarial",calle:"Calle Morelos 45",colonia:"Centro",municipio:"Ecatepec",estado:"Estado de México",cp:"55000",telefono:"55 2222 8888",email:"lapaloma@gmail.com",web:"—",sucursales:"1",fechaAlta:"04/jun/2021"},representante:{nombre:"Rosa Domínguez Valle",curp:"DOVR750310MMCMLM09",rfc:"ALP210604N30",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",docId:"INE · ****3305"},bancarios:{banco:"Banamex",clabe:"002180009876543210",cuenta:"9876543210",titular:"Rosa Domínguez Valle",tipo:"Cuenta de ahorro",ultimaVerif:"02/oct/2026"},contacto:{nombre:"Rosa Domínguez Valle",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",horario:"Lun–Dom 7:00–22:00"}},
-  {negocio:{nombre:"Taquería El Trompo",rfc:"TET190815JK2",giro:"Restaurante",tipo:"Persona física con actividad empresarial",calle:"Blvd. Manuel Ávila Camacho 890",colonia:"Polanco",municipio:"Miguel Hidalgo",estado:"CDMX",cp:"11560",telefono:"55 5555 0001",email:"trompo@tacos.mx",web:"—",sucursales:"2",fechaAlta:"15/ago/2019"},representante:{nombre:"Miguel Ángel Torres Peña",curp:"TOPM870922HDFRRG05",rfc:"TOPM870922QW5",cargo:"Titular",email:"trompo@tacos.mx",telefono:"55 5555 0001",docId:"INE · ****7740"},bancarios:{banco:"Banorte",clabe:"006180005544332211",cuenta:"5544332211",titular:"Miguel Torres Peña",tipo:"Cuenta corriente",ultimaVerif:"28/sep/2026"},contacto:{nombre:"Sandra Torres",cargo:"Administración",email:"admin@tacos.mx",telefono:"55 5555 0002",horario:"Mar–Dom 12:00–23:00"}},
-  {negocio:{nombre:"Papelería Central",rfc:"PCE201122AB9",giro:"Papelería",tipo:"Persona moral",calle:"Calle 5 de Mayo 77",colonia:"Centro Histórico",municipio:"Cuauhtémoc",estado:"CDMX",cp:"06060",telefono:"55 6666 1234",email:"info@papeleriacentral.mx",web:"papeleriacentral.mx",sucursales:"1",fechaAlta:"22/nov/2020"},representante:{nombre:"Patricia Vega Lozano",curp:"VELP820614MDFGZM03",rfc:"VELP820614SX3",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",docId:"INE · ****9912"},bancarios:{banco:"HSBC México",clabe:"021180007788990011",cuenta:"7788990011",titular:"Papelería Central SA de CV",tipo:"Cuenta corriente",ultimaVerif:"10/oct/2026"},contacto:{nombre:"Patricia Vega Lozano",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",horario:"Lun–Sáb 9:00–19:00"}}
+  /* 0: Ferretería Bermúdez (activo) */
+  {estatus:"Activo",negocio:{nombre:"Ferretería Bermúdez",rfc:"FBE180312K74",giro:"Ferretería",tipo:"Persona moral",calle:"Av. Insurgentes Sur 1234",colonia:"Del Valle",municipio:"Benito Juárez",estado:"CDMX",cp:"03100",telefono:"55 1234 5678",email:"contacto@ferreteriabermudez.com",web:"ferreteriabermudez.com",sucursales:"3",fechaAlta:"12/mar/2024"},representante:{nombre:"Carlos Bermúdez Ríos",curp:"BERC800520HDFRSM01",rfc:"BERC800520AB1",cargo:"Representante Legal",email:"carlos@ferreteriabermudez.com",telefono:"55 9876 5432",docId:"INE · ****4821"},bancarios:{banco:"BBVA México",clabe:"012180001234567890",cuenta:"0123456789",titular:"Ferretería Bermúdez SA de CV",tipo:"Cuenta corriente",ultimaVerif:"15/sep/2026"},contacto:{nombre:"Laura Soto Mendez",cargo:"Encargada de operaciones",email:"laura.soto@ferreteriabermudez.com",telefono:"55 3333 4444",horario:"Lun–Vie 9:00–18:00"}},
+  /* 1: Abarrotes La Paloma (activo) */
+  {estatus:"Activo",negocio:{nombre:"Abarrotes La Paloma",rfc:"ALP210604N30",giro:"Abarrotes",tipo:"Persona física con actividad empresarial",calle:"Calle Morelos 45",colonia:"Centro",municipio:"Ecatepec",estado:"Estado de México",cp:"55000",telefono:"55 2222 8888",email:"lapaloma@gmail.com",web:"—",sucursales:"1",fechaAlta:"04/jun/2021"},representante:{nombre:"Rosa Domínguez Valle",curp:"DOVR750310MMCMLM09",rfc:"ALP210604N30",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",docId:"INE · ****3305"},bancarios:{banco:"Banamex",clabe:"002180009876543210",cuenta:"9876543210",titular:"Rosa Domínguez Valle",tipo:"Cuenta de ahorro",ultimaVerif:"02/oct/2026"},contacto:{nombre:"Rosa Domínguez Valle",cargo:"Propietaria",email:"lapaloma@gmail.com",telefono:"55 2222 8888",horario:"Lun–Dom 7:00–22:00"}},
+  /* 2: Taquería El Trompo (activo) */
+  {estatus:"Activo",negocio:{nombre:"Taquería El Trompo",rfc:"TET190815JK2",giro:"Restaurante",tipo:"Persona física con actividad empresarial",calle:"Blvd. Manuel Ávila Camacho 890",colonia:"Polanco",municipio:"Miguel Hidalgo",estado:"CDMX",cp:"11560",telefono:"55 5555 0001",email:"trompo@tacos.mx",web:"—",sucursales:"2",fechaAlta:"15/ago/2019"},representante:{nombre:"Miguel Ángel Torres Peña",curp:"TOPM870922HDFRRG05",rfc:"TOPM870922QW5",cargo:"Titular",email:"trompo@tacos.mx",telefono:"55 5555 0001",docId:"INE · ****7740"},bancarios:{banco:"Banorte",clabe:"006180005544332211",cuenta:"5544332211",titular:"Miguel Torres Peña",tipo:"Cuenta corriente",ultimaVerif:"28/sep/2026"},contacto:{nombre:"Sandra Torres",cargo:"Administración",email:"admin@tacos.mx",telefono:"55 5555 0002",horario:"Mar–Dom 12:00–23:00"}},
+  /* 3: Papelería Central (activo) */
+  {estatus:"Activo",negocio:{nombre:"Papelería Central",rfc:"PCE201122AB9",giro:"Papelería",tipo:"Persona moral",calle:"Calle 5 de Mayo 77",colonia:"Centro Histórico",municipio:"Cuauhtémoc",estado:"CDMX",cp:"06060",telefono:"55 6666 1234",email:"info@papeleriacentral.mx",web:"papeleriacentral.mx",sucursales:"1",fechaAlta:"22/nov/2020"},representante:{nombre:"Patricia Vega Lozano",curp:"VELP820614MDFGZM03",rfc:"VELP820614SX3",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",docId:"INE · ****9912"},bancarios:{banco:"HSBC México",clabe:"021180007788990011",cuenta:"7788990011",titular:"Papelería Central SA de CV",tipo:"Cuenta corriente",ultimaVerif:"10/oct/2026"},contacto:{nombre:"Patricia Vega Lozano",cargo:"Gerente General",email:"patricia@papeleriacentral.mx",telefono:"55 6666 5678",horario:"Lun–Sáb 9:00–19:00"}}
 ];
 
-function openPsComercioDetalle(idx){
-  const r=psComercios[idx];
-  const p=psComercioPerfiles[idx]||psComercioPerfiles[0];
-  document.getElementById("drawerTitle").textContent=r[0];
-  document.getElementById("drawerSub").textContent=r[1]+" · "+r[2];
-  document.getElementById("drawerContent").innerHTML=`
-    <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin:-20px -24px 20px">
-      ${["negocio","representante","bancarios","contacto"].map((tab,i)=>`
-        <button onclick="switchPerfTab(this,'pdt-${tab}')" class="pdt-tab${i===0?' on':''}" style="flex:1;background:none;border:none;padding:11px 4px 10px;font-size:12px;font-weight:500;color:${i===0?'var(--action-primary)':'var(--text-muted)'};cursor:pointer;border-bottom:2px solid ${i===0?'var(--action-primary)':'transparent'};transition:all .15s;white-space:nowrap">${["Negocio","Representante","Bancarios","Contacto"][i]}</button>
-      `).join("")}
-    </div>
+/* perfiles para comercios En proceso de vinculación (psAltas) */
+const psAltasPerfiles=[
+  /* 0: Farmacia El Roble — Pendiente de revisión */
+  {estatus:"Pendiente de revisión",negocio:{nombre:"Farmacia El Roble",rfc:"FER220418T81",giro:"Farmacia",tipo:"Persona moral",calle:"Av. Hidalgo 302",colonia:"Jardines del Bosque",municipio:"Guadalajara",estado:"Jalisco",cp:"44520",telefono:"33 4444 5555",email:"contacto@farmaciaelroble.mx",web:"—",sucursales:"—",fechaAlta:"08/oct/2026"},representante:{nombre:"Jorge Roble Sandoval",curp:"ROSJ780910HJALRG06",rfc:"ROSJ780910MN4",cargo:"Representante Legal",email:"jorge@farmaciaelroble.mx",telefono:"33 4444 5556",docId:"INE · ****2210"},bancarios:{banco:"Pendiente de captura",clabe:null,cuenta:null,titular:"Pendiente de captura",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"Adriana Roble",cargo:"Administración",email:"adriana@farmaciaelroble.mx",telefono:"33 4444 5557",horario:"Lun–Sáb 8:00–21:00"}},
+  /* 1: Papelería Colores — En revisión */
+  {estatus:"En revisión",negocio:{nombre:"Papelería Colores",rfc:"PLC210930K55",giro:"Papelería",tipo:"Persona física con actividad empresarial",calle:"Calle Colón 88",colonia:"Centro",municipio:"Monterrey",estado:"Nuevo León",cp:"64000",telefono:"81 1111 2222",email:"papeleriacolores@gmail.com",web:"—",sucursales:"—",fechaAlta:"14/oct/2026"},representante:{nombre:"Mónica Salazar Reyes",curp:"SARM900215MNLLYN04",rfc:"SARM900215TK7",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",docId:"INE · ****8843"},bancarios:{banco:"Santander",clabe:"014680001122334455",cuenta:"1122334455",titular:"Mónica Salazar Reyes",tipo:"Cuenta corriente",ultimaVerif:"Pendiente de verificación"},contacto:{nombre:"Mónica Salazar Reyes",cargo:"Propietaria",email:"papeleriacolores@gmail.com",telefono:"81 1111 2222",horario:"Lun–Vie 9:00–18:00"}},
+  /* 2: Ferretería Los Pinos — Pre-registro */
+  {estatus:"Pre-registro",negocio:{nombre:"Ferretería Los Pinos",rfc:"FLP190603N20",giro:"Ferretería",tipo:"Persona moral",calle:"Pendiente de captura",colonia:"—",municipio:"—",estado:"—",cp:"—",telefono:"—",email:"ferreteria.pinos@gmail.com",web:"—",sucursales:"—",fechaAlta:"20/oct/2026"},representante:{nombre:"Pendiente de captura",curp:null,rfc:"FLP190603N20",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",docId:"Pendiente"},bancarios:{banco:"Pendiente de captura",clabe:null,cuenta:null,titular:"Pendiente de captura",tipo:"—",ultimaVerif:"—"},contacto:{nombre:"Pendiente de captura",cargo:"—",email:"ferreteria.pinos@gmail.com",telefono:"—",horario:"—"}}
+];
 
-    <div id="pdt-negocio">
-      <div class="det-lbl">Información general</div>
-      <div class="det-row"><span class="det-k">Nombre comercial</span><span class="det-v">${p.negocio.nombre}</span></div>
-      <div class="det-row"><span class="det-k">RFC</span><span class="det-v mono">${p.negocio.rfc}</span></div>
-      <div class="det-row"><span class="det-k">Giro</span><span class="det-v">${p.negocio.giro}</span></div>
-      <div class="det-row"><span class="det-k">Tipo de persona</span><span class="det-v">${p.negocio.tipo}</span></div>
-      <div class="det-row"><span class="det-k">Sucursales activas</span><span class="det-v">${p.negocio.sucursales}</span></div>
-      <div class="det-row"><span class="det-k">Alta en cartera</span><span class="det-v">${p.negocio.fechaAlta}</span></div>
-      <div class="det-lbl">Domicilio fiscal</div>
-      <div class="det-row"><span class="det-k">Calle y número</span><span class="det-v" style="text-align:right">${p.negocio.calle}</span></div>
-      <div class="det-row"><span class="det-k">Colonia</span><span class="det-v">${p.negocio.colonia}</span></div>
-      <div class="det-row"><span class="det-k">Municipio / Alcaldía</span><span class="det-v">${p.negocio.municipio}</span></div>
-      <div class="det-row"><span class="det-k">Estado</span><span class="det-v">${p.negocio.estado}</span></div>
-      <div class="det-row"><span class="det-k">C.P.</span><span class="det-v mono">${p.negocio.cp}</span></div>
-      <div class="det-lbl">Contacto del negocio</div>
-      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.negocio.telefono}</span></div>
-      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.negocio.email}</span></div>
-      <div class="det-row"><span class="det-k">Sitio web</span><span class="det-v">${p.negocio.web}</span></div>
-    </div>
+function _cpCardRow(k,v){
+  const isPending=!v||v==="Pendiente de captura"||v==="Pendiente de verificación"||v==="—";
+  return `<div class="cp-row"><span class="cp-k">${k}</span><span class="cp-v${isPending?' pending':''}${k.includes('CLABE')||k.includes('RFC')||k.includes('CURP')||k.includes('C.P.')||k.includes('cuenta')?' mono':''}">${isPending?'Pendiente':v}</span></div>`;
+}
 
-    <div id="pdt-representante" style="display:none">
-      <div class="det-lbl">Datos personales</div>
-      <div class="det-row"><span class="det-k">Nombre completo</span><span class="det-v">${p.representante.nombre}</span></div>
-      <div class="det-row"><span class="det-k">CURP</span><span class="det-v mono" style="font-size:12px">${p.representante.curp}</span></div>
-      <div class="det-row"><span class="det-k">RFC</span><span class="det-v mono">${p.representante.rfc}</span></div>
-      <div class="det-row"><span class="det-k">Cargo</span><span class="det-v">${p.representante.cargo}</span></div>
-      <div class="det-lbl">Contacto</div>
-      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.representante.email}</span></div>
-      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.representante.telefono}</span></div>
-      <div class="det-lbl">Identificación</div>
-      <div class="det-row"><span class="det-k">Documento presentado</span><span class="det-v">${p.representante.docId}</span></div>
+function openComercioProfile(idx, source){
+  const p = source==='proceso' ? psAltasPerfiles[idx] : psComercioPerfiles[idx];
+  if(!p) return;
+  const vincBadgeMap={"Pre-registro":"b-neutral","Pendiente de revisión":"b-warn","En revisión":"b-info","Requiere correcciones":"b-err","Aprobado":"b-ok","Activo":"b-ok"};
+  const badgeCls = vincBadgeMap[p.estatus]||"b-neutral";
+  document.getElementById("cpName").textContent = p.negocio.nombre;
+  document.getElementById("cpMeta").textContent = p.negocio.rfc+" · "+p.negocio.giro;
+  document.getElementById("cpStatusBadge").innerHTML = badge(p.estatus, badgeCls);
+  document.getElementById("cp-negocio").innerHTML=`
+    <div class="cp-grid">
+      <div class="cp-card">
+        <div class="cp-card-title">Información general</div>
+        ${_cpCardRow("Nombre comercial",p.negocio.nombre)}
+        ${_cpCardRow("RFC",p.negocio.rfc)}
+        ${_cpCardRow("Giro",p.negocio.giro)}
+        ${_cpCardRow("Tipo de persona",p.negocio.tipo)}
+        ${_cpCardRow("Sucursales",p.negocio.sucursales)}
+        ${_cpCardRow("Fecha de registro",p.negocio.fechaAlta)}
+      </div>
+      <div class="cp-card">
+        <div class="cp-card-title">Domicilio fiscal</div>
+        ${_cpCardRow("Calle y número",p.negocio.calle)}
+        ${_cpCardRow("Colonia",p.negocio.colonia)}
+        ${_cpCardRow("Municipio / Alcaldía",p.negocio.municipio)}
+        ${_cpCardRow("Estado",p.negocio.estado)}
+        ${_cpCardRow("C.P.",p.negocio.cp)}
+      </div>
     </div>
-
-    <div id="pdt-bancarios" style="display:none">
-      <div class="det-lbl">Cuenta de dispersión</div>
-      <div class="det-row"><span class="det-k">Banco</span><span class="det-v">${p.bancarios.banco}</span></div>
-      <div class="det-row"><span class="det-k">CLABE</span><span class="det-v mono" style="font-size:12px;letter-spacing:.5px">${p.bancarios.clabe}</span></div>
-      <div class="det-row"><span class="det-k">Número de cuenta</span><span class="det-v mono">${p.bancarios.cuenta}</span></div>
-      <div class="det-row"><span class="det-k">Titular</span><span class="det-v">${p.bancarios.titular}</span></div>
-      <div class="det-row"><span class="det-k">Tipo de cuenta</span><span class="det-v">${p.bancarios.tipo}</span></div>
-      <div class="det-row"><span class="det-k">Última verificación</span><span class="det-v">${p.bancarios.ultimaVerif}</span></div>
-    </div>
-
-    <div id="pdt-contacto" style="display:none">
-      <div class="det-lbl">Contacto comercial</div>
-      <div class="det-row"><span class="det-k">Nombre</span><span class="det-v">${p.contacto.nombre}</span></div>
-      <div class="det-row"><span class="det-k">Cargo</span><span class="det-v">${p.contacto.cargo}</span></div>
-      <div class="det-row"><span class="det-k">Correo electrónico</span><span class="det-v">${p.contacto.email}</span></div>
-      <div class="det-row"><span class="det-k">Teléfono</span><span class="det-v">${p.contacto.telefono}</span></div>
-      <div class="det-row"><span class="det-k">Horario de atención</span><span class="det-v">${p.contacto.horario}</span></div>
+    <div class="cp-card">
+      <div class="cp-card-title">Contacto del negocio</div>
+      ${_cpCardRow("Teléfono",p.negocio.telefono)}
+      ${_cpCardRow("Correo electrónico",p.negocio.email)}
+      ${_cpCardRow("Sitio web",p.negocio.web)}
     </div>`;
-  document.getElementById("drawerOverlay").classList.add("on");
-  document.getElementById("mainDrawer").classList.add("on");
+  document.getElementById("cp-representante").innerHTML=`
+    <div class="cp-grid">
+      <div class="cp-card">
+        <div class="cp-card-title">Datos personales</div>
+        ${_cpCardRow("Nombre completo",p.representante.nombre)}
+        ${_cpCardRow("CURP",p.representante.curp)}
+        ${_cpCardRow("RFC",p.representante.rfc)}
+        ${_cpCardRow("Cargo",p.representante.cargo)}
+      </div>
+      <div class="cp-card">
+        <div class="cp-card-title">Contacto e identificación</div>
+        ${_cpCardRow("Correo electrónico",p.representante.email)}
+        ${_cpCardRow("Teléfono",p.representante.telefono)}
+        ${_cpCardRow("Documento presentado",p.representante.docId)}
+      </div>
+    </div>`;
+  document.getElementById("cp-bancarios").innerHTML=`
+    <div class="cp-card" style="max-width:540px">
+      <div class="cp-card-title">Cuenta de dispersión</div>
+      ${_cpCardRow("Banco",p.bancarios.banco)}
+      ${_cpCardRow("CLABE interbancaria",p.bancarios.clabe)}
+      ${_cpCardRow("Número de cuenta",p.bancarios.cuenta)}
+      ${_cpCardRow("Titular",p.bancarios.titular)}
+      ${_cpCardRow("Tipo de cuenta",p.bancarios.tipo)}
+      ${_cpCardRow("Última verificación",p.bancarios.ultimaVerif)}
+    </div>`;
+  document.getElementById("cp-contacto").innerHTML=`
+    <div class="cp-card" style="max-width:540px">
+      <div class="cp-card-title">Contacto comercial</div>
+      ${_cpCardRow("Nombre",p.contacto.nombre)}
+      ${_cpCardRow("Cargo",p.contacto.cargo)}
+      ${_cpCardRow("Correo electrónico",p.contacto.email)}
+      ${_cpCardRow("Teléfono",p.contacto.telefono)}
+      ${_cpCardRow("Horario de atención",p.contacto.horario)}
+    </div>`;
+  /* reset al primer tab */
+  document.querySelectorAll(".cp-tab").forEach((b,i)=>{b.classList.toggle("on",i===0)});
+  document.querySelectorAll(".cp-panel").forEach((p,i)=>{p.classList.toggle("on",i===0)});
+  document.getElementById("comercioProfileOverlay").classList.add("on");
 }
 
-function switchPerfTab(btn,tabId){
-  const body=document.getElementById("drawerContent");
-  body.querySelectorAll(".pdt-tab").forEach(b=>{
-    const active=b===btn;
-    b.style.color=active?"var(--action-primary)":"var(--text-muted)";
-    b.style.borderBottomColor=active?"var(--action-primary)":"transparent";
-  });
-  ["pdt-negocio","pdt-representante","pdt-bancarios","pdt-contacto"].forEach(id=>{
-    const el=document.getElementById(id);
-    if(el) el.style.display=id===tabId?"block":"none";
-  });
+function closeComercioProfile(){
+  document.getElementById("comercioProfileOverlay").classList.remove("on");
 }
+
+function switchCpTab(btn,panelId){
+  document.querySelectorAll(".cp-tab").forEach(b=>b.classList.toggle("on",b===btn));
+  document.querySelectorAll(".cp-panel").forEach(p=>p.classList.toggle("on",p.id===panelId));
+}
+
+/* alias para compatibilidad con onclick existente en psComercios */
+function openPsComercioDetalle(idx){ openComercioProfile(idx,'activo'); }
 
 /* Constancia de situación fiscal */
 function uploadConstancia(input){
