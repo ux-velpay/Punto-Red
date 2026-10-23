@@ -14,7 +14,7 @@
   --action-primary:#754bf1;
   --action-primary-hover:#6844d4;
   --action-primary-text:#ffffff;
-  --action-secondary:#2d006d;      /* indigo profundo: títulos, botón Descargar */
+  --action-secondary:#111827;      /* indigo profundo: títulos, botón Descargar */
   --action-secondary-hover:#3d1a80;
   --action-disabled:#d0d5dd;
   --action-disabled-text:#6b7280;
@@ -26,7 +26,7 @@
   --bg-subtle:#f7f7fa;
   --bg-sidebar:#FBFCFD;
 
-  --text-strong:#2d006d;
+  --text-strong:#111827;
   --text-body:#26263a;
   --text-muted:#6b7280;
   --text-faint:#9497a3;
@@ -317,13 +317,13 @@ tbody tr:hover{background:#fbfaff}
 .bar-stack .seg-part{width:100%;flex-shrink:0;transition:height .5s cubic-bezier(.2,.8,.2,1)}
 .ps-tip{position:fixed;z-index:200;background:#fff;color:var(--text-body);padding:12px 14px;border-radius:12px;font-size:12px;pointer-events:none;opacity:0;transform:translateY(4px);transition:opacity .12s;box-shadow:var(--shadow-pop);border:1px solid var(--border);min-width:212px}
 .ps-tip.on{opacity:1;transform:translateY(0)}
-.ps-tip .tip-h{font-weight:500;color:#2d006d;font-size:13px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.ps-tip .tip-h{font-weight:500;color:#111827;font-size:13px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid var(--border)}
 .ps-tip .tip-row{display:flex;justify-content:space-between;gap:18px;padding:3px 0;color:var(--text-muted)}
 .ps-tip .tip-row span{display:flex;align-items:center}
 .ps-tip .tip-row i{width:9px;height:9px;border-radius:3px;display:inline-block;margin-right:7px;flex-shrink:0}
 .ps-tip .tip-row b{color:var(--text-strong);font-weight:500;font-variant-numeric:tabular-nums}
 .ps-tip .tip-total{display:flex;justify-content:space-between;gap:18px;margin-top:7px;padding-top:7px;border-top:1px solid var(--border);color:var(--text-body);font-weight:500}
-.ps-tip .tip-total b{color:#2d006d;font-variant-numeric:tabular-nums}
+.ps-tip .tip-total b{color:#111827;font-variant-numeric:tabular-nums}
 .retenido-link{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
 .retenido-link:hover{color:var(--action-primary)!important}
 .settle-date{font-size:12px;color:var(--text-muted);margin-top:14px;padding-top:12px;border-top:1px solid var(--border)}
@@ -1397,7 +1397,6 @@ tbody tr:hover{background:#fbfaff}
             <tbody id="psLlavesBody"></tbody>
           </table></div>
         </div>
-        <div class="card" style="overflow:hidden" id="psLlavesAcc"></div>
         <p style="color:var(--text-faint);font-size:12px;margin-top:12px">La <b>llave privada</b> se muestra una sola vez al generarse; después solo sus últimos 4 caracteres. Regenerar invalida la llave anterior y las terminales activas dejan de operar. El QR tiene vigencia de 48 h y es de un solo uso.</p>
       </section>
 
@@ -1997,6 +1996,51 @@ tbody tr:hover{background:#fbfaff}
       </tbody>
     </table></div>
     <div style="margin-top:14px;padding:11px 14px;background:var(--info-bg);border-radius:10px;color:var(--info-text);font-size:12px">Los fondos retenidos no llegan a Settlement hasta resolverse la revisión. No se muestran datos sensibles (PAN, CVV, CLABE).</div>
+  </div>
+</div>
+
+<!-- Modal Ver llaves -->
+<div class="modal-overlay" id="llavesOverlay" onclick="if(event.target===this)closeLlavesModal()">
+  <div class="modal-box" style="max-width:600px">
+    <div class="modal-head">
+      <div>
+        <h3 id="lmTitle" style="margin:0 0 4px"></h3>
+        <div style="display:flex;align-items:center;gap:8px">
+          <span class="mono sub-2" id="lmSub" style="font-size:12px"></span>
+          <span id="lmBadge"></span>
+        </div>
+      </div>
+      <button class="drawer-close" onclick="closeLlavesModal()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:15px;height:15px"><path d="M18 6L6 18M6 6l12 12"/></svg></button>
+    </div>
+    <div class="modal-body" style="display:flex;flex-direction:column;gap:10px">
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-sidebar);border:1px solid var(--border);border-radius:10px;padding:13px 14px">
+        <div style="min-width:0">
+          <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:5px">Llave pública</div>
+          <code id="lmPubKey" data-full="" style="font-family:'Inter';font-size:13px;color:var(--text-strong);letter-spacing:.3px;word-break:break-all"></code>
+          <div style="color:var(--text-faint);font-size:11px;margin-top:4px" id="lmPubMeta"></div>
+        </div>
+        <button class="key-btn" style="flex-shrink:0" title="Copiar" onclick="copyLlave(this,document.getElementById('lmPubKey').dataset.full)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--bg-sidebar);border:1px solid var(--border);border-radius:10px;padding:13px 14px">
+        <div style="min-width:0">
+          <div style="font-size:11px;font-weight:500;text-transform:uppercase;letter-spacing:.5px;color:var(--text-muted);margin-bottom:5px">Llave privada</div>
+          <code id="lmPrivKey" data-full="" data-shown="0" style="font-family:'Inter';font-size:13px;color:var(--text-strong);letter-spacing:.3px;word-break:break-all"></code>
+          <div style="color:var(--text-faint);font-size:11px;margin-top:4px" id="lmPrivMeta"></div>
+        </div>
+        <div style="display:flex;gap:4px;flex-shrink:0">
+          <button class="key-btn" title="Revelar" onclick="toggleLlavesModalKey()"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+          <button class="key-btn" title="Copiar" onclick="copyLlave(this,document.getElementById('lmPrivKey').dataset.full)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
+        </div>
+      </div>
+    </div>
+    <div class="modal-foot" style="justify-content:space-between">
+      <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+        <span id="lmQrChip"></span>
+        <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>Regenerar llave</button>
+        <button class="btn btn-ghost btn-sm" style="color:var(--err-text)">Revocar</button>
+      </div>
+      <button class="btn btn-ghost btn-sm" onclick="closeLlavesModal()">Cerrar</button>
+    </div>
   </div>
 </div>
 
@@ -2610,56 +2654,40 @@ document.getElementById("psDispBody").innerHTML=psDispersiones.map(r=>`<tr>
 /* Llaves y Aprovisionamiento */
 (function renderLlaves(){
   const tbody=document.getElementById("psLlavesBody");
-  const acc=document.getElementById("psLlavesAcc");
-  if(!tbody||!acc)return;
+  if(!tbody)return;
   const aprovBadge=e=>badge(e,e==="Aprovisionado"?"b-ok":"b-warn");
-  tbody.innerHTML=psLlaves.map(r=>`<tr>
+  tbody.innerHTML=psLlaves.map((r,i)=>`<tr>
     <td><b style="color:var(--text-strong)">${r[0]}</b><div class="sub-2 mono">${r[1]}</div></td>
     <td class="num">${r[2]}</td><td class="num">${r[3]}</td>
     <td>${aprovBadge(r[4])}</td>
     <td class="mono sub-2">${r[9]}</td>
-    <td><button class="btn btn-ghost btn-sm" onclick="toggleLlave(${psLlaves.indexOf(r)})">Ver llaves</button></td></tr>`).join("");
-  acc.innerHTML=psLlaves.map((r,i)=>`
-    <div class="llave-item">
-      <button class="llave-head" id="llh${i}" onclick="toggleLlave(${i})">
-        <b class="lh-name">${r[0]}</b>
-        <span class="mono sub-2" style="font-size:12px">${r[1]}</span>
-        ${aprovBadge(r[4])}
-        <svg class="lh-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
-      </button>
-      <div class="llave-body" id="llb${i}">
-        <div class="llave-grid">
-          <div class="llave-field">
-            <div class="lf-label">Llave pública</div>
-            <div class="lf-row"><code>${maskPub(r[5])}</code>
-              <button class="key-btn" title="Copiar" onclick="copyLlave(this,'${r[5]}')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
-            </div>
-            <div style="color:var(--text-faint);font-size:11px;margin-top:6px">Ambiente: <b>${r[7]}</b> · Generada: ${r[8]}</div>
-          </div>
-          <div class="llave-field">
-            <div class="lf-label">Llave privada</div>
-            <div class="lf-row"><code id="pk${i}" data-full="${r[6]}" data-shown="0">${maskKey(r[6])}</code>
-              <button class="key-btn" title="Revelar" onclick="toggleLlaveKey(${i})"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
-              <button class="key-btn" title="Copiar" onclick="copyLlave(this,document.getElementById('pk${i}').dataset.full)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 012-2h10"/></svg></button>
-            </div>
-            <div style="color:var(--text-faint);font-size:11px;margin-top:6px">Último uso: ${r[9]}</div>
-          </div>
-        </div>
-        <div class="llave-actions">
-          ${qrChipFor(r[0],r[1])}
-          <button class="btn btn-ghost btn-sm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="width:14px;height:14px"><path d="M1 4v6h6M23 20v-6h-6"/><path d="M20.49 9A9 9 0 005.64 5.64L1 10M23 14l-4.64 4.36A9 9 0 013.51 15"/></svg>Regenerar llave</button>
-          <button class="btn btn-ghost btn-sm" style="color:var(--err-text)">Revocar</button>
-        </div>
-      </div>
-    </div>`).join("");
+    <td><button class="btn btn-ghost btn-sm" onclick="openLlavesModal(${i})">Ver llaves</button></td></tr>`).join("");
 })();
-function toggleLlave(i){
-  const h=document.getElementById("llh"+i),b=document.getElementById("llb"+i);
-  if(!h||!b)return;
-  const open=b.classList.toggle("open");h.classList.toggle("open",open);
+function openLlavesModal(i){
+  const r=psLlaves[i];
+  document.getElementById("lmTitle").textContent=r[0];
+  document.getElementById("lmSub").textContent=r[1];
+  document.getElementById("lmBadge").innerHTML=badge(r[4],r[4]==="Aprovisionado"?"b-ok":"b-warn");
+  const pubEl=document.getElementById("lmPubKey");
+  pubEl.textContent=maskPub(r[5]);
+  pubEl.dataset.full=r[5];
+  document.getElementById("lmPubMeta").innerHTML="Ambiente: <b>"+r[7]+"</b> · Generada: "+r[8];
+  const privEl=document.getElementById("lmPrivKey");
+  privEl.textContent=maskKey(r[6]);
+  privEl.dataset.full=r[6];
+  privEl.dataset.shown="0";
+  document.getElementById("lmPrivMeta").textContent="Último uso: "+r[9];
+  document.getElementById("lmQrChip").innerHTML=qrChipFor(r[0],r[1]);
+  document.getElementById("llavesOverlay").classList.add("on");
+  document.addEventListener("keydown",llavesModalEsc);
 }
-function toggleLlaveKey(i){
-  const el=document.getElementById("pk"+i);
+function closeLlavesModal(){
+  document.getElementById("llavesOverlay").classList.remove("on");
+  document.removeEventListener("keydown",llavesModalEsc);
+}
+function llavesModalEsc(e){if(e.key==="Escape")closeLlavesModal();}
+function toggleLlavesModalKey(){
+  const el=document.getElementById("lmPrivKey");
   if(!el)return;
   const on=el.dataset.shown==="1";
   el.textContent=on?maskKey(el.dataset.full):el.dataset.full;
@@ -2785,7 +2813,7 @@ function renderPsDonut(){
   const donutEl=document.getElementById("psDonut");
   const rowsEl=document.getElementById("psDonutRows");
   if(donutEl)donutEl.innerHTML=`<circle cx="21" cy="21" r="15.9" fill="none" stroke="#eceaf2" stroke-width="3.5"/>${circles}
-    <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="500" fill="#2d006d" font-family="Inter">$${Math.round(total/1000)}k</text>
+    <text x="21" y="20" text-anchor="middle" font-size="6" font-weight="500" fill="#111827" font-family="Inter">$${Math.round(total/1000)}k</text>
     <text x="21" y="26" text-anchor="middle" font-size="3.2" fill="#9497a3">saldo vend.</text>`;
   if(rowsEl)rowsEl.innerHTML=mix.map(s=>`<div class="drow"><span class="name"><i class="dot" style="background:${s[2]}"></i>${s[0]}</span><span class="amt">${psMoney(s[1])} · ${total?Math.round(s[1]/total*100):0}%</span></div>`).join("");
 }
@@ -3293,7 +3321,7 @@ function qrSVG(seed){
     if(edge||inner)rects+=cell(or+r,oc+c);}};
   finder(0,0);finder(0,N-7);finder(N-7,0);
   for(let r=0;r<N;r++)for(let c=0;c<N;c++){if(!isFinder(r,c)&&rnd()>0.5)rects+=cell(r,c);}
-  return `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" fill="#2d006d"><rect width="${size}" height="${size}" fill="#fff"/><g>${rects}</g></svg>`;
+  return `<svg viewBox="0 0 ${size} ${size}" xmlns="http://www.w3.org/2000/svg" fill="#111827"><rect width="${size}" height="${size}" fill="#fff"/><g>${rects}</g></svg>`;
 }
 function openQR(name,id){
   currentQR={name,id};
@@ -3324,7 +3352,7 @@ function printQR(){
   const svg=$("#qrStage svg");if(!svg)return;
   const w=window.open("","_blank","width=460,height=620");
   if(!w){window.print();return;}
-  w.document.write(`<title>QR ${currentQR.name}</title><body style="font-family:sans-serif;text-align:center;padding:28px"><h2 style="margin:0 0 4px;color:#2d006d">${currentQR.name}</h2><div style="color:#6b7280;margin-bottom:18px">ID ${currentQR.id}</div><div style="width:280px;margin:0 auto">${new XMLSerializer().serializeToString(svg)}</div></body>`);
+  w.document.write(`<title>QR ${currentQR.name}</title><body style="font-family:sans-serif;text-align:center;padding:28px"><h2 style="margin:0 0 4px;color:#111827">${currentQR.name}</h2><div style="color:#6b7280;margin-bottom:18px">ID ${currentQR.id}</div><div style="width:280px;margin:0 auto">${new XMLSerializer().serializeToString(svg)}</div></body>`);
   w.document.close();w.focus();setTimeout(()=>w.print(),300);
 }
 
@@ -3499,7 +3527,7 @@ function openEdoCta(idx){
     `<div style="display:flex;flex-direction:column;gap:2px;margin-top:6px">
       <div style="display:flex;justify-content:space-between;gap:32px;font-size:13px;color:#5a5a7a"><span>Comisión bruta</span><span>${_fmt(totalCom)}</span></div>
       <div style="display:flex;justify-content:space-between;gap:32px;font-size:13px;color:#5a5a7a"><span>IVA (16%)</span><span>${_fmt(totalIva)}</span></div>
-      <div style="display:flex;justify-content:space-between;gap:32px;font-size:14px;font-weight:600;color:#2d006d;border-top:1px solid #e5e0f5;margin-top:4px;padding-top:4px"><span>Total a pagar</span><span>${_fmt(totalTotal)}</span></div>
+      <div style="display:flex;justify-content:space-between;gap:32px;font-size:14px;font-weight:600;color:#111827;border-top:1px solid #e5e0f5;margin-top:4px;padding-top:4px"><span>Total a pagar</span><span>${_fmt(totalTotal)}</span></div>
     </div>`;
 
   document.getElementById("edoOverlay").classList.add("on");
