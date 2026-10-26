@@ -2273,7 +2273,7 @@ const ONBOARDING_URL_LOCAL = "http://localhost:3000?portal=punto-red";
 function iniciarOnboarding(esNuevo=false){
   const overlay    = document.getElementById("onboardingOverlay");
   const placeholder= document.getElementById("onboardingPlaceholder");
-  const esLocal    = true;
+  const esLocal    = location.hostname === "localhost" || location.hostname === "127.0.0.1" || location.protocol === "file:";
   const ONBOARDING_URL = esLocal ? ONBOARDING_URL_LOCAL : ONBOARDING_URL_PROD;
 
   if(esNuevo){
